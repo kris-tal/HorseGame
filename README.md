@@ -1,9 +1,33 @@
-## Instrukcje początkowe
+# Końtra
 
-Proszę każdego członka zespołu o sprawdzenie, czy Państwa adres email, który będzie się zapisywał w commitach, jest zarejestrowany na Państwa koncie na GitHubie.
-Swój adres email do commitów mogą Państwo odczytać za pomocą komendy `git config user.mail` i ustawić za pomocą komendy `git config user.mail "nowy adres email"`.
-Swoje adresy email zerejestrowane na GitHubie mogą Państwo odczytać i zmienić na stronie [https://github.com/settings/emails](https://github.com/settings/emails).
+A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
-Ponadto proszę jednego z członków zespołu o zastąpienie w pliku settings.gradle nazwy projektu 'project' przez 'team-' z numerem zespołu dopisanym po kresce.
+This project was generated with a template including simple application launchers and a main class extending `Game` that sets the first screen.
 
-Kiedy wszystkie czynności, o które tutaj proszę, zostaną wykonane, można niniejszy plik README.md usunąć lub zastąpić wedle Państwa uznania.
+## Platforms
+
+- `core`: Main module with the application logic shared by all platforms.
+- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+
+## Gradle
+
+This project uses [Gradle](https://gradle.org/) to manage dependencies.
+The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
+Useful Gradle tasks and flags:
+
+- `--continue`: when using this flag, errors will not stop the tasks from running.
+- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
+- `--offline`: when using this flag, cached dependency archives will be used.
+- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
+- `build`: builds sources and archives of every project.
+- `cleanEclipse`: removes Eclipse project data.
+- `cleanIdea`: removes IntelliJ project data.
+- `clean`: removes `build` folders, which store compiled classes and built archives.
+- `eclipse`: generates Eclipse project data.
+- `idea`: generates IntelliJ project data.
+- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
+- `lwjgl3:run`: starts the application.
+- `test`: runs unit tests (if any).
+
+Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
+For example, `core:clean` removes `build` folder only from the `core` project.
