@@ -1,3 +1,17 @@
+# Gradle
 .gradle
-.idea
 build
+out
+
+# Intellij IDEA
+*.iml
+.idea
+
+# VS Code dla Ani
+.vscode
+
+# Other
+.DS_Store
+.log
+
+
