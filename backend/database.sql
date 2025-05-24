@@ -1,0 +1,12 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(80) UNIQUE NOT NULL,
+    email VARCHAR(120),
+    password_hash VARCHAR(256) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE  TABLE horses (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(80)
+);

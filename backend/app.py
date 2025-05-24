@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from config import Config
 from models import db
+from routes.profile import profile_bp
 from routes.auth import auth_bp
 from flask_jwt_extended import JWTManager
 
@@ -11,6 +12,8 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 app.register_blueprint(auth_bp)
+app.register_blueprint(profile_bp)
+
 
 @app.route('/', methods=['GET'])
 def index():
