@@ -100,6 +100,10 @@ public class LoginScreen implements Screen {
             }
         });
         registerLabel.setWidth(fieldWidth);
+        stage.addActor(usernameField);
+        stage.addActor(passwordField);
+        stage.addActor(registerLabel);
+        stage.addActor(loginButton);
 
         //layout
         root.top();
