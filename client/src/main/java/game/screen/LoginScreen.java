@@ -3,6 +3,7 @@ package game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,6 +26,7 @@ public class LoginScreen implements Screen {
     private TextField passwordField;
     private TextButton loginButton;
     private Label registerLabel;
+    private Sound loginSound;
 
     public LoginScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
@@ -48,6 +50,7 @@ public class LoginScreen implements Screen {
         bgTexture = ResourceManager.authScreenBgTexture;
         logoTexture = ResourceManager.logoTexture;
         skin = ResourceManager.uiSkin;
+        loginSound = ResourceManager.horseSound1;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -64,24 +67,21 @@ public class LoginScreen implements Screen {
         float logoWidth = screenWidth / 2f;
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
-
         //username / password field
         usernameField = new TextField("", skin);
-        usernameField.setMessageText("Username");
+        usernameField.setMessageText("username");
 
         passwordField = new TextField("", skin);
-        passwordField.setMessageText("Password");
+        passwordField.setMessageText("password");
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
-        float fieldWidth = Gdx.graphics.getWidth() / 3f;
-        float fieldHeight = Gdx.graphics.getHeight() / 20f;
-
         //login button
-        loginButton = new TextButton("Login", skin);
+        loginButton = new TextButton("log in", skin);
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                loginSound.play();
                 String username = usernameField.getText();
                 String password = passwordField.getText();
                 System.out.println("Login with: " + username + " / " + password);
@@ -89,21 +89,18 @@ public class LoginScreen implements Screen {
             }
         });
 
+        float fieldWidth = Gdx.graphics.getWidth() / 3f;
+        float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
         //go to register screen
         registerLabel = new Label("I don't have an account..", skin);
-        registerLabel.setColor(Color.SKY);
+        registerLabel.setColor(Color.PINK);
         registerLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new RegisterScreen(game, resourceManager));
             }
         });
-        registerLabel.setWidth(fieldWidth);
-        stage.addActor(usernameField);
-        stage.addActor(passwordField);
-        stage.addActor(registerLabel);
-        stage.addActor(loginButton);
 
         //layout
         root.top();
@@ -112,7 +109,7 @@ public class LoginScreen implements Screen {
         root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(mediumPadding).row();
         root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(mediumPadding).row();
         root.add(loginButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
-        root.add(registerLabel).padTop(smallPadding).row();
+        root.add(registerLabel).width(fieldWidth).padTop(smallPadding).row();
     }
 
     @Override

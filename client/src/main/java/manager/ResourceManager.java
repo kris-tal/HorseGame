@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,19 +18,21 @@ public class ResourceManager {
     public static final String LOGO_PATH = "images/other/logo.png";
     public static final String UI_TEXTURE_PATH_ATLAS = "skins/uiskin.atlas";
     public static final String UI_SKIN_PATH = "skins/uiskin.json";
+    public static final String HORSE_SOUND1_PATH = "sounds/horse_sound1.wav";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
     public static Texture logoTexture;
-    public static TextureAtlas uiTextureAtlas = new TextureAtlas(UI_TEXTURE_PATH_ATLAS);
-    public static Skin uiSkin = new Skin(Gdx.files.internal(UI_SKIN_PATH), uiTextureAtlas);
-
+    public static TextureAtlas uiTextureAtlas;
+    public static Skin uiSkin;
+    public static Sound horseSound1;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
         assetManager.load(LOGO_PATH, Texture.class);
         assetManager.load(UI_SKIN_PATH, Skin.class);
         assetManager.load(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
+        assetManager.load(HORSE_SOUND1_PATH, Sound.class);
 
         assetManager.finishLoading();
 
@@ -37,6 +40,7 @@ public class ResourceManager {
         logoTexture = assetManager.get(LOGO_PATH, Texture.class);
         uiSkin = assetManager.get(UI_SKIN_PATH, Skin.class);
         uiTextureAtlas = assetManager.get(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
+        horseSound1 = assetManager.get(HORSE_SOUND1_PATH, Sound.class);
     }
 
     //i'll need this later (maybe)
@@ -68,6 +72,21 @@ public class ResourceManager {
             return assetManager.get(path, Skin.class);
         }
         Gdx.app.log("ResourceManager", "Skin not loaded: " + path);
+        return null;
+    }
+
+    public static void loadSound(String path) {
+        if (!assetManager.isLoaded(path)) {
+            assetManager.load(path, Sound.class);
+            assetManager.finishLoadingAsset(path);
+        }
+    }
+
+    public static Sound getSound(String path) {
+        if (assetManager.isLoaded(path)) {
+            return assetManager.get(path, Sound.class);
+        }
+        Gdx.app.log("ResourceManager", "Sound not loaded: " + path);
         return null;
     }
 
