@@ -3,12 +3,21 @@ package game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.HorseGame;
 import manager.ResourceManager;
 
 public class RegisterScreen implements Screen {
-    private HorseGame game;
-    private ResourceManager resourceManager;
+    private final HorseGame game;
+    private final ResourceManager resourceManager;
+    private Stage stage;
 
     public RegisterScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
@@ -17,7 +26,77 @@ public class RegisterScreen implements Screen {
 
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        float topPadding = screenHeight / 10f;
+        float bigPadding = screenHeight / 10f;
+        float mediumPadding = screenHeight / 20f;
+        float smallPadding = screenHeight / 40f;
+
+        //loading assets
+        Texture bgTexture = ResourceManager.authScreenBgTexture;
+        Texture logoTexture = ResourceManager.logoTexture;
+        Skin skin = ResourceManager.uiSkin;
+        Sound loginSound = ResourceManager.horseSound1;
+
+        //staging bg
+        Image background = new Image(bgTexture);
+        background.setFillParent(true);
+        stage.addActor(background);
+
+        Table root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
+
+        //staging logo
+        Image logo = new Image(logoTexture);
+        logo.setScaling(Scaling.fit);
+        float logoWidth = screenWidth / 2f;
+        float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
+
+        //username / password field
+        TextField usernameField = new TextField("", skin);
+        usernameField.setMessageText("username");
+
+        TextField passwordField = new TextField("", skin);
+        passwordField.setMessageText("password");
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        TextField repeatPasswordField = new TextField("", skin);
+        repeatPasswordField.setMessageText("repeat password");
+        repeatPasswordField.setPasswordMode(true);
+        repeatPasswordField.setPasswordCharacter('*');
+
+        //register button
+        TextButton registerButton = new TextButton("register!", skin);
+        registerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                loginSound.play();
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                System.out.println("Login with: " + username + " / " + password);
+                //add register logic !!!!
+                game.setScreen(new CharacterSelectionScreen(game, resourceManager));
+            }
+        });
+
+        float fieldWidth = Gdx.graphics.getWidth() / 3f;
+        float fieldHeight = Gdx.graphics.getHeight() / 20f;
+
+        //layout
+        root.top();
+        root.padTop(topPadding);
+        root.add(logo).width(logoWidth).height(logoHeight).padBottom(mediumPadding).row();
+        root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
+        root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
+        root.add(repeatPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
+        root.add(registerButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
     }
 
     @Override
@@ -25,11 +104,14 @@ public class RegisterScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -43,6 +125,8 @@ public class RegisterScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        //reszte disposuje w managerze
     }
+
 }

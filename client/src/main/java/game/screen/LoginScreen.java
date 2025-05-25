@@ -16,17 +16,9 @@ import game.HorseGame;
 import manager.ResourceManager;
 
 public class LoginScreen implements Screen {
-    private HorseGame game;
-    private ResourceManager resourceManager;
+    private final HorseGame game;
+    private final ResourceManager resourceManager;
     private Stage stage;
-    private Skin skin;
-    private Texture bgTexture;
-    private Texture logoTexture;
-    private TextField usernameField;
-    private TextField passwordField;
-    private TextButton loginButton;
-    private Label registerLabel;
-    private Sound loginSound;
 
     public LoginScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
@@ -47,10 +39,10 @@ public class LoginScreen implements Screen {
         float smallPadding = screenHeight / 40f;
 
         //loading assets
-        bgTexture = ResourceManager.authScreenBgTexture;
-        logoTexture = ResourceManager.logoTexture;
-        skin = ResourceManager.uiSkin;
-        loginSound = ResourceManager.horseSound1;
+        Texture bgTexture = ResourceManager.authScreenBgTexture;
+        Texture logoTexture = ResourceManager.logoTexture;
+        Skin skin = ResourceManager.uiSkin;
+        Sound loginSound = ResourceManager.horseSound1;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -68,16 +60,16 @@ public class LoginScreen implements Screen {
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
         //username / password field
-        usernameField = new TextField("", skin);
+        TextField usernameField = new TextField("", skin);
         usernameField.setMessageText("username");
 
-        passwordField = new TextField("", skin);
+        TextField passwordField = new TextField("", skin);
         passwordField.setMessageText("password");
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
         //login button
-        loginButton = new TextButton("log in", skin);
+        TextButton loginButton = new TextButton("log in", skin);
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -93,7 +85,7 @@ public class LoginScreen implements Screen {
         float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
         //go to register screen
-        registerLabel = new Label("I don't have an account..", skin);
+        Label registerLabel = new Label("I don't have an account..", skin);
         registerLabel.setColor(Color.PINK);
         registerLabel.addListener(new ClickListener() {
             @Override
