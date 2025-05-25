@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         try {
-            String requestBody = gson.toJson(new LoginRequest(username, password, "test@example.com"));
+            String requestBody = gson.toJson(new LoginRequest(username, password));
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/signup"))

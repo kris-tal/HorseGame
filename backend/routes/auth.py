@@ -23,12 +23,10 @@ def signup():
         return jsonify({"msg": "Username is too long!"}), 400
 
     user = User(username=data['username'])
-    if data['email'] is not None:
+    if 'email' in data:
         if not is_valid_email(data['email']):
             return jsonify({"msg": "Invalid email"}), 400
         user.email = data['email']
-    else:
-        user.email = None
     user.set_password(data['password'])
     db.session.add(user)
     db.session.commit()
