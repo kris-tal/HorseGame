@@ -13,16 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.HorseGame;
+import game.model.AuthResult;
+import game.service.AuthService;
+import game.service.AuthServiceImpl;
 import manager.ResourceManager;
 
 public class LoginScreen implements Screen {
     private final HorseGame game;
     private final ResourceManager resourceManager;
+    private final AuthService authService;
     private Stage stage;
 
     public LoginScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
+        this.authService = new AuthServiceImpl();
     }
 
     @Override
@@ -42,7 +47,6 @@ public class LoginScreen implements Screen {
         Texture bgTexture = ResourceManager.authScreenBgTexture;
         Texture logoTexture = ResourceManager.logoTexture;
         Skin skin = ResourceManager.uiSkin;
-        Sound loginSound = ResourceManager.horseSound1;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -73,11 +77,21 @@ public class LoginScreen implements Screen {
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                loginSound.play();
                 String username = usernameField.getText();
                 String password = passwordField.getText();
+                Sound loginSuccessSound = ResourceManager.horseSound1;
+                Sound loginFailSound = ResourceManager.snortSound;
+
                 System.out.println("Login with: " + username + " / " + password);
-                //add login logic !!!!
+                if (authService.login(username, password) != AuthResult.SUCCESS) {
+                    System.out.println("Login failed");
+                    loginFailSound.play();
+                }
+                else {
+                    System.out.println("Login successful");
+                    loginSuccessSound.play();
+                    game.setScreen(new RanchScreen(game, resourceManager));
+                }
             }
         });
 

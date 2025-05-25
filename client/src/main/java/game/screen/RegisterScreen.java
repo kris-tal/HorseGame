@@ -12,16 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.HorseGame;
+import game.model.AuthResult;
+import game.service.AuthService;
+import game.service.AuthServiceImpl;
 import manager.ResourceManager;
 
 public class RegisterScreen implements Screen {
     private final HorseGame game;
     private final ResourceManager resourceManager;
+    private final AuthService authService;
     private Stage stage;
 
     public RegisterScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
+        this.authService = new AuthServiceImpl();
     }
 
     @Override
@@ -41,7 +46,6 @@ public class RegisterScreen implements Screen {
         Texture bgTexture = ResourceManager.authScreenBgTexture;
         Texture logoTexture = ResourceManager.logoTexture;
         Skin skin = ResourceManager.uiSkin;
-        Sound loginSound = ResourceManager.horseSound1;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -67,22 +71,40 @@ public class RegisterScreen implements Screen {
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
-        TextField repeatPasswordField = new TextField("", skin);
-        repeatPasswordField.setMessageText("repeat password");
-        repeatPasswordField.setPasswordMode(true);
-        repeatPasswordField.setPasswordCharacter('*');
+        TextField confirmPasswordField = new TextField("", skin);
+        confirmPasswordField.setMessageText("repeat password");
+        confirmPasswordField.setPasswordMode(true);
+        confirmPasswordField.setPasswordCharacter('*');
 
         //register button
         TextButton registerButton = new TextButton("register!", skin);
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                loginSound.play();
                 String username = usernameField.getText();
                 String password = passwordField.getText();
-                System.out.println("Login with: " + username + " / " + password);
-                //add register logic !!!!
-                game.setScreen(new CharacterSelectionScreen(game, resourceManager));
+
+                Sound registerSuccessSound = ResourceManager.horseSound1;
+                Sound registerFailSound = ResourceManager.snortSound;
+
+                String confirmPassword = confirmPasswordField.getText();
+                if (!password.equals(confirmPassword)) {
+                    System.out.println("Passwords do not match.");
+                    registerFailSound.play();
+                    return;
+                }
+
+                System.out.println("Register with: " + username + " / " + password);
+                if (authService.register(username, password) != AuthResult.SUCCESS) {
+                    System.out.println("Registration failed.");
+                    registerFailSound.play();
+                }
+                else {
+                    System.out.println("Registration successful");
+                    registerSuccessSound.play();
+                    game.setScreen(new CharacterSelectionScreen(game, resourceManager));
+
+                }
             }
         });
 
@@ -95,7 +117,7 @@ public class RegisterScreen implements Screen {
         root.add(logo).width(logoWidth).height(logoHeight).padBottom(mediumPadding).row();
         root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
-        root.add(repeatPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
+        root.add(confirmPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(registerButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
     }
 

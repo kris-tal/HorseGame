@@ -1,6 +1,8 @@
 package game.service;
 
+import game.model.AuthResult;
+
 public interface AuthService {
-    boolean login(String username, String password);
-    boolean register(String username, String password);
+    AuthResult register(String username, String password);
+    AuthResult login(String username, String password);
 }

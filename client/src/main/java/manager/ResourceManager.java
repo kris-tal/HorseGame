@@ -19,6 +19,7 @@ public class ResourceManager {
     public static final String UI_TEXTURE_PATH_ATLAS = "skins/uiskin.atlas";
     public static final String UI_SKIN_PATH = "skins/uiskin.json";
     public static final String HORSE_SOUND1_PATH = "sounds/horse_sound1.wav";
+    public static final String SNORT_SOUND_PATH = "sounds/snort.wav";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
@@ -26,6 +27,7 @@ public class ResourceManager {
     public static TextureAtlas uiTextureAtlas;
     public static Skin uiSkin;
     public static Sound horseSound1;
+    public static Sound snortSound;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -33,6 +35,7 @@ public class ResourceManager {
         assetManager.load(UI_SKIN_PATH, Skin.class);
         assetManager.load(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
         assetManager.load(HORSE_SOUND1_PATH, Sound.class);
+        assetManager.load(SNORT_SOUND_PATH, Sound.class);
 
         assetManager.finishLoading();
 
@@ -41,6 +44,8 @@ public class ResourceManager {
         uiSkin = assetManager.get(UI_SKIN_PATH, Skin.class);
         uiTextureAtlas = assetManager.get(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
         horseSound1 = assetManager.get(HORSE_SOUND1_PATH, Sound.class);
+        snortSound = assetManager.get(SNORT_SOUND_PATH, Sound.class);
+
     }
 
     //i'll need this later (maybe)
