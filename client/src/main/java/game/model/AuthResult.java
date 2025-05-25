@@ -6,5 +6,8 @@ public enum AuthResult {
     INVALID_PASSWORD,
     USER_NOT_FOUND,
     WRONG_PASSWORD,
-    SERVER_ERROR
+    SERVER_ERROR,
+    TIMEOUT,
+    INTERRUPTED,
+    INVALID_INPUT
 }

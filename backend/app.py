@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from config import Config
-from models import db
+from models import db, User
 from routes.profile import profile_bp
 from routes.auth import auth_bp
 from flask_jwt_extended import JWTManager
