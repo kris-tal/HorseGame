@@ -15,6 +15,7 @@ public class ResourceManager {
 
     //asset paths
     public static final String AUTH_SCREEN_BG_PATH = "images/background/auth_screen_background.png";
+    public static final String RANCH_SCREEN_BG_PATH = "images/background/ranch_screen_background.png";
     public static final String LOGO_PATH = "images/other/logo.png";
     public static final String UI_TEXTURE_PATH_ATLAS = "skins/uiskin.atlas";
     public static final String UI_SKIN_PATH = "skins/uiskin.json";
@@ -23,6 +24,7 @@ public class ResourceManager {
 
     //preloaded assets
     public static Texture authScreenBgTexture;
+    public static Texture ranchScreenBgTexture;
     public static Texture logoTexture;
     public static TextureAtlas uiTextureAtlas;
     public static Skin uiSkin;
@@ -31,6 +33,7 @@ public class ResourceManager {
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
+        assetManager.load(RANCH_SCREEN_BG_PATH, Texture.class);
         assetManager.load(LOGO_PATH, Texture.class);
         assetManager.load(UI_SKIN_PATH, Skin.class);
         assetManager.load(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
@@ -40,6 +43,7 @@ public class ResourceManager {
         assetManager.finishLoading();
 
         authScreenBgTexture = assetManager.get(AUTH_SCREEN_BG_PATH, Texture.class);
+        ranchScreenBgTexture = assetManager.get(RANCH_SCREEN_BG_PATH, Texture.class);
         logoTexture = assetManager.get(LOGO_PATH, Texture.class);
         uiSkin = assetManager.get(UI_SKIN_PATH, Skin.class);
         uiTextureAtlas = assetManager.get(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);

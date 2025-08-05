@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.HorseGame;
 import manager.ResourceManager;
@@ -26,13 +27,9 @@ public class RanchScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0.6f, 0.8f, 1f, 1f);
-        pixmap.fill();
+        Texture bgTexture = ResourceManager.ranchScreenBgTexture;
 
-        Texture bgTexture = new Texture(pixmap);
-        pixmap.dispose();
-
+        //staging bg
         Image background = new Image(bgTexture);
         background.setFillParent(true);
         stage.addActor(background);
