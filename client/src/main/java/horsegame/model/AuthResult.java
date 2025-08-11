@@ -1,4 +1,4 @@
-package game.model;
+package horsegame.model;
 
 public enum AuthResult {
     SUCCESS,
