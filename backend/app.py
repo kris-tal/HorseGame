@@ -15,10 +15,8 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(profile_bp)
 
 
-@app.route('/', methods=['GET'])
-def index():
-    return jsonify({"msg": "Hello, cruel world!"}), 200
-
 with app.app_context():
     db.create_all()
-app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=4000)

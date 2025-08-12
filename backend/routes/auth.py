@@ -41,3 +41,7 @@ def login():
         token = create_access_token(identity=json.dumps({"id": user.id, "username": user.username}))
         return jsonify({"token": token}), 200 # Login successful
     return jsonify({"msg": "Invalid credentials"}), 401 # Forbidden
+
+@auth_bp.route('/', methods=['GET'])
+def index():
+    return jsonify({"msg": "Hello, cruel world!"}), 200
