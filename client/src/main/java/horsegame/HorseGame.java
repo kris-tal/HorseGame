@@ -1,9 +1,9 @@
-package game;
+package horsegame;
 
 import com.badlogic.gdx.Game;
-import game.screen.CharacterSelectionScreen;
-import game.screen.LoginScreen;
-import game.screen.RegisterScreen;
+import horsegame.screen.CharacterSelectionScreen;
+import horsegame.screen.LoginScreen;
+import horsegame.screen.RegisterScreen;
 import manager.ResourceManager;
 
 public class HorseGame extends Game {
