@@ -27,9 +27,9 @@ public class StatusBar extends Table {
         }
 
         private void setup() {
-            usernameLabel = new Label("Username", getSkin());
-            prestigeLabel = new Label("Prestige", getSkin());
-            moneyLabel = new Label("Money", getSkin());
+            usernameLabel = new Label("Username", UIStyles.getDefaultLabelStyle());
+            prestigeLabel = new Label("Prestige", UIStyles.getDefaultLabelStyle());
+            moneyLabel = new Label("Money", UIStyles.getDefaultLabelStyle());
 
             add(usernameLabel).padRight(10);
             add(prestigeLabel).padRight(10);
@@ -80,7 +80,7 @@ public class StatusBar extends Table {
 
     private void addItems() {
         PlayerStatusItem playerStatusItem = new PlayerStatusItem(getSkin());
-        TextButton inventoryButton = new TextButton("inv", getSkin());
+        TextButton inventoryButton = new TextButton("inv", UIStyles.getDefaultButtonStyle());
         inventoryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -89,7 +89,7 @@ public class StatusBar extends Table {
         });
 
         if (type == Type.FULL) {
-            TextButton buildingModeButton = new TextButton("buildingMode", getSkin());
+            TextButton buildingModeButton = new TextButton("buildingMode", UIStyles.getDefaultButtonStyle());
             buildingModeButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -97,7 +97,7 @@ public class StatusBar extends Table {
                 }
             });
 
-            TextButton raceButton = new TextButton("race", getSkin());
+            TextButton raceButton = new TextButton("race", UIStyles.getDefaultButtonStyle());
             raceButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -109,7 +109,7 @@ public class StatusBar extends Table {
             addToRight(raceButton);
         }
 
-        TextButton mapButton = new TextButton("map", getSkin());
+        TextButton mapButton = new TextButton("map", UIStyles.getDefaultButtonStyle());
         mapButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

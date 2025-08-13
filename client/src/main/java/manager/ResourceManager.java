@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -21,15 +22,21 @@ public class ResourceManager {
     public static final String UI_SKIN_PATH = "skins/uiskin.json";
     public static final String HORSE_SOUND1_PATH = "sounds/horse_sound1.wav";
     public static final String SNORT_SOUND_PATH = "sounds/snort.wav";
+    public static final String UI_ATLAS_PATH = "ui/ui.atlas";
+    public static final String UI_FONT_PATH = "ui/fonts/uifont.fnt";
+    public static final String UI_FONT_BOLD_PATH = "ui/fonts/uifontbold.fnt";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
     public static Texture ranchScreenBgTexture;
     public static Texture logoTexture;
     public static TextureAtlas uiTextureAtlas;
+    public static TextureAtlas uiAtlas;    //
     public static Skin uiSkin;
     public static Sound horseSound1;
     public static Sound snortSound;
+    public static BitmapFont uiFont;
+    public static BitmapFont uiFontBold;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -39,6 +46,9 @@ public class ResourceManager {
         assetManager.load(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
         assetManager.load(HORSE_SOUND1_PATH, Sound.class);
         assetManager.load(SNORT_SOUND_PATH, Sound.class);
+        assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
+        assetManager.load(UI_FONT_PATH, BitmapFont.class);
+        assetManager.load(UI_FONT_BOLD_PATH, BitmapFont.class);
 
         assetManager.finishLoading();
 
@@ -49,6 +59,9 @@ public class ResourceManager {
         uiTextureAtlas = assetManager.get(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);
         horseSound1 = assetManager.get(HORSE_SOUND1_PATH, Sound.class);
         snortSound = assetManager.get(SNORT_SOUND_PATH, Sound.class);
+        uiAtlas = assetManager.get(UI_ATLAS_PATH, TextureAtlas.class);
+        uiFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
+        uiFontBold = assetManager.get(UI_FONT_BOLD_PATH, BitmapFont.class);
 
     }
 

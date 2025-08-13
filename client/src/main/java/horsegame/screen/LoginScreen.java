@@ -16,6 +16,7 @@ import horsegame.HorseGame;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
+import horsegame.ui.UIStyles;
 import manager.ResourceManager;
 
 public class LoginScreen implements Screen {
@@ -64,16 +65,17 @@ public class LoginScreen implements Screen {
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
         //username / password field
-        TextField usernameField = new TextField("", skin);
+        TextField usernameField = new TextField("", UIStyles.getTextFieldStyle());
         usernameField.setMessageText("username");
 
-        TextField passwordField = new TextField("", skin);
+
+        TextField passwordField = new TextField("", UIStyles.getTextFieldStyle());
         passwordField.setMessageText("password");
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
         //login button
-        TextButton loginButton = new TextButton("log in", skin);
+        TextButton loginButton = new TextButton("log in", UIStyles.getDefaultButtonStyle());
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,12 +97,33 @@ public class LoginScreen implements Screen {
             }
         });
 
+
+        usernameField.setTextFieldListener((textField, c) -> {
+            if (c == '\n' || c == '\r') {
+                stage.setKeyboardFocus(passwordField);
+            }
+        });
+
+        passwordField.setTextFieldListener((textField, c) -> {
+            if (c == '\n' || c == '\r') {
+                loginButton.fire(new InputEvent() {{
+                    setType(Type.touchDown);
+                    setStage(stage);
+                    setRelatedActor(loginButton);
+                }});
+                loginButton.fire(new InputEvent() {{
+                    setType(Type.touchUp);
+                    setStage(stage);
+                    setRelatedActor(loginButton);
+                }});
+            }
+        });
+
         float fieldWidth = Gdx.graphics.getWidth() / 3f;
         float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
         //go to register screen
-        Label registerLabel = new Label("I don't have an account..", skin);
-        registerLabel.setColor(Color.PINK);
+        Label registerLabel = new Label("I don't have an account..", UIStyles.getDefaultLabelStyle());
         registerLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
