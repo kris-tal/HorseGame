@@ -1,6 +1,8 @@
 import json
 
 from flask import Blueprint, request, jsonify
+
+from file_manager import create_user_files
 from models import db, User
 from flask_jwt_extended import create_access_token
 import re
@@ -30,6 +32,9 @@ def signup():
     user.set_password(data['password'])
     db.session.add(user)
     db.session.commit()
+
+    create_user_files(user_id=user.id)
+
     token = create_access_token(identity=json.dumps({"id": user.id, "username": user.username}))
     return jsonify({"token": token}), 201 # Created
 
@@ -41,3 +46,7 @@ def login():
         token = create_access_token(identity=json.dumps({"id": user.id, "username": user.username}))
         return jsonify({"token": token}), 200 # Login successful
     return jsonify({"msg": "Invalid credentials"}), 401 # Forbidden
+
+@auth_bp.route('/', methods=['GET'])
+def index():
+    return jsonify({"msg": "Hello, cruel world!"}), 200
