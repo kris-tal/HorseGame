@@ -6,8 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import horsegame.HorseGame;
-import horsegame.race.GameMap;      // poprawny import z Twojego folderu race
-import horsegame.race.MapRenderer;  // poprawny import z Twojego folderu race
+import horsegame.race.GameMap;
+import horsegame.race.MapRenderer;
 import manager.ResourceManager;
 
 public class RaceSingleplayer implements Screen {
