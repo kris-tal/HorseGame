@@ -16,7 +16,7 @@ public class UIStyles {
     private final static Color defaultfontColor = new Color(216/255f, 204/255f, 193/255f, 1f);
 
     public static TextButton.TextButtonStyle getDefaultButtonStyle() {
-        NinePatch upPatch = atlas.createPatch("color6_up");   // Requires "split" data in .atlas
+        NinePatch upPatch = atlas.createPatch("color6_up");
         NinePatch downPatch = atlas.createPatch("color6_down");
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
