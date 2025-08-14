@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import horsegame.HorseGame;
+import horsegame.screen.RaceSingleplayer;
+import manager.ResourceManager;
 
 public class RanchStatusBar extends Table {
     public enum Type { FULL, LIGHT }
@@ -14,6 +17,10 @@ public class RanchStatusBar extends Table {
         void onStatusBar(Action action);
     }
     private StatusBarListener listener;
+
+
+    private final HorseGame game;
+    private final ResourceManager resourceManager;
 
     public static class PlayerStatusItem extends Table {
         private Label usernameLabel;
@@ -47,8 +54,10 @@ public class RanchStatusBar extends Table {
     private final Table leftStack;
     private final Table rightStack;
 
-    public RanchStatusBar(Skin skin) {
+    public RanchStatusBar(HorseGame game, ResourceManager resourceManager, Skin skin) {
         super(skin);
+        this.game = game;
+        this.resourceManager = resourceManager;
 
         this.skin = skin;
 
@@ -96,6 +105,7 @@ public class RanchStatusBar extends Table {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Race button clicked");
+                game.setScreen(new RaceSingleplayer(game, resourceManager));
             }
         });
 
