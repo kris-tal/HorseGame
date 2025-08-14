@@ -15,6 +15,7 @@ import horsegame.HorseGame;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
+import horsegame.ui.UIStyles;
 import manager.ResourceManager;
 
 public class RegisterScreen implements Screen {
@@ -63,21 +64,21 @@ public class RegisterScreen implements Screen {
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
         //username / password field
-        TextField usernameField = new TextField("", skin);
+        TextField usernameField = new TextField("", UIStyles.getTextFieldStyle());
         usernameField.setMessageText("username");
 
-        TextField passwordField = new TextField("", skin);
+        TextField passwordField = new TextField("", UIStyles.getTextFieldStyle());
         passwordField.setMessageText("password");
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
-        TextField confirmPasswordField = new TextField("", skin);
+        TextField confirmPasswordField = new TextField("", UIStyles.getTextFieldStyle());
         confirmPasswordField.setMessageText("repeat password");
         confirmPasswordField.setPasswordMode(true);
         confirmPasswordField.setPasswordCharacter('*');
 
         //register button
-        TextButton registerButton = new TextButton("register!", skin);
+        TextButton registerButton = new TextButton("register!", UIStyles.getDefaultButtonStyle());
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -102,9 +103,35 @@ public class RegisterScreen implements Screen {
                 else {
                     System.out.println("Registration successful");
                     registerSuccessSound.play();
-                    game.setScreen(new CharacterSelectionScreen(game, resourceManager));
-
+                    game.setScreen(new RanchScreen(game, resourceManager));
                 }
+            }
+        });
+
+        usernameField.setTextFieldListener((textField, c) -> {
+            if (c == '\n' || c == '\r') {
+                stage.setKeyboardFocus(passwordField);
+            }
+        });
+
+        passwordField.setTextFieldListener((textField, c) -> {
+            if (c == '\n' || c == '\r') {
+                stage.setKeyboardFocus(confirmPasswordField);
+            }
+        });
+
+        confirmPasswordField.setTextFieldListener((textField, c) -> {
+            if (c == '\n' || c == '\r') {
+                registerButton.fire(new InputEvent() {{
+                    setType(Type.touchDown);
+                    setStage(stage);
+                    setRelatedActor(registerButton);
+                }});
+                registerButton.fire(new InputEvent() {{
+                    setType(Type.touchUp);
+                    setStage(stage);
+                    setRelatedActor(registerButton);
+                }});
             }
         });
 
@@ -147,8 +174,9 @@ public class RegisterScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        //reszte disposuje w managerze
+        if (stage != null) {
+            stage.dispose();
+        }
     }
 
 }

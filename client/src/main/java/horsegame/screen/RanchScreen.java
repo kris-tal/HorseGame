@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import horsegame.HorseGame;
-import horsegame.ui.StatusBar;
+import horsegame.ui.RanchStatusBar;
 import manager.ResourceManager;
 
 public class RanchScreen implements Screen {
@@ -35,7 +35,7 @@ public class RanchScreen implements Screen {
         background.setFillParent(true);
         stage.addActor(background);
 
-        StatusBar statusBar = new StatusBar(skin, StatusBar.Type.FULL, ScreenID.RANCH);
+        RanchStatusBar statusBar = new RanchStatusBar(skin);
         stage.addActor(statusBar);
     }
 

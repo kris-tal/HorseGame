@@ -1,7 +1,6 @@
 package horsegame;
 
 import com.badlogic.gdx.Game;
-import horsegame.screen.CharacterSelectionScreen;
 import horsegame.screen.LoginScreen;
 import horsegame.screen.RegisterScreen;
 import manager.ResourceManager;
@@ -10,9 +9,6 @@ public class HorseGame extends Game {
     private ResourceManager resourceManager;
     private LoginScreen loginScreen;
     private RegisterScreen registerScreen;
-    private CharacterSelectionScreen characterSelectionScreen;
-    //private RanchScreen ranchScreen;
-    //private MeadowScreen meadowScreen;
     //private RaceScreen raceScreen;
 
     @Override

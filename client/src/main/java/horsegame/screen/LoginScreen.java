@@ -166,8 +166,9 @@ public class LoginScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        //reszte disposuje w managerze
+        if (stage != null) {
+            stage.dispose();
+        }
     }
 
 }

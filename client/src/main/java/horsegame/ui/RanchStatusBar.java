@@ -5,9 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import horsegame.screen.ScreenID;
 
-public class StatusBar extends Table {
+public class RanchStatusBar extends Table {
     public enum Type { FULL, LIGHT }
     public enum Action { INVENTORY, MAP, BUILDING_MODE, RACE }
 
@@ -44,18 +43,14 @@ public class StatusBar extends Table {
 
     }
 
-    private final Type type;
-    private final ScreenID screenID;
     private final Skin skin;
     private final Table leftStack;
     private final Table rightStack;
 
-    public StatusBar(Skin skin, Type type, ScreenID screenID) {
+    public RanchStatusBar(Skin skin) {
         super(skin);
 
         this.skin = skin;
-        this.type = type;
-        this.screenID = screenID;
 
         this.leftStack = new Table(skin);
         this.rightStack = new Table(skin);
@@ -88,26 +83,23 @@ public class StatusBar extends Table {
             }
         });
 
-        if (type == Type.FULL) {
-            TextButton buildingModeButton = new TextButton("buildingMode", UIStyles.getDefaultButtonStyle());
-            buildingModeButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Building mode button clicked");
-                }
-            });
+        TextButton buildingModeButton = new TextButton("buildingMode", UIStyles.getDefaultButtonStyle());
+        buildingModeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Building mode button clicked");
+            }
+        });
 
-            TextButton raceButton = new TextButton("race", UIStyles.getDefaultButtonStyle());
-            raceButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Race button clicked");
-                }
-            });
+        TextButton raceButton = new TextButton("race", UIStyles.getDefaultButtonStyle());
+        raceButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Race button clicked");
+            }
+        });
 
-            addToRight(buildingModeButton);
-            addToRight(raceButton);
-        }
+
 
         TextButton mapButton = new TextButton("map", UIStyles.getDefaultButtonStyle());
         mapButton.addListener(new ClickListener() {
@@ -117,9 +109,12 @@ public class StatusBar extends Table {
             }
         });
 
+
         addToLeft(playerStatusItem);
         addToLeft(inventoryButton);
 
+        addToRight(buildingModeButton);
+        addToRight(raceButton);
         addToRight(mapButton);
     }
 
