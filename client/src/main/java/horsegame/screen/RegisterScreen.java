@@ -38,7 +38,6 @@ public class RegisterScreen implements Screen {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        float topPadding = screenHeight / 10f;
         float bigPadding = screenHeight / 10f;
         float mediumPadding = screenHeight / 20f;
         float smallPadding = screenHeight / 40f;
@@ -46,7 +45,6 @@ public class RegisterScreen implements Screen {
         //loading assets
         Texture bgTexture = ResourceManager.authScreenBgTexture;
         Texture logoTexture = ResourceManager.logoTexture;
-        Skin skin = ResourceManager.uiSkin;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -138,14 +136,23 @@ public class RegisterScreen implements Screen {
         float fieldWidth = Gdx.graphics.getWidth() / 3f;
         float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
+        Label loginLabel = new Label("Actually I do have an account..", UIStyles.getDefaultLabelStyle());
+        loginLabel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new LoginScreen(game, resourceManager));
+            }
+        });
+
         //layout
         root.top();
-        root.padTop(topPadding);
-        root.add(logo).width(logoWidth).height(logoHeight).padBottom(mediumPadding).row();
+        root.padTop(bigPadding);
+        root.add(logo).width(logoWidth).height(logoHeight).padBottom(bigPadding).row();
         root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(confirmPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(registerButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
+        root.add(loginLabel).width(fieldWidth).padTop(smallPadding).row();
     }
 
     @Override

@@ -1,9 +1,12 @@
 package horsegame.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -12,6 +15,10 @@ import manager.ResourceManager;
 public class UIStyles {
     private final static TextureAtlas atlas = ResourceManager.uiAtlas;
     private final static Color defaultfontColor = new Color(216/255f, 204/255f, 193/255f, 1f);
+
+    static {
+        ResourceManager.uiFont.getData().setScale(0.5f);
+    }
 
     public static TextButton.TextButtonStyle getDefaultButtonStyle() {
         NinePatch upPatch = atlas.createPatch("color6_up");
@@ -22,7 +29,6 @@ public class UIStyles {
         style.down = new NinePatchDrawable(downPatch);
         style.font = ResourceManager.uiFont;
         style.fontColor = defaultfontColor;
-        style.font.getData().setScale(0.5f);
 
         return style;
     }
@@ -47,5 +53,9 @@ public class UIStyles {
         style.font = ResourceManager.uiFont;
 
         return style;
+    }
+
+    public static NinePatch getDefaultBackgroundPatch() {
+        return atlas.createPatch("color5_down");
     }
 }

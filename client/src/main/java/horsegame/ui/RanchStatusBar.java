@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class RanchStatusBar extends Table {
-    public enum Type { FULL, LIGHT }
     public enum Action { INVENTORY, MAP, BUILDING_MODE, RACE }
 
     public interface StatusBarListener {
@@ -75,23 +74,16 @@ public class RanchStatusBar extends Table {
 
     private void addItems() {
         PlayerStatusItem playerStatusItem = new PlayerStatusItem(getSkin());
-        TextButton inventoryButton = new TextButton("inv", UIStyles.getDefaultButtonStyle());
-        inventoryButton.addListener(new ClickListener() {
+
+        TextButton shopButton = new TextButton("shop", UIStyles.getDefaultButtonStyle());
+        shopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Inventory button clicked");
+                showMapMenu();
             }
         });
 
-        TextButton buildingModeButton = new TextButton("buildingMode", UIStyles.getDefaultButtonStyle());
-        buildingModeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Building mode button clicked");
-            }
-        });
-
-        TextButton raceButton = new TextButton("race", UIStyles.getDefaultButtonStyle());
+        TextButton raceButton = new TextButton("race!", UIStyles.getDefaultButtonStyle());
         raceButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -99,23 +91,11 @@ public class RanchStatusBar extends Table {
             }
         });
 
-
-
-        TextButton mapButton = new TextButton("map", UIStyles.getDefaultButtonStyle());
-        mapButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                showMapMenu();
-            }
-        });
-
-
         addToLeft(playerStatusItem);
-        addToLeft(inventoryButton);
 
-        addToRight(buildingModeButton);
+        addToRight(shopButton);
         addToRight(raceButton);
-        addToRight(mapButton);
+
     }
 
     private void addToLeft(Actor actor) {

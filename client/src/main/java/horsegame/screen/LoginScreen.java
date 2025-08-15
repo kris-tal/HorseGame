@@ -15,6 +15,7 @@ import horsegame.HorseGame;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
+import horsegame.ui.UIItems;
 import horsegame.ui.UIStyles;
 import manager.ResourceManager;
 
@@ -38,7 +39,6 @@ public class LoginScreen implements Screen {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        float topPadding = screenHeight / 10f;
         float bigPadding = screenHeight / 10f;
         float mediumPadding = screenHeight / 20f;
         float smallPadding = screenHeight / 40f;
@@ -46,7 +46,6 @@ public class LoginScreen implements Screen {
         //loading assets
         Texture bgTexture = ResourceManager.authScreenBgTexture;
         Texture logoTexture = ResourceManager.logoTexture;
-        Skin skin = ResourceManager.uiSkin;
 
         //staging bg
         Image background = new Image(bgTexture);
@@ -74,7 +73,7 @@ public class LoginScreen implements Screen {
         passwordField.setPasswordCharacter('*');
 
         //login button
-        TextButton loginButton = new TextButton("log in", UIStyles.getDefaultButtonStyle());
+        TextButton loginButton = UIItems.getTextButton("log in");
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -132,8 +131,8 @@ public class LoginScreen implements Screen {
 
         //layout
         root.top();
-        root.padTop(topPadding);
-        root.add(logo).width(logoWidth).height(logoHeight).padBottom(mediumPadding).row();
+        root.padTop(bigPadding);
+        root.add(logo).width(logoWidth).height(logoHeight).padBottom(bigPadding).row();
         root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(mediumPadding).row();
         root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(mediumPadding).row();
         root.add(loginButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
