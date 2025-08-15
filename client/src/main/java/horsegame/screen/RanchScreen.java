@@ -35,7 +35,7 @@ public class RanchScreen implements Screen {
         background.setFillParent(true);
         stage.addActor(background);
 
-        RanchStatusBar statusBar = new RanchStatusBar(skin);
+        RanchStatusBar statusBar = new RanchStatusBar(game, resourceManager, skin);
         stage.addActor(statusBar);
     }
 
