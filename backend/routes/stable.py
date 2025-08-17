@@ -1,7 +1,6 @@
-import json
+from flask import Blueprint
 
-from flask import Blueprint, request, jsonify
-from models import User
+from managers.identity_manager import get_user
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from routes.profile import profile_bp
@@ -13,6 +12,8 @@ stable_bp = Blueprint('stable', __name__)
 @jwt_required()
 def get_stable():
     identity = get_jwt_identity()
-    user_data = json.loads(identity)
-    user = User.query.filter_by(username=user_data["username"]).first()
+    data, status = get_user(identity)
+    if status != 200:
+        return data, status
+
 

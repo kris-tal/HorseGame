@@ -5,7 +5,7 @@ import json
 
 CONTENT_DIR = os.getenv("CONTENT_DIR")
 
-USER_DATA_DIR = "user_data"
+USER_DATA_DIR = "../user_data"
 DEFAULT_DATA_DIR = "default"
 
 class DataType(Enum):
