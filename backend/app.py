@@ -1,10 +1,12 @@
 from flask import Flask
 from config import Config
 from database.models import db
+from routes.horses import horses_bp
 from routes.profile import profile_bp
 from routes.auth import auth_bp
 from flask_jwt_extended import JWTManager
 
+from routes.shop import shop_bp
 from routes.stable import stable_bp
 
 app = Flask(__name__)
@@ -17,7 +19,9 @@ jwt = JWTManager(app)
 # Register all the blueprints of the backend
 app.register_blueprint(auth_bp) # Authorization blueprint
 app.register_blueprint(profile_bp) # Profile management blueprint
+app.register_blueprint(horses_bp) # Horse management blueprint
 app.register_blueprint(stable_bp) # Stable management blueprint
+app.register_blueprint(shop_bp) # Shop management blueprint
 
 
 with app.app_context():

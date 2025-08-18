@@ -9,10 +9,12 @@ USER_DATA_DIR = "../user_data"
 DEFAULT_DATA_DIR = "default"
 
 class DataType(Enum):
-    Stable = 1
+    Stable = 1,
+    Shop = 2
 
 DEFAULT_FILES = {
-    DataType.Stable: "stable.json"
+    DataType.Stable: "stable.json",
+    DataType.Shop: "shop.json"
 }
 
 def create_user_files(user_id:int):
@@ -27,8 +29,7 @@ def create_user_files(user_id:int):
         if not os.path.exists(file_path):
             shutil.copy(default_file_path, file_path)
 
-
-def get_user_files(user_id: int, file: DataType):
+def get_user_file(user_id: int, file: DataType):
     user_dir = os.path.join(CONTENT_DIR, USER_DATA_DIR, str(user_id))
     file_name = DEFAULT_FILES[file]
     file_path = os.path.join(user_dir, file_name)
@@ -39,3 +40,14 @@ def get_user_files(user_id: int, file: DataType):
     with open(file_path, "r") as f:
         data = json.load(f)
     return data
+
+def save_user_file(user_id: int, file: DataType, data):
+    user_dir = os.path.join(CONTENT_DIR, USER_DATA_DIR, str(user_id))
+    os.makedirs(user_dir, exist_ok=True)  # Ensure directory exists
+
+    file_name = DEFAULT_FILES[file]
+    file_path = os.path.join(user_dir, file_name)
+
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=4)
+
