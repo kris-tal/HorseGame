@@ -1,16 +1,19 @@
 package horsegame.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import horsegame.HorseGame;
 import horsegame.screen.RaceSingleplayer;
 import manager.ResourceManager;
 
 public class RanchStatusBar extends Table {
-    public enum Action { INVENTORY, MAP, BUILDING_MODE, RACE }
+    public enum Action { RANKING, SHOP, RACE }
 
     public interface StatusBarListener {
         void onStatusBar(Action action);
@@ -21,32 +24,44 @@ public class RanchStatusBar extends Table {
     private final HorseGame game;
     private final ResourceManager resourceManager;
 
-    public static class PlayerStatusItem extends Table {
-        private Label usernameLabel;
-        private Label prestigeLabel;
-        private Label moneyLabel;
+    public class PlayerStatusItem extends Table {
 
-        public PlayerStatusItem(Skin skin) {
-            super(skin);
-            setup();
+        private final Label usernameLabel;
+        private final Label moneyLabel;
+        private final Label prestigeLabel;
+
+        public PlayerStatusItem(String username, int money, int prestige) {
+            super();
+
+            setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
+
+            usernameLabel = new Label(username, UIStyles.getDefaultLabelStyle());
+
+            //TextureRegion coinRegion = ResourceManager.uiAtlas.findRegion("coin_icon");
+            //Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
+            moneyLabel = new Label(String.valueOf(money), UIStyles.getDefaultLabelStyle());
+
+            //TextureRegion prestigeRegion = ResourceManager.uiAtlas.findRegion("prestige_icon");
+            //Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
+            prestigeLabel = new Label(String.valueOf(prestige), UIStyles.getDefaultLabelStyle());
+
+            //layout
+            pad(5); // padding inside the background
+
+            add(usernameLabel).padRight(20).left();
+            //add(coinImage).size(24, 24).padRight(5);
+            add(moneyLabel).padRight(20);
+            //add(prestigeImage).size(24, 24).padRight(5);
+            add(prestigeLabel);
         }
 
-        private void setup() {
-            usernameLabel = new Label("Username", UIStyles.getDefaultLabelStyle());
-            prestigeLabel = new Label("Prestige", UIStyles.getDefaultLabelStyle());
-            moneyLabel = new Label("Money", UIStyles.getDefaultLabelStyle());
-
-            add(usernameLabel).padRight(10);
-            add(prestigeLabel).padRight(10);
-            add(moneyLabel);
-
-            setBackground(getSkin().getDrawable("default-round"));      //temporary
+        public void updateMoney(int money) {
+            moneyLabel.setText(String.valueOf(money));
         }
 
-        //no generalnie potrzebuje jakiejs logiki ktora bedzie mi pobierala te rzeczy z bazy danych
-        //i odpowiednio je updatowala
-        //ale na razie niech to jest po prostu tak
-
+        public void updatePrestige(int prestige) {
+            prestigeLabel.setText(String.valueOf(prestige));
+        }
     }
 
     private final Skin skin;
@@ -82,13 +97,18 @@ public class RanchStatusBar extends Table {
     }
 
     private void addItems() {
-        PlayerStatusItem playerStatusItem = new PlayerStatusItem(getSkin());
+        PlayerStatusItem playerStatusItem = new PlayerStatusItem("Majeczka04", 1, 99999);
+
+        addToLeft(playerStatusItem);
+
 
         TextButton shopButton = new TextButton("shop", UIStyles.getDefaultButtonStyle());
         shopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                showMapMenu();
+                if (listener != null) {
+                    listener.onStatusBar(Action.SHOP);
+                }
             }
         });
 
@@ -96,12 +116,11 @@ public class RanchStatusBar extends Table {
         raceButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Race button clicked");
-                game.setScreen(new RaceSingleplayer(game, resourceManager));
+                if (listener != null) {
+                    listener.onStatusBar(Action.RACE);
+                }
             }
         });
-
-        addToLeft(playerStatusItem);
 
         addToRight(shopButton);
         addToRight(raceButton);
@@ -116,12 +135,7 @@ public class RanchStatusBar extends Table {
         rightStack.add(actor).padLeft(10);
     }
 
-    //BUTTON LOGIC
-    private void showMapMenu() {
-        Gdx.app.log("DEBUG", "Showing map menu");
-
-        Table menu = new Table(skin);
-
-
+    public void setListener(StatusBarListener listener) {
+        this.listener = listener;
     }
 }
