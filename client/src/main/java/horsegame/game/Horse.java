@@ -2,16 +2,16 @@ package horsegame.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import horsegame.data.HorseType;
+import horsegame.data.HorseData;
 
 public class Horse {
-    private HorseType type;
+    private HorseData data;
     private Vector2 position;
     private float friendshipLevel; // 0 do 100.0
-    private boolean isWild;
+    private boolean isWild; // For now no wild horses
 
-    public Horse(HorseType type, Vector2 position, boolean isWild) {
-        this.type = type;
+    public Horse(HorseData type, Vector2 position, boolean isWild) {
+        this.data = type;
         this.position = position;
         this.friendshipLevel = 0;
         this.isWild = isWild;
@@ -22,7 +22,7 @@ public class Horse {
     }
 
     public void give(String giftId) {
-        if (type.giftPreferences.contains(giftId)) {
+        if (true){//data.giftPreferences.contains(giftId)) {
             friendshipLevel = Math.min(100f, friendshipLevel + 10f);
         }
         else {
@@ -37,7 +37,7 @@ public class Horse {
     }
 
     // gettery
-    public HorseType getType() { return type; }
+    public HorseData getData() { return data; }
     public Vector2 getPosition() { return position; }
     public float getFriendshipLevel() { return friendshipLevel; }
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import horsegame.HorseGame;
+import horsegame.model.AuthCode;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
@@ -80,7 +81,7 @@ public class LoginScreen implements Screen {
                 Sound loginFailSound = ResourceManager.snortSound;
 
                 System.out.println("Login with: " + username + " / " + password);
-                if (authService.login(username, password) != AuthResult.SUCCESS) {
+                if (authService.login(username, password).returnedCode != AuthCode.SUCCESS) {
                     System.out.println("Login failed");
                     loginFailSound.play();
                 }

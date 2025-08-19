@@ -1,13 +1,9 @@
 package horsegame.model;
-
-public enum AuthResult {
-    SUCCESS,
-    USERNAME_TAKEN,
-    INVALID_PASSWORD,
-    USER_NOT_FOUND,
-    WRONG_PASSWORD,
-    SERVER_ERROR,
-    TIMEOUT,
-    INTERRUPTED,
-    INVALID_INPUT
+public class AuthResult {
+    public AuthCode returnedCode;
+    public String token;
+    public AuthResult(AuthCode code, String token) {
+        this.token = token;
+        this.returnedCode = code;
+    }
 }

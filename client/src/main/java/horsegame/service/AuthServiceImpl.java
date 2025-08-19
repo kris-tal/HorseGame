@@ -1,5 +1,6 @@
 package horsegame.service;
 
+import horsegame.model.AuthCode;
 import horsegame.model.AuthResult;
 import java.net.URI;
 import java.net.http.*;
@@ -12,8 +13,12 @@ public class AuthServiceImpl implements AuthService {
 
     private final HttpClient client;
     private String authToken;
-    private static final String BASE_URL = "http://localhost:5000";// tutaj dajemy to na czym pracuje nasz flask
-    private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
+
+    // Move these as static per-game connection parameters (Maybe perhaps select url during launch?)
+    public static final String BASE_URL = "http://localhost:4000";// tutaj dajemy to na czym pracuje nasz flask
+    public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
+
+
     private final Gson gson;
 
     public AuthServiceImpl() {
@@ -28,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResult login(String username, String password) {
         if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
-            return AuthResult.INVALID_INPUT;
+            return new AuthResult(AuthCode.INVALID_INPUT, null);
         }
 
         try {
@@ -47,32 +52,32 @@ public class AuthServiceImpl implements AuthService {
                 var jsonObject = gson.fromJson(response.body(), Map.class);
                 if (jsonObject.containsKey("token")) {
                     authToken = (String) jsonObject.get("token");
-                    return AuthResult.SUCCESS;
+                    return new AuthResult(AuthCode.SUCCESS, authToken);
                 } else {
-                    return AuthResult.SERVER_ERROR;
+                    return new AuthResult(AuthCode.SERVER_ERROR, null);
                 }
             } else if (response.statusCode() == 401) {
-                return AuthResult.WRONG_PASSWORD;
+                return new AuthResult(AuthCode.WRONG_PASSWORD, null);
             } else if (response.statusCode() == 404) {
-                return AuthResult.USER_NOT_FOUND;
+                return new AuthResult(AuthCode.USER_NOT_FOUND, null);
             } else {
-                return AuthResult.SERVER_ERROR;
+                return new AuthResult(AuthCode.SERVER_ERROR, null);
             }
 
         } catch (HttpTimeoutException e) {
-            return AuthResult.TIMEOUT;
+            return new AuthResult(AuthCode.TIMEOUT, null);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return AuthResult.INTERRUPTED;
+            return new AuthResult(AuthCode.INTERRUPTED, null);
         } catch (Exception e) {
-            return AuthResult.SERVER_ERROR;
+            return new AuthResult(AuthCode.SERVER_ERROR, null);
         }
     }
 
     @Override
     public AuthResult register(String username, String password) {
         if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
-            return AuthResult.INVALID_INPUT;
+            return new AuthResult(AuthCode.INVALID_INPUT, null);
         }
 
         try {
@@ -97,20 +102,20 @@ public class AuthServiceImpl implements AuthService {
             System.out.println("Response body: " + response.body());
 
             return switch (response.statusCode()) {
-                case 201 -> AuthResult.SUCCESS;
-                case 409 -> AuthResult.USERNAME_TAKEN;
-                case 400 -> AuthResult.INVALID_INPUT;
-                default -> AuthResult.SERVER_ERROR;
+                case 201 -> new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
+                case 409 -> new AuthResult(AuthCode.USERNAME_TAKEN, null);
+                case 400 -> new AuthResult(AuthCode.INVALID_INPUT, null);
+                default -> new AuthResult(AuthCode.SERVER_ERROR, null);
             };
 
         } catch (HttpTimeoutException e) {
-            return AuthResult.TIMEOUT;
+            return new AuthResult(AuthCode.TIMEOUT, null);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return AuthResult.INTERRUPTED;
+            return new AuthResult(AuthCode.INTERRUPTED, null);
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
-            return AuthResult.SERVER_ERROR;
+            return new AuthResult(AuthCode.SERVER_ERROR, null);
         }
     }
 

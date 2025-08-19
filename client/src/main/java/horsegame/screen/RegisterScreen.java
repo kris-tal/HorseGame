@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import horsegame.HorseGame;
+import horsegame.model.AuthCode;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
@@ -94,7 +95,7 @@ public class RegisterScreen implements Screen {
                 }
 
                 System.out.println("Register with: " + username + " / " + password);
-                if (authService.register(username, password) != AuthResult.SUCCESS) {
+                if (authService.register(username, password).returnedCode != AuthCode.SUCCESS) {
                     System.out.println("Registration failed.");
                     registerFailSound.play();
                 }
