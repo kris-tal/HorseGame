@@ -69,11 +69,11 @@ public class RanchScreen implements Screen {
         statusBar.setListener(action -> {
             switch (action) {
                 case SHOP:
-                    // TODO: later add a shop menu
+                    //add shop
                     Gdx.app.log("DEBUG", "Shop button pressed");
                     break;
                 case RACE:
-                    toggleMenu(); // opens/closes race menu + dim background
+                    toggleMenu();
                     break;
                 case RANKING:
                     Gdx.app.log("DEBUG", "Ranking button pressed");
