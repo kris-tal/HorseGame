@@ -11,6 +11,6 @@ def get_profile_data():
     identity = get_jwt_identity()
     user_data = json.loads(identity)
     user = User.query.filter_by(username=user_data["username"]).first()
-    return jsonify({"username": user.username, "email": user.email,
-                    "created_at": user.created_at}), 200 # OK
+    return jsonify({"username": user.username, "email": user.email, "money":user.money,
+                    "prestige":user.prestige, "created_at": user.created_at}), 200 # OK
 

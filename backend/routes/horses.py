@@ -24,7 +24,8 @@ def get_user_horses():
             "name": horse.name,
             "race": horse.race,
             "speed": horse.speed,
-            "stamina": horse.stamina
+            "stamina": horse.stamina,
+            "level": horse.level
         } for horse in horses
     ]
 
