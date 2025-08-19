@@ -35,8 +35,8 @@ public class ResourceManager {
     public static Skin uiSkin;
     public static Sound horseSound1;
     public static Sound snortSound;
-    public static BitmapFont uiFont;
-    public static BitmapFont uiFontBold;
+    public static BitmapFont uiDefaultFont;
+    public static BitmapFont uiLargeFont;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -48,7 +48,6 @@ public class ResourceManager {
         assetManager.load(SNORT_SOUND_PATH, Sound.class);
         assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(UI_FONT_PATH, BitmapFont.class);
-        assetManager.load(UI_FONT_BOLD_PATH, BitmapFont.class);
 
         assetManager.finishLoading();
 
@@ -60,8 +59,8 @@ public class ResourceManager {
         horseSound1 = assetManager.get(HORSE_SOUND1_PATH, Sound.class);
         snortSound = assetManager.get(SNORT_SOUND_PATH, Sound.class);
         uiAtlas = assetManager.get(UI_ATLAS_PATH, TextureAtlas.class);
-        uiFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
-        uiFontBold = assetManager.get(UI_FONT_BOLD_PATH, BitmapFont.class);
+        uiDefaultFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
+        uiLargeFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
 
     }
 
@@ -94,21 +93,6 @@ public class ResourceManager {
             return assetManager.get(path, Skin.class);
         }
         Gdx.app.log("ResourceManager", "Skin not loaded: " + path);
-        return null;
-    }
-
-    public static void loadSound(String path) {
-        if (!assetManager.isLoaded(path)) {
-            assetManager.load(path, Sound.class);
-            assetManager.finishLoadingAsset(path);
-        }
-    }
-
-    public static Sound getSound(String path) {
-        if (assetManager.isLoaded(path)) {
-            return assetManager.get(path, Sound.class);
-        }
-        Gdx.app.log("ResourceManager", "Sound not loaded: " + path);
         return null;
     }
 

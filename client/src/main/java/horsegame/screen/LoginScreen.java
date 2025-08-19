@@ -15,7 +15,7 @@ import horsegame.HorseGame;
 import horsegame.model.AuthResult;
 import horsegame.service.AuthService;
 import horsegame.service.AuthServiceImpl;
-import horsegame.ui.UIItems;
+import horsegame.ui.UIFactory;
 import horsegame.ui.UIStyles;
 import manager.ResourceManager;
 
@@ -63,17 +63,14 @@ public class LoginScreen implements Screen {
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
         //username / password field
-        TextField usernameField = new TextField("", UIStyles.getTextFieldStyle());
-        usernameField.setMessageText("username");
+        TextField usernameField = UIFactory.createTextField("username");
 
-
-        TextField passwordField = new TextField("", UIStyles.getTextFieldStyle());
-        passwordField.setMessageText("password");
+        TextField passwordField = UIFactory.createTextField("password");
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
         //login button
-        TextButton loginButton = UIItems.getTextButton("log in");
+        TextButton loginButton = UIFactory.createTextButton("log in");
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
