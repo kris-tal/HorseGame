@@ -19,7 +19,6 @@ public class RanchScreen implements Screen {
     private final ResourceManager resourceManager;
     private Stage stage;
 
-    private Table dimBackground;
     private RaceMenuPanel raceMenuPanel;
 
     public RanchScreen(HorseGame game, ResourceManager resourceManager) {
@@ -40,13 +39,6 @@ public class RanchScreen implements Screen {
         Image background = new Image(bgTexture);
         background.setFillParent(true);
         stage.addActor(background);
-
-        dimBackground = new Table();
-        dimBackground.setFillParent(true);
-        dimBackground.setColor(0, 0, 0, 0.5f);
-        dimBackground.setVisible(false);
-
-        stage.addActor(dimBackground);
 
         raceMenuPanel = new RaceMenuPanel(
                 Gdx.graphics.getWidth() / 2f,
@@ -113,10 +105,8 @@ public class RanchScreen implements Screen {
     public void toggleMenu() {
         if (raceMenuPanel.isOpen()) {
             raceMenuPanel.hide();
-            dimBackground.setVisible(false);
         } else {
             raceMenuPanel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            dimBackground.setVisible(true);
         }
     }
 }

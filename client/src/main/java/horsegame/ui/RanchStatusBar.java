@@ -93,7 +93,6 @@ public class RanchStatusBar extends Table {
         add(rightStack).expandX().fillX().right();
 
         addItems();
-        debug();
     }
 
     private void addItems() {
