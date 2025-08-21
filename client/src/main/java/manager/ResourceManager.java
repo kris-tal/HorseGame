@@ -24,7 +24,7 @@ public class ResourceManager {
     public static final String SNORT_SOUND_PATH = "sounds/snort.wav";
     public static final String UI_ATLAS_PATH = "ui/ui.atlas";
     public static final String UI_FONT_PATH = "ui/fonts/uifont.fnt";
-    public static final String UI_FONT_BOLD_PATH = "ui/fonts/uifontbold.fnt";
+    public static final String ICONS_ATLAS_PATH = "ui/icons/icons.atlas";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
@@ -37,6 +37,7 @@ public class ResourceManager {
     public static Sound snortSound;
     public static BitmapFont uiDefaultFont;
     public static BitmapFont uiLargeFont;
+    public static TextureAtlas iconsAtlas;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -48,6 +49,7 @@ public class ResourceManager {
         assetManager.load(SNORT_SOUND_PATH, Sound.class);
         assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(UI_FONT_PATH, BitmapFont.class);
+        assetManager.load(ICONS_ATLAS_PATH, TextureAtlas.class);
 
         assetManager.finishLoading();
 
@@ -61,6 +63,7 @@ public class ResourceManager {
         uiAtlas = assetManager.get(UI_ATLAS_PATH, TextureAtlas.class);
         uiDefaultFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
         uiLargeFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
+        iconsAtlas = assetManager.get(ICONS_ATLAS_PATH, TextureAtlas.class);
 
     }
 

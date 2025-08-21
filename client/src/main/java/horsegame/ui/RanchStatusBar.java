@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import horsegame.HorseGame;
 import horsegame.screen.RaceSingleplayer;
 import manager.ResourceManager;
@@ -37,22 +38,26 @@ public class RanchStatusBar extends Table {
 
             usernameLabel = new Label(username, UIStyles.getDefaultLabelStyle());
 
-            //TextureRegion coinRegion = ResourceManager.uiAtlas.findRegion("coin_icon");
-            //Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
+            TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
+            Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
             moneyLabel = new Label(String.valueOf(money), UIStyles.getDefaultLabelStyle());
 
-            //TextureRegion prestigeRegion = ResourceManager.uiAtlas.findRegion("prestige_icon");
-            //Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
+            TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion("prestige_icon");
+            Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
             prestigeLabel = new Label(String.valueOf(prestige), UIStyles.getDefaultLabelStyle());
 
             //layout
-            pad(5); // padding inside the background
+            pad(10); // padding inside the background
 
             add(usernameLabel).padRight(20).left();
-            //add(coinImage).size(24, 24).padRight(5);
+            add(coinImage).size(32, 32).padRight(5);
             add(moneyLabel).padRight(20);
-            //add(prestigeImage).size(24, 24).padRight(5);
+            add(prestigeImage).size(32, 32).padRight(5);
             add(prestigeLabel);
+
+            setTransform(true);
+            setOrigin(Align.center);
+            setScale(1.5f);
         }
 
         public void updateMoney(int money) {
@@ -84,7 +89,9 @@ public class RanchStatusBar extends Table {
     private void setup() {
         setFillParent(true);
         top();
-        pad(20);
+        padTop(40);
+        padLeft(20);
+        padRight(60);
 
         leftStack.left();
         rightStack.right();
@@ -101,7 +108,7 @@ public class RanchStatusBar extends Table {
         addToLeft(playerStatusItem);
 
 
-        TextButton shopButton = new TextButton("shop", UIStyles.getDefaultButtonStyle());
+        TextButton shopButton = UIFactory.createLargeTextButton("shop");
         shopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -111,7 +118,7 @@ public class RanchStatusBar extends Table {
             }
         });
 
-        TextButton raceButton = new TextButton("race!", UIStyles.getDefaultButtonStyle());
+        TextButton raceButton = UIFactory.createLargeTextButton("race!");
         raceButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -127,11 +134,11 @@ public class RanchStatusBar extends Table {
     }
 
     private void addToLeft(Actor actor) {
-        leftStack.add(actor).padRight(10);
+        leftStack.add(actor).padRight(40);
     }
 
     private void addToRight(Actor actor) {
-        rightStack.add(actor).padLeft(10);
+        rightStack.add(actor).padLeft(40).padTop(-20);
     }
 
     public void setListener(StatusBarListener listener) {
