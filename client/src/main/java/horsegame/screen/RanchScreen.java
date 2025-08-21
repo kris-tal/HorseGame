@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import horsegame.HorseGame;
+import horsegame.data.HorseData;
 import horsegame.ui.RaceMenuPanel;
 import horsegame.ui.RanchStatusBar;
 import manager.ResourceManager;
@@ -63,9 +64,12 @@ public class RanchScreen implements Screen {
                 case SHOP:
                     //add shop
                     Gdx.app.log("DEBUG", "Shop button pressed");
+                    game.setScreen(new ShopScreen(skin));
                     break;
                 case RACE:
-                    toggleMenu();
+                   // game.setScreen(new HorseSelectionScreen(skin) {
+                   // });
+                    //toggleMenu();
                     break;
                 case RANKING:
                     Gdx.app.log("DEBUG", "Ranking button pressed");
