@@ -25,7 +25,7 @@ public class RanchStatusBar extends Table {
     private final HorseGame game;
     private final ResourceManager resourceManager;
 
-    public class PlayerStatusItem extends Table {
+    public static class PlayerStatusItem extends Table {
 
         private final Label usernameLabel;
         private final Label moneyLabel;
@@ -36,7 +36,7 @@ public class RanchStatusBar extends Table {
 
             setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
 
-            usernameLabel = new Label(username, UIStyles.getDefaultLabelStyle());
+            usernameLabel = UIFactory.createLabel("MajeczkaOh");
 
             TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
             Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
@@ -44,10 +44,10 @@ public class RanchStatusBar extends Table {
 
             TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion("prestige_icon");
             Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
-            prestigeLabel = new Label(String.valueOf(prestige), UIStyles.getDefaultLabelStyle());
+            prestigeLabel = UIFactory.createLabel("prestige");
 
             //layout
-            pad(10); // padding inside the background
+            pad(5); // padding inside the background
 
             add(usernameLabel).padRight(20).left();
             add(coinImage).size(32, 32).padRight(5);
@@ -134,11 +134,11 @@ public class RanchStatusBar extends Table {
     }
 
     private void addToLeft(Actor actor) {
-        leftStack.add(actor).padRight(40);
+        leftStack.add(actor).padRight(40).padLeft(10).padTop(10);
     }
 
     private void addToRight(Actor actor) {
-        rightStack.add(actor).padLeft(40).padTop(-20);
+        rightStack.add(actor).padLeft(60).padTop(-20);
     }
 
     public void setListener(StatusBarListener listener) {
