@@ -1,6 +1,6 @@
 package horsegame.service;
 
-import horsegame.model.AuthResult;
+import horsegame.auth.AuthResult;
 
 public interface AuthService {
     AuthResult register(String username, String password);

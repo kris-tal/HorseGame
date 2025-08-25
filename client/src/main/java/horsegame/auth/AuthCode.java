@@ -1,4 +1,4 @@
-package horsegame.model;
+package horsegame.auth;
 
 public enum AuthCode {
     SUCCESS,

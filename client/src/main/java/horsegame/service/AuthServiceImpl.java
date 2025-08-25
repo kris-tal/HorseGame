@@ -1,7 +1,7 @@
 package horsegame.service;
 
-import horsegame.model.AuthCode;
-import horsegame.model.AuthResult;
+import horsegame.auth.AuthCode;
+import horsegame.auth.AuthResult;
 import java.net.URI;
 import java.net.http.*;
 import java.time.Duration;

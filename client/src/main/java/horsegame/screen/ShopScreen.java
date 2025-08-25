@@ -10,6 +10,7 @@ import horsegame.data.PurchaseResult;
 import horsegame.data.ShopItem;
 import horsegame.data.ShopResponse;
 import horsegame.service.*;
+import horsegame.ui.ListScreen;
 
 import java.util.ArrayList;
 import java.util.List;

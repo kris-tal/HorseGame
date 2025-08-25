@@ -1,4 +1,4 @@
-package horsegame.model;
+package horsegame.auth;
 public class AuthResult {
     public AuthCode returnedCode;
     public String token;

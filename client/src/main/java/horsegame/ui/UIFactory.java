@@ -1,8 +1,10 @@
 package horsegame.ui;
 
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 
 public class UIFactory {
@@ -37,5 +39,13 @@ public class UIFactory {
         TextField textField = new TextField("", style);
         textField.setMessageText(message);
         return textField;
+    }
+
+    public static NinePatchDrawable createDefaultBackgroundDrawable() {
+        return new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch());
+    }
+
+    public static NinePatchDrawable createDarkerBackgroundDrawable() {
+        return new NinePatchDrawable(UIStyles.getDarkerBackgroundPatch());
     }
 }

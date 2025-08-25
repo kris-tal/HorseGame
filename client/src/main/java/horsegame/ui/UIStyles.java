@@ -70,4 +70,6 @@ public class UIStyles {
     public static NinePatch getDefaultBackgroundPatch() {
         return atlas.createPatch("color4_down");
     }
+
+    public static NinePatch getDarkerBackgroundPatch() { return atlas.createPatch("color5_down"); }
 }

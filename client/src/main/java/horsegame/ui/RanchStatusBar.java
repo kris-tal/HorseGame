@@ -1,6 +1,5 @@
 package horsegame.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import horsegame.HorseGame;
-import horsegame.screen.RaceSingleplayer;
 import manager.ResourceManager;
 
 public class RanchStatusBar extends Table {
@@ -36,7 +34,7 @@ public class RanchStatusBar extends Table {
 
             setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
 
-            usernameLabel = UIFactory.createLabel("MajeczkaOh");
+            usernameLabel = UIFactory.createLabel("MajeczkaO4");
 
             TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
             Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
@@ -47,7 +45,7 @@ public class RanchStatusBar extends Table {
             prestigeLabel = UIFactory.createLabel("prestige");
 
             //layout
-            pad(5); // padding inside the background
+            pad(5).padLeft(10).padRight(10); // padding inside the background
 
             add(usernameLabel).padRight(20).left();
             add(coinImage).size(32, 32).padRight(5);
