@@ -21,16 +21,16 @@ import views.common.UIFactory;
 import views.common.UIStyles;
 import services.ResourceManager;
 
-public class LoginScreen implements Screen {
+public class LoginScreen implements Screen, LoginView {
     private final HorseGame game;
     private final ResourceManager resourceManager;
-    private final AuthService authService;
+    private final LoginPresenter presenter;
     private Stage stage;
 
     public LoginScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
-        this.authService = new AuthServiceImpl();
+        this.presenter = new LoginPresenter(this, new AuthServiceImpl());
     }
 
     @Override
@@ -91,44 +91,23 @@ public class LoginScreen implements Screen {
                     loginSuccessSound.play();
                     game.setScreen(new RanchScreen(game, resourceManager));
                 }
+                presenter.onLoginClicked(usernameField.getText(), passwordField.getText());
             }
         });
 
-
-        usernameField.setTextFieldListener((textField, c) -> {
-            if (c == '\n' || c == '\r') {
-                stage.setKeyboardFocus(passwordField);
-            }
-        });
-
-        passwordField.setTextFieldListener((textField, c) -> {
-            if (c == '\n' || c == '\r') {
-                loginButton.fire(new InputEvent() {{
-                    setType(Type.touchDown);
-                    setStage(stage);
-                    setRelatedActor(loginButton);
-                }});
-                loginButton.fire(new InputEvent() {{
-                    setType(Type.touchUp);
-                    setStage(stage);
-                    setRelatedActor(loginButton);
-                }});
-            }
-        });
-
-        float fieldWidth = Gdx.graphics.getWidth() / 3f;
-        float fieldHeight = Gdx.graphics.getHeight() / 20f;
-
-        //go to register screen
+        //register label
         Label registerLabel = new Label("I don't have an account..", UIStyles.getDefaultLabelStyle());
         registerLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new RegisterScreen(game, resourceManager));
+                presenter.onRegisterClicked();
             }
         });
 
         //layout
+        float fieldWidth = Gdx.graphics.getWidth() / 3f;
+        float fieldHeight = Gdx.graphics.getHeight() / 20f;
+
         root.top();
         root.padTop(bigPadding);
         root.add(logo).width(logoWidth).height(logoHeight).padBottom(bigPadding).row();
@@ -141,13 +120,39 @@ public class LoginScreen implements Screen {
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+            presenter.onExitPressed();
         }
-
         stage.act(delta);
         stage.draw();
     }
 
+    // LoginView methods
+    @Override
+    public void showLoginSuccess() {
+        ResourceManager.horseSound1.play();
+    }
+
+    @Override
+    public void showLoginFailure() {
+        ResourceManager.snortSound.play();
+    }
+
+    @Override
+    public void navigateToRegister() {
+        game.setScreen(new RegisterScreen(game, resourceManager));
+    }
+
+    @Override
+    public void navigateToRanch() {
+        game.setScreen(new RanchScreen(game, resourceManager));
+    }
+
+    @Override
+    public void exitGame() {
+        Gdx.app.exit();
+    }
+
+    // LibGDX things
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -164,9 +169,8 @@ public class LoginScreen implements Screen {
 
     @Override
     public void dispose() {
-        if (stage != null) {
+        if(stage != null) {
             stage.dispose();
         }
     }
-
 }

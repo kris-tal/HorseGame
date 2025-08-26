@@ -17,11 +17,12 @@ import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
 import services.ResourceManager;
 
-public class RanchScreen implements Screen {
+public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
     private final ResourceManager resourceManager;
-    private Stage stage;
+    private final RanchPresenter presenter;
     private final MenuContext menuContext;
+    private Stage stage;
 
     private RaceMenuPanel raceMenuPanel;
     private HorseSelectionPanel horseSelectionPanel;
@@ -31,7 +32,8 @@ public class RanchScreen implements Screen {
     public RanchScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
-        menuContext = new MenuContext();
+        this.menuContext = new MenuContext();
+        this.presenter = new RanchPresenter(this, menuContext);
     }
 
     @Override
@@ -51,15 +53,16 @@ public class RanchScreen implements Screen {
         stage.addActor(statusBar);
 
         raceMenuPanel = new RaceMenuPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        horseSelectionPanel = new HorseSelectionPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        lobbyPanel = new LobbyPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+
         raceMenuPanel.setListener(mode -> {
             switch (mode) {
                 case SINGLEPLAYER:
-                    menuContext.setMode(MenuContext.Mode.SINGLEPLAYER);
-                    showPanel(horseSelectionPanel);
+                    presenter.onSingleplayerClicked(horseSelectionPanel);
                     break;
                 case MULTIPLAYER:
-                    menuContext.setMode(MenuContext.Mode.MULTIPLAYER);
-                    showPanel(horseSelectionPanel);
+                    presenter.onMultiplayerClicked(horseSelectionPanel);
                     break;
             }
             raceMenuPanel.hide();
@@ -88,27 +91,39 @@ public class RanchScreen implements Screen {
         statusBar.setListener(action -> {
             switch (action) {
                 case SHOP:
-                    Gdx.app.log("DEBUG", "Shop button pressed");
-                    showPanel(shopPanel);
+                    presenter.onShopButtonClicked();
                     break;
                 case RACE:
-                    Gdx.app.log("DEBUG", "Race button pressed");
-                    showPanel(raceMenuPanel);
+                    presenter.onRaceButtonClicked();
                     break;
                 case RANKING:
-                    Gdx.app.log("DEBUG", "Ranking button pressed");
+                    presenter.onRankingButtonClicked();
                     break;
             }
         });
         return statusBar;
     }
 
+    // RanchView methods
+
+    public void showPanel(Panel panel) {
+        hideAllPanels();
+        panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    public void hideAllPanels() {
+        raceMenuPanel.hide();
+        horseSelectionPanel.hide();
+        lobbyPanel.hide();
+    }
+
+    // LibGDX things
+
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-
         stage.act(delta);
         stage.draw();
     }
@@ -125,21 +140,6 @@ public class RanchScreen implements Screen {
     @Override
     public void hide() {}
 
-    @Override
-    public void dispose() {
-
-    }
-
-    public void  hideAllPanels() {
-        raceMenuPanel.hide();
-        horseSelectionPanel.hide();
-        lobbyPanel.hide();
-    }
-
-    private void showPanel(Panel panel) {
-        hideAllPanels();
-        panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
 
     private void onRaceMenuButtonClicked() {
         showPanel(raceMenuPanel);
@@ -154,4 +154,6 @@ public class RanchScreen implements Screen {
         // after horse selection:
         // showPanel(lobbyPanel);
     }
+
+    public void dispose() {}
 }

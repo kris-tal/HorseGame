@@ -20,16 +20,16 @@ import services.ResourceManager;
 import views.login.LoginScreen;
 import views.ranch.RanchScreen;
 
-public class RegisterScreen implements Screen {
+public class RegisterScreen implements Screen, RegisterView {
     private final HorseGame game;
     private final ResourceManager resourceManager;
-    private final AuthService authService;
+    private final RegisterPresenter presenter;
     private Stage stage;
 
     public RegisterScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
-        this.authService = new AuthServiceImpl();
+        this.presenter = new RegisterPresenter(this, new AuthServiceImpl());
     }
 
     @Override
@@ -72,16 +72,17 @@ public class RegisterScreen implements Screen {
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
-        TextField confirmPasswordField = new TextField("", UIStyles.getTextFieldStyle());
-        confirmPasswordField.setMessageText("repeat password");
-        confirmPasswordField.setPasswordMode(true);
-        confirmPasswordField.setPasswordCharacter('*');
+        TextField repeatPasswordField = new TextField("", UIStyles.getTextFieldStyle());
+        repeatPasswordField.setMessageText("repeat password");
+        repeatPasswordField.setPasswordMode(true);
+        repeatPasswordField.setPasswordCharacter('*');
 
         //register button
         TextButton registerButton = new TextButton("register!", UIStyles.getDefaultButtonStyle());
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
                 String username = usernameField.getText();
                 String password = passwordField.getText();
 
@@ -105,46 +106,24 @@ public class RegisterScreen implements Screen {
                     registerSuccessSound.play();
                     game.setScreen(new RanchScreen(game, resourceManager));
                 }
+                presenter.onRegisterClicked(
+                        usernameField.getText(),
+                        passwordField.getText(),
+                        repeatPasswordField.getText()
+                );
             }
         });
-
-        usernameField.setTextFieldListener((textField, c) -> {
-            if (c == '\n' || c == '\r') {
-                stage.setKeyboardFocus(passwordField);
-            }
-        });
-
-        passwordField.setTextFieldListener((textField, c) -> {
-            if (c == '\n' || c == '\r') {
-                stage.setKeyboardFocus(confirmPasswordField);
-            }
-        });
-
-        confirmPasswordField.setTextFieldListener((textField, c) -> {
-            if (c == '\n' || c == '\r') {
-                registerButton.fire(new InputEvent() {{
-                    setType(Type.touchDown);
-                    setStage(stage);
-                    setRelatedActor(registerButton);
-                }});
-                registerButton.fire(new InputEvent() {{
-                    setType(Type.touchUp);
-                    setStage(stage);
-                    setRelatedActor(registerButton);
-                }});
-            }
-        });
-
-        float fieldWidth = Gdx.graphics.getWidth() / 3f;
-        float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
         Label loginLabel = new Label("Actually I do have an account..", UIStyles.getDefaultLabelStyle());
         loginLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LoginScreen(game, resourceManager));
+                presenter.onLoginLabelClicked();
             }
         });
+
+        float fieldWidth = Gdx.graphics.getWidth() / 3f;
+        float fieldHeight = Gdx.graphics.getHeight() / 20f;
 
         //layout
         root.top();
@@ -152,17 +131,44 @@ public class RegisterScreen implements Screen {
         root.add(logo).width(logoWidth).height(logoHeight).padBottom(bigPadding).row();
         root.add(usernameField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(passwordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
-        root.add(confirmPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
+        root.add(repeatPasswordField).width(fieldWidth).height(fieldHeight).padBottom(smallPadding).row();
         root.add(registerButton).width(fieldWidth / 4).height(fieldHeight / 2).padBottom(smallPadding).row();
         root.add(loginLabel).width(fieldWidth).padTop(smallPadding).row();
     }
+
+    // LoginView methods
+    @Override
+    public void showRegisterFailure() {
+        ResourceManager.snortSound.play();
+    }
+
+    @Override
+    public void showRegisterSuccess() {
+        ResourceManager.horseSound1.play();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        game.setScreen(new LoginScreen(game, resourceManager));
+    }
+
+    @Override
+    public void navigateToRanch() {
+        game.setScreen(new RanchScreen(game, resourceManager));
+    }
+
+    @Override
+    public void exitGame() {
+        Gdx.app.exit();
+    }
+
+    // LibGDX things
 
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-
         stage.act(delta);
         stage.draw();
     }
@@ -187,5 +193,4 @@ public class RegisterScreen implements Screen {
             stage.dispose();
         }
     }
-
 }
