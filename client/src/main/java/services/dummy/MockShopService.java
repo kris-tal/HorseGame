@@ -17,11 +17,16 @@ public class MockShopService extends ShopServiceImpl {
         ShopResponse response = new ShopResponse();
         response.availableHorses = List.of(
                 new ShopResponse.HorseToBuy(1, "Arabian", 500),
+                new ShopResponse.HorseToBuy(2, "Friesian", 750),
+                new ShopResponse.HorseToBuy(2, "Friesian", 750),
+                new ShopResponse.HorseToBuy(2, "Friesian", 750),
                 new ShopResponse.HorseToBuy(2, "Friesian", 750)
         );
         response.upgrades = List.of(
                 new ShopResponse.Upgrade(1, "Arabian", 200),
-                new ShopResponse.Upgrade(2, "Friesian", 300)
+                new ShopResponse.Upgrade(2, "Friesian", 300),
+                new ShopResponse.Upgrade(1, "Arabian", 200),
+                new ShopResponse.Upgrade(1, "Arabian", 200)
         );
         return response;
     }

@@ -90,18 +90,18 @@ public class RegisterScreen implements Screen {
 
                 String confirmPassword = confirmPasswordField.getText();
                 if (!password.equals(confirmPassword)) {
-                    System.out.println("Passwords do not match.");
+                    Gdx.app.log("DEBUG", "Passwords do not match.");
                     registerFailSound.play();
                     return;
                 }
 
-                System.out.println("Register with: " + username + " / " + password);
+                Gdx.app.log("DEBUG", "Register with: " + username + " / " + password);
                 if (authService.register(username, password).returnedCode != AuthCode.SUCCESS) {
-                    System.out.println("Registration failed.");
+                    Gdx.app.log("DEBUG", "Registration failed.");
                     registerFailSound.play();
                 }
                 else {
-                    System.out.println("Registration successful");
+                    Gdx.app.log("DEBUG", "Registration successful");
                     registerSuccessSound.play();
                     game.setScreen(new RanchScreen(game, resourceManager));
                 }

@@ -17,9 +17,15 @@ public class RaceMenuPanel extends Panel {
 
     public RaceMenuPanel(float width, float height) {
         super(width, height);
-        Label title = UIFactory.createLargeLabel("race menu");
-        content.add(title).padBottom(bigPadding).center().row();
+    }
 
+    @Override
+    protected String getTitle() {
+        return "RACE MENU";
+    }
+
+    @Override
+    protected void addContent(float width, float height) {
         TextButton singleplayerButton = UIFactory.createLargeTextButton("singleplayer");
         singleplayerButton.addListener(new ClickListener() {
             @Override
@@ -27,7 +33,7 @@ public class RaceMenuPanel extends Panel {
                 if (listener != null) listener.onModeSelected(MenuContext.Mode.SINGLEPLAYER);
             }
         });
-        content.add(singleplayerButton).padBottom(defaultPadding).row();
+        content.add(singleplayerButton).padTop(smallPadding).padBottom(defaultPadding).row();
 
         TextButton multiplayerButton = UIFactory.createLargeTextButton("multiplayer");
         multiplayerButton.addListener(new ClickListener() {

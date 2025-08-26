@@ -17,18 +17,21 @@ public abstract class ListPanel<T> extends Panel {
 
     public ListPanel(float width, float height) {
         super(width, height);
-
-        Label title = UIFactory.createLargeLabel(getTitle());
-        content.add(title).padBottom(bigPadding).center().row();
-
-        listTable = new Table();
-        scrollPane = new ScrollPane(listTable);
-        scrollPane.setFadeScrollBars(false);
-
-        content.add(scrollPane).expand().fill().row();
     }
 
-    protected abstract String getTitle();
+    @Override
+    protected void addContent(float width, float height) {
+        listTable = new Table();
+        listTable.top();
+
+        scrollPane = new ScrollPane(listTable);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(true, false);
+
+
+        content.row();
+        content.add(scrollPane).width(width * 0.8f).height(height * 0.5f).center().row();
+    }
 
     protected abstract void populateRow(Table row, T item);
 
@@ -49,7 +52,7 @@ public abstract class ListPanel<T> extends Panel {
         lastSelectedRow = null;
 
         Drawable alternate = UIFactory.createDefaultBackgroundDrawable();
-        Drawable defaultBg = UIFactory.createDarkerBackgroundDrawable();
+        Drawable defaultBg = UIFactory.createDefaultBackgroundDrawable();
 
         for (int i = 0; i < items.size(); i++) {
             T item = items.get(i);
@@ -70,7 +73,7 @@ public abstract class ListPanel<T> extends Panel {
                 }
             });
 
-            listTable.add(row).expandX().fillX().pad(5).row();
+            listTable.add(row).expandX().fillX().pad(5).center().row();
 
             if (i == 0) {
                 onItemSelected(item, row);

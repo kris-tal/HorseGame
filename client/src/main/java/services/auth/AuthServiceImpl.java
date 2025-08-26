@@ -1,5 +1,6 @@
 package services.auth;
 
+import com.badlogic.gdx.Gdx;
 import data.auth.AuthCode;
 import data.auth.AuthResult;
 import java.net.URI;
@@ -90,16 +91,16 @@ public class AuthServiceImpl implements AuthService {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                     .build();
 
-            System.out.println("===[DEBUG] Sending request to /signup ===");
-            System.out.println("URI: " + request.uri());
-            System.out.println("Headers: " + request.headers().map());
-            System.out.println("Body: " + requestBody);
+            Gdx.app.log("DEBUG", "===[DEBUG] Sending request to /signup ===");
+            Gdx.app.log("DEBUG", "URI: " + request.uri());
+            Gdx.app.log("DEBUG", "Headers: " + request.headers().map());
+            Gdx.app.log("DEBUG", "Body: " + requestBody);
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("===[DEBUG] Received response ===");
-            System.out.println("Status code: " + response.statusCode());
-            System.out.println("Response body: " + response.body());
+            Gdx.app.log("DEBUG", "===[DEBUG] Received response ===");
+            Gdx.app.log("DEBUG", "Status code: " + response.statusCode());
+            Gdx.app.log("DEBUG", "Response body: " + response.body());
 
             return switch (response.statusCode()) {
                 case 201 -> new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
@@ -114,7 +115,7 @@ public class AuthServiceImpl implements AuthService {
             Thread.currentThread().interrupt();
             return new AuthResult(AuthCode.INTERRUPTED, null);
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
+            Gdx.app.log("DEBUG", "Exception: " + e.getMessage());
             return new AuthResult(AuthCode.SERVER_ERROR, null);
         }
     }

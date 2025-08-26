@@ -1,10 +1,7 @@
 package views.common;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
@@ -21,6 +18,15 @@ public abstract class Panel extends Table {
         setSize(width, height);
         pad(smallPadding);
 
+        Label title = UIFactory.createLargeLabel(getTitle());
+        content.add(title).padBottom(defaultPadding).center().row();
+
+        addContent(width, height);
+
+        Container<Table> contentContainer = new Container<>(content);
+
+        add(contentContainer).expand().fill();
+
         TextButton closeButton = UIFactory.createLargeTextButton("X");
         closeButton.addListener(new ClickListener() {
             @Override
@@ -30,14 +36,11 @@ public abstract class Panel extends Table {
         });
 
         Container<TextButton> closeContainer = new Container<>(closeButton);
-        closeContainer.top().right().padTop(2 * smallPadding).padRight(2 * smallPadding);
+        closeContainer.top().right();
 
-        Stack stack = new Stack();
-        stack.setFillParent(true);
-        stack.add(content);
-        stack.add(closeContainer);
+        addActor(closeButton);
+        closeButton.setPosition(getWidth() - closeButton.getWidth() - smallPadding, getHeight() - closeButton.getHeight() - smallPadding);
 
-        add(stack).expand().fill();
         setVisible(false);
     }
 
@@ -52,6 +55,10 @@ public abstract class Panel extends Table {
     public void hide() {
         setVisible(false);
     }
+
+    protected abstract String getTitle();
+
+    protected abstract void addContent(float width, float height);
 
     public boolean isOpen() {
         return isVisible();

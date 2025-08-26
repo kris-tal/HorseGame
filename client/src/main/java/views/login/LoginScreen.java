@@ -81,13 +81,13 @@ public class LoginScreen implements Screen {
                 Sound loginSuccessSound = ResourceManager.horseSound1;
                 Sound loginFailSound = ResourceManager.snortSound;
 
-                System.out.println("Login with: " + username + " / " + password);
+                Gdx.app.log("DEBUG", "Login with: " + username + " / " + password);
                 if (authService.login(username, password).returnedCode != AuthCode.SUCCESS) {
-                    System.out.println("Login failed");
+                    Gdx.app.log("DEBUG", "Login failed");
                     loginFailSound.play();
                 }
                 else {
-                    System.out.println("Login successful");
+                    Gdx.app.log("DEBUG", "Login successful");
                     loginSuccessSound.play();
                     game.setScreen(new RanchScreen(game, resourceManager));
                 }

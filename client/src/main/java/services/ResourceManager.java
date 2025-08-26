@@ -25,6 +25,7 @@ public class ResourceManager {
     public static final String UI_ATLAS_PATH = "ui/ui.atlas";
     public static final String UI_FONT_PATH = "ui/fonts/uifont.fnt";
     public static final String ICONS_ATLAS_PATH = "ui/icons/icons.atlas";
+    public static final String HORSES_ATLAS_PATH = "horses/horses.atlas";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
@@ -38,6 +39,7 @@ public class ResourceManager {
     public static BitmapFont uiDefaultFont;
     public static BitmapFont uiLargeFont;
     public static TextureAtlas iconsAtlas;
+    public static TextureAtlas horsesAtlas;
 
     public ResourceManager() {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -50,6 +52,7 @@ public class ResourceManager {
         assetManager.load(UI_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(UI_FONT_PATH, BitmapFont.class);
         assetManager.load(ICONS_ATLAS_PATH, TextureAtlas.class);
+        assetManager.load(HORSES_ATLAS_PATH, TextureAtlas.class);
 
         assetManager.finishLoading();
 
@@ -64,6 +67,7 @@ public class ResourceManager {
         uiDefaultFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
         uiLargeFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
         iconsAtlas = assetManager.get(ICONS_ATLAS_PATH, TextureAtlas.class);
+        horsesAtlas = assetManager.get(HORSES_ATLAS_PATH, TextureAtlas.class);
 
     }
 

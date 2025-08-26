@@ -13,7 +13,7 @@ import views.common.Panel;
 import views.ranch.race.HorseSelectionPanel;
 import views.ranch.race.LobbyPanel;
 import views.ranch.race.RaceMenuPanel;
-import views.ranch.shop.ShopScreen;
+import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
 import services.ResourceManager;
 
@@ -26,6 +26,7 @@ public class RanchScreen implements Screen {
     private RaceMenuPanel raceMenuPanel;
     private HorseSelectionPanel horseSelectionPanel;
     private LobbyPanel lobbyPanel;
+    private ShopPanel shopPanel;
 
     public RanchScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
@@ -64,8 +65,12 @@ public class RanchScreen implements Screen {
             raceMenuPanel.hide();
         });
 
-        horseSelectionPanel = new HorseSelectionPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-        lobbyPanel = new LobbyPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        float panelWidth = Gdx.graphics.getWidth() / 2f;
+        float panelHeight = Gdx.graphics.getHeight() / 2f;
+
+        horseSelectionPanel = new HorseSelectionPanel(panelWidth, panelHeight);
+        lobbyPanel = new LobbyPanel(panelWidth, panelHeight);
+        shopPanel = new ShopPanel(panelWidth, panelHeight);
 
         //menu panels
         stage.addActor(raceMenuPanel);
@@ -73,7 +78,7 @@ public class RanchScreen implements Screen {
         stage.addActor(lobbyPanel);
 
         //shop panels
-        //nie ma jeszcze
+        stage.addActor(shopPanel);
 
         hideAllPanels();
     }
@@ -84,10 +89,11 @@ public class RanchScreen implements Screen {
             switch (action) {
                 case SHOP:
                     Gdx.app.log("DEBUG", "Shop button pressed");
-                    game.setScreen(new ShopScreen(skin));
+                    showPanel(shopPanel);
                     break;
                 case RACE:
-                    openMenuPanel();
+                    Gdx.app.log("DEBUG", "Race button pressed");
+                    showPanel(raceMenuPanel);
                     break;
                 case RANKING:
                     Gdx.app.log("DEBUG", "Ranking button pressed");
@@ -122,10 +128,6 @@ public class RanchScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    public void openMenuPanel() {
-        raceMenuPanel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void  hideAllPanels() {

@@ -8,14 +8,17 @@ import views.common.UIFactory;
 public class HorseSelectionPanel extends ListPanel {
     public HorseSelectionPanel(float width, float height) {
         super(width, height);
-
-        Label title = UIFactory.createLargeLabel("select your horse");
-        content.add(title).padBottom(bigPadding).center().row();
     }
 
     @Override
     protected String getTitle() {
-        return "";
+        return "select your horse";
+    }
+
+    @Override
+    protected void addContent(float width, float height) {
+        super.addContent(width, height);
+
     }
 
     @Override

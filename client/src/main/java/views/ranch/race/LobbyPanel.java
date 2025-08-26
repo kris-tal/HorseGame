@@ -7,8 +7,15 @@ import views.common.UIFactory;
 public class LobbyPanel extends Panel {
     public LobbyPanel(float width, float height) {
         super(width, height);
+    }
 
-        Label title = UIFactory.createLargeLabel("waiting for other horse lovers..");
-        content.add(title).padBottom(bigPadding).center().row();
+    @Override
+    protected String getTitle() {
+        return "waiting for other horse lovers..";
+    }
+
+    @Override
+    protected void addContent(float width, float height) {
+
     }
 }
