@@ -3,7 +3,6 @@ package views.register;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
-import data.auth.AuthCode;
-import services.auth.AuthService;
 import services.auth.AuthServiceImpl;
 import views.common.UIStyles;
 import services.ResourceManager;
@@ -95,6 +92,27 @@ public class RegisterScreen implements Screen, RegisterView {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 presenter.onLoginLabelClicked();
+            }
+        });
+
+        // Jesteśmy w polu username + klikamy Enter = skaczemy do pola password
+        usernameField.setTextFieldListener((textField, c) -> {
+            if (c == '\r' || c == '\n') {
+                textField.getStage().setKeyboardFocus(passwordField);
+            }
+        });
+
+        // Jesteśmy w polu password + klikamy Enter = skaczemy do pola repeat_password
+        passwordField.setTextFieldListener((textField, c) -> {
+            if (c == '\r' || c == '\n') {
+                textField.getStage().setKeyboardFocus(repeatPasswordField);
+            }
+        });
+
+        // Jesteśmy w polu repeat_password + klikamy Enter = próba rejestracji
+        repeatPasswordField.setTextFieldListener((textField, c) -> {
+            if (c == '\r' || c == '\n') {
+                presenter.onRegisterClicked(usernameField.getText(), passwordField.getText(), repeatPasswordField.getText());
             }
         });
 
