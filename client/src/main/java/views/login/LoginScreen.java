@@ -76,21 +76,6 @@ public class LoginScreen implements Screen, LoginView {
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                String username = usernameField.getText();
-                String password = passwordField.getText();
-                Sound loginSuccessSound = ResourceManager.horseSound1;
-                Sound loginFailSound = ResourceManager.snortSound;
-
-                Gdx.app.log("DEBUG", "Login with: " + username + " / " + password);
-                if (authService.login(username, password).returnedCode != AuthCode.SUCCESS) {
-                    Gdx.app.log("DEBUG", "Login failed");
-                    loginFailSound.play();
-                }
-                else {
-                    Gdx.app.log("DEBUG", "Login successful");
-                    loginSuccessSound.play();
-                    game.setScreen(new RanchScreen(game, resourceManager));
-                }
                 presenter.onLoginClicked(usernameField.getText(), passwordField.getText());
             }
         });

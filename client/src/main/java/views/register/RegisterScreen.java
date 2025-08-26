@@ -82,30 +82,6 @@ public class RegisterScreen implements Screen, RegisterView {
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                String username = usernameField.getText();
-                String password = passwordField.getText();
-
-                Sound registerSuccessSound = ResourceManager.horseSound1;
-                Sound registerFailSound = ResourceManager.snortSound;
-
-                String confirmPassword = confirmPasswordField.getText();
-                if (!password.equals(confirmPassword)) {
-                    Gdx.app.log("DEBUG", "Passwords do not match.");
-                    registerFailSound.play();
-                    return;
-                }
-
-                Gdx.app.log("DEBUG", "Register with: " + username + " / " + password);
-                if (authService.register(username, password).returnedCode != AuthCode.SUCCESS) {
-                    Gdx.app.log("DEBUG", "Registration failed.");
-                    registerFailSound.play();
-                }
-                else {
-                    Gdx.app.log("DEBUG", "Registration successful");
-                    registerSuccessSound.play();
-                    game.setScreen(new RanchScreen(game, resourceManager));
-                }
                 presenter.onRegisterClicked(
                         usernameField.getText(),
                         passwordField.getText(),

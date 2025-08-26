@@ -91,20 +91,20 @@ public class RanchScreen implements Screen, RanchView {
         statusBar.setListener(action -> {
             switch (action) {
                 case SHOP:
-                    presenter.onShopButtonClicked();
+                    presenter.onShopButtonClicked(shopPanel);
                     break;
                 case RACE:
-                    presenter.onRaceButtonClicked();
+                    presenter.onRaceButtonClicked(raceMenuPanel);
                     break;
                 case RANKING:
-                    presenter.onRankingButtonClicked();
+                    //presenter.onRankingButtonClicked(null);
                     break;
             }
         });
         return statusBar;
     }
 
-    // RanchView methods
+    //RanchView methods
 
     public void showPanel(Panel panel) {
         hideAllPanels();
@@ -117,7 +117,7 @@ public class RanchScreen implements Screen, RanchView {
         lobbyPanel.hide();
     }
 
-    // LibGDX things
+    //LibGDX things
 
     @Override
     public void render(float delta) {

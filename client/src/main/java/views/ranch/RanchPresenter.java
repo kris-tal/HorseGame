@@ -12,16 +12,16 @@ public class RanchPresenter {
         this.menuContext = menuContext;
     }
 
-    public void onRaceButtonClicked() {
-        view.showPanel(null); // handled by RanchScreen
+    public void onRaceButtonClicked(Panel panel) {
+        view.showPanel(panel);
     }
 
-    public void onShopButtonClicked() {
-        view.openShopMenu();
+    public void onShopButtonClicked(Panel panel) {
+        view.showPanel(panel);
     }
 
-    public void onRankingButtonClicked() {
-        view.openRanking();
+    public void onRankingButtonClicked(Panel panel) {
+        view.showPanel(panel);
     }
 
     public void onSingleplayerClicked(Panel horseSelectionPanel) {
