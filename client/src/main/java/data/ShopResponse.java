@@ -1,6 +1,5 @@
 package data;
 
-import com.google.gson.Gson;
 import java.util.List;
 
 public class ShopResponse {
@@ -29,10 +28,5 @@ public class ShopResponse {
             this.race = race;
             this.price = price;
         }
-    }
-
-
-    public static ShopResponse fromJson(String json) {
-        return new Gson().fromJson(json, ShopResponse.class);
     }
 }

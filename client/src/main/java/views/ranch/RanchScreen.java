@@ -17,11 +17,12 @@ import views.ranch.shop.ShopScreen;
 import views.common.MenuContext;
 import services.ResourceManager;
 
-public class RanchScreen implements Screen {
+public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
     private final ResourceManager resourceManager;
-    private Stage stage;
+    private final RanchPresenter presenter;
     private final MenuContext menuContext;
+    private Stage stage;
 
     private RaceMenuPanel raceMenuPanel;
     private HorseSelectionPanel horseSelectionPanel;
@@ -30,7 +31,8 @@ public class RanchScreen implements Screen {
     public RanchScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
-        menuContext = new MenuContext();
+        this.menuContext = new MenuContext();
+        this.presenter = new RanchPresenter(this, menuContext);
     }
 
     @Override
@@ -50,30 +52,27 @@ public class RanchScreen implements Screen {
         stage.addActor(statusBar);
 
         raceMenuPanel = new RaceMenuPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        horseSelectionPanel = new HorseSelectionPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        lobbyPanel = new LobbyPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+
         raceMenuPanel.setListener(mode -> {
             switch (mode) {
                 case SINGLEPLAYER:
-                    menuContext.setMode(MenuContext.Mode.SINGLEPLAYER);
-                    showPanel(horseSelectionPanel);
+                    presenter.onSingleplayerClicked(horseSelectionPanel);
                     break;
                 case MULTIPLAYER:
-                    menuContext.setMode(MenuContext.Mode.MULTIPLAYER);
-                    showPanel(horseSelectionPanel);
+                    presenter.onMultiplayerClicked(horseSelectionPanel);
                     break;
             }
             raceMenuPanel.hide();
         });
-
-        horseSelectionPanel = new HorseSelectionPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-        lobbyPanel = new LobbyPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
 
         //menu panels
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
         stage.addActor(lobbyPanel);
 
-        //shop panels
-        //nie ma jeszcze
+        // TODO: shop panels
 
         hideAllPanels();
     }
@@ -83,26 +82,51 @@ public class RanchScreen implements Screen {
         statusBar.setListener(action -> {
             switch (action) {
                 case SHOP:
-                    Gdx.app.log("DEBUG", "Shop button pressed");
-                    game.setScreen(new ShopScreen(skin));
+                    presenter.onShopButtonClicked();
                     break;
                 case RACE:
-                    openMenuPanel();
+                    presenter.onRaceButtonClicked();
+                    raceMenuPanel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                     break;
                 case RANKING:
-                    Gdx.app.log("DEBUG", "Ranking button pressed");
+                    presenter.onRankingButtonClicked();
                     break;
             }
         });
         return statusBar;
     }
 
+    // RanchView methods
+
+    public void showPanel(Panel panel) {
+        hideAllPanels();
+        panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    public void hideAllPanels() {
+        raceMenuPanel.hide();
+        horseSelectionPanel.hide();
+        lobbyPanel.hide();
+    }
+
+    @Override
+    public void openShopMenu() {
+        game.setScreen(new ShopScreen(ResourceManager.uiSkin));
+    }
+
+    @Override
+    public void openRanking() {
+        Gdx.app.log("DEBUG", "Ranking button pressed");
+        // TODO: game.setScreen(new RankingScreen());
+    }
+
+    // LibGDX things
+
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-
         stage.act(delta);
         stage.draw();
     }
@@ -120,36 +144,5 @@ public class RanchScreen implements Screen {
     public void hide() {}
 
     @Override
-    public void dispose() {
-
-    }
-
-    public void openMenuPanel() {
-        raceMenuPanel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    public void  hideAllPanels() {
-        raceMenuPanel.hide();
-        horseSelectionPanel.hide();
-        lobbyPanel.hide();
-    }
-
-    private void showPanel(Panel panel) {
-        hideAllPanels();
-        panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    private void onRaceMenuButtonClicked() {
-        showPanel(raceMenuPanel);
-    }
-
-    private void onSingleplayerChosen() {
-        showPanel(horseSelectionPanel);
-    }
-
-    private void onMultiplayerChosen() {
-        showPanel(horseSelectionPanel);
-        // after horse selection:
-        // showPanel(lobbyPanel);
-    }
+    public void dispose() {}
 }

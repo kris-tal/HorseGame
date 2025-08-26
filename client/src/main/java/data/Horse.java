@@ -29,12 +29,6 @@ public class Horse {
         }
     }
 
-    // no i on bedzie mial jedna z animacji no ale to nwm jak zrobic na razie
-
-    public void render(SpriteBatch batch) {
-
-    }
-
     // gettery
     public HorseData getData() { return data; }
     public Vector2 getPosition() { return position; }

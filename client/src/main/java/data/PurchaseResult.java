@@ -1,7 +1,5 @@
 package data;
 
-import com.google.gson.Gson;
-
 public class PurchaseResult {
     public boolean success;
     public String message;
@@ -25,9 +23,5 @@ public class PurchaseResult {
                 ", message='" + message + '\'' +
                 ", horseId=" + horseId +
                 '}';
-    }
-
-    public static PurchaseResult fromJson(String json) {
-        return new Gson().fromJson(json, PurchaseResult.class);
     }
 }
