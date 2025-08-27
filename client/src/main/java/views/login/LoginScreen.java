@@ -16,7 +16,7 @@ import views.register.RegisterScreen;
 import services.auth.AuthServiceImpl;
 import views.common.UIFactory;
 import views.common.UIStyles;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 
 public class LoginScreen implements Screen, LoginView {
     private final HorseGame game;

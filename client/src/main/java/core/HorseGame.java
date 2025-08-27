@@ -3,7 +3,7 @@ package core;
 import com.badlogic.gdx.Game;
 import views.login.LoginScreen;
 import views.register.RegisterScreen;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 
 public class HorseGame extends Game {
     private ResourceManager resourceManager;

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import services.auth.AuthServiceImpl;
 import views.common.UIStyles;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 import views.login.LoginScreen;
 import views.ranch.RanchScreen;
 

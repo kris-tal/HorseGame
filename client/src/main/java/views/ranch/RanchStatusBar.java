@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 import views.common.UIFactory;
 import views.common.UIStyles;
 

@@ -15,7 +15,7 @@ import views.ranch.race.LobbyPanel;
 import views.ranch.race.RaceMenuPanel;
 import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 
 public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;

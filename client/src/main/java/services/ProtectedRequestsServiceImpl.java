@@ -19,6 +19,9 @@ public class ProtectedRequestsServiceImpl implements ProtectedRequestsService {
     }
     @Override
     public HttpRequest.Builder ProtectedGet(String path) {
+        if(session == null) {
+            throw new RuntimeException("User not logged in!");
+        }
         return  HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + path))
                 .header("Content-Type", "application/json")
@@ -29,6 +32,9 @@ public class ProtectedRequestsServiceImpl implements ProtectedRequestsService {
 
     @Override
     public HttpRequest.Builder ProtectedPost(String path, HttpRequest.BodyPublisher body) {
+        if(session == null) {
+            throw new RuntimeException("User not logged in!");
+        }
         return  HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + path))
                 .header("Content-Type", "application/json")

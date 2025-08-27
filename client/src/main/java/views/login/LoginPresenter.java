@@ -2,6 +2,7 @@ package views.login;
 
 import services.auth.AuthService;
 import data.auth.AuthCode;
+import services.managers.SessionManager;
 
 public class LoginPresenter {
     private final LoginView view;
@@ -15,6 +16,7 @@ public class LoginPresenter {
     public void onLoginClicked(String username, String password) {
         var result = authService.login(username, password);
         if (result.returnedCode == AuthCode.SUCCESS) {
+            SessionManager.getInstance().startSession(result.token);
             view.showLoginSuccess();
             view.navigateToRanch();
         } else {

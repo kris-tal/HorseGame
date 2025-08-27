@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import core.HorseGame;
 import data.race.GameMap;
 import race.MapRenderer;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 
 public class RaceSingleplayerScreen implements Screen {
     private final HorseGame game;

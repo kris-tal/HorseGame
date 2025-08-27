@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import services.ResourceManager;
+import services.managers.ResourceManager;
 
 public class UIStyles {
     private final static TextureAtlas atlas = ResourceManager.uiAtlas;
