@@ -19,24 +19,20 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
-
-# Temporarily defined enum for horse rases, possibly this will reference a table with different breeds
-horse_races_enum = ENUM('arabian', 'mustang', 'shire', 'mule', name='horse_races', create_type=False)
-
 # Model for a horse
 class Horse(db.Model):
     __tablename__ = 'horses'
-
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=True)
-    race = db.Column(horse_races_enum, nullable=True)
-    speed = db.Column(db.Integer, default=10)
-    stamina = db.Column(db.Integer, default=10)
+    name = db.Column(db.String(80), db.ForeignKey('horse_types.name'), nullable=False)
     level = db.Column(db.Integer, default=1)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-
     owner = db.relationship('User', backref=db.backref('horses', cascade='all, delete'))
 
     def __repr__(self):
-        return f'<Horse {self.name} ({self.race})>'
+        return f'<Horse {self.name} ({self.level})>'
+
+# Reference for horses one can purchase and maintain
+class HorseTypes(db.Model):
+    __tablename__ = 'horse_types'
+    name = db.Column(db.String(80), unique=True, primary_key=True)
+    purchase_price = db.Column(db.Integer)

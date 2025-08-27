@@ -1,6 +1,7 @@
 from flask import Flask
 from config import Config
 from database.models import db
+from database.setup import initialize
 from routes.horses import horses_bp
 from routes.profile import profile_bp
 from routes.auth import auth_bp
@@ -27,5 +28,6 @@ app.register_blueprint(shop_bp) # Shop management blueprint
 with app.app_context():
     db.create_all()
 
+initialize()
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=4000)

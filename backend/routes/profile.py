@@ -13,4 +13,3 @@ def get_profile_data():
     user = User.query.filter_by(username=user_data["username"]).first()
     return jsonify({"username": user.username, "email": user.email, "money":user.money,
                     "prestige":user.prestige, "created_at": user.created_at}), 200 # OK
-

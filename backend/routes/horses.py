@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from managers.identity_manager import get_user
-from database.models import Horse
+from database.models import Horse, HorseTypes, db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 horses_bp = Blueprint('horses', __name__)
@@ -22,9 +22,6 @@ def get_user_horses():
         {
             "id": horse.id,
             "name": horse.name,
-            "race": horse.race,
-            "speed": horse.speed,
-            "stamina": horse.stamina,
             "level": horse.level
         } for horse in horses
     ]
@@ -32,23 +29,19 @@ def get_user_horses():
     return jsonify(horses=horses_data), 200
 
 
-# Structure for sample request
-# { id:1, name:"Ariel" };
-@jwt_required()
-@horses_bp.route('/horses/name', methods=['POST'])
-def rename_horse():
-    identity = get_jwt_identity()
-    data, status = get_user(identity)
-    if status != 200:
-        return data, status
-    horse_id = request.json['id']
-    horse_name = request.json['name']
-    if not horse_id or not horse_name:
-        return jsonify({"msg":"Invalid request"}), 400
+def add_horse(user_id, name):
+    horse = HorseTypes.query.filter_by(name=name).first()
+    if horse is None:
+        return None
+    new_horse = Horse(owner_id=user_id, name=name)
+    Horse.query.add(new_horse)
+    db.session.commit()
+    return new_horse.id
 
-    horses = Horse.query.filter_by(owner_id=data.id, id=horse_id).all()
-    if not horses:
-        return jsonify({"msg":"Horse not found"}), 404
 
-    horse = horses[0]
-    horse.name = request.json['name']
+def upgrade_horse(horse_id):
+    horse = Horse.query.filter_by(id=horse_id).first()
+    if horse is None:
+        return None
+    horse.level += 1
+    db.session.commit()
