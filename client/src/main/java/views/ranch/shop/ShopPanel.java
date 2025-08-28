@@ -25,7 +25,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
     public ShopPanel(float width, float height) {
         super(width, height);
-        this.shopService = new MockShopService(); // mock service for now
+        this.shopService = new MockShopService();
         refreshShop();
     }
 

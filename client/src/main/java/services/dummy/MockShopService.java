@@ -1,15 +1,15 @@
 package services.dummy;
 
 import data.PurchaseResult;
-import java.util.List;
 import data.ShopResponse;
 import services.ShopServiceImpl;
 
-//generalnie to nie mialam serwera a chcialam sprawdzicn czy to jakkolwiek działa więc se dodałam taką klasę
+import java.util.List;
+
 public class MockShopService extends ShopServiceImpl {
 
     public MockShopService() {
-        super("mock-token");
+        super();
     }
 
     @Override
@@ -18,15 +18,11 @@ public class MockShopService extends ShopServiceImpl {
         response.availableHorses = List.of(
                 new ShopResponse.HorseToBuy(1, "Arabian", 500),
                 new ShopResponse.HorseToBuy(2, "Friesian", 750),
-                new ShopResponse.HorseToBuy(2, "Friesian", 750),
-                new ShopResponse.HorseToBuy(2, "Friesian", 750),
-                new ShopResponse.HorseToBuy(2, "Friesian", 750)
+                new ShopResponse.HorseToBuy(3, "Mustang", 600)
         );
         response.upgrades = List.of(
-                new ShopResponse.Upgrade(1, "Arabian", 200),
-                new ShopResponse.Upgrade(2, "Friesian", 300),
-                new ShopResponse.Upgrade(1, "Arabian", 200),
-                new ShopResponse.Upgrade(1, "Arabian", 200)
+                new ShopResponse.Upgrade(1, "Speed Boost", 200),
+                new ShopResponse.Upgrade(2, "Endurance Training", 300)
         );
         return response;
     }
