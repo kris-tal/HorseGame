@@ -99,11 +99,11 @@ public class ShopPanel extends ListPanel<ShopItem> {
                 ShopResponse response = shopService.getShopData();
                 List<ShopItem> allItems = new ArrayList<>();
 
-                for (ShopResponse.HorseToBuy h : response.availableHorses)
-                    allItems.add(new ShopItem(h.id, h.race, h.price, false, false));
+                for (ShopResponse.HorseToBuy h : response.horses)
+                    allItems.add(new ShopItem(0, h.name, h.price, false, false));
 
                 for (ShopResponse.Upgrade u : response.upgrades)
-                    allItems.add(new ShopItem(u.horseId, u.race, u.price, true, true));
+                    allItems.add(new ShopItem(0, u.name, u.price, true, true));
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception e) {

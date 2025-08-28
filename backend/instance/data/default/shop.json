@@ -1,1 +1,18 @@
-[]
+{
+    "horses": [
+        {
+            "name": "Ash",
+            "price": 800
+        }
+    ],
+    "upgrades": [
+        {
+            "name": "Ariel",
+            "price": 500
+        },
+        {
+            "name": "Twilight",
+            "price": 1200
+        }
+    ]
+}

@@ -9,11 +9,9 @@ USER_DATA_DIR = "../user_data"
 DEFAULT_DATA_DIR = "default"
 
 class DataType(Enum):
-    Stable = 1,
-    Shop = 2
+    Shop = 1
 
 DEFAULT_FILES = {
-    DataType.Stable: "stable.json",
     DataType.Shop: "shop.json"
 }
 
@@ -47,6 +45,15 @@ def save_user_file(user_id: int, file: DataType, data):
 
     file_name = DEFAULT_FILES[file]
     file_path = os.path.join(user_dir, file_name)
+
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=4)
+
+def create_default_file(file: DataType, data):
+    file_name = DEFAULT_FILES[file]
+    default_dir = os.path.join(CONTENT_DIR, DEFAULT_DATA_DIR)
+    os.makedirs(default_dir, exist_ok=True)
+    file_path = os.path.join(default_dir, file_name)
 
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)

@@ -36,3 +36,4 @@ class HorseTypes(db.Model):
     __tablename__ = 'horse_types'
     name = db.Column(db.String(80), unique=True, primary_key=True)
     purchase_price = db.Column(db.Integer)
+    default = db.Column(db.Boolean, default=False)
