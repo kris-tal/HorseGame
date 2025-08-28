@@ -1,5 +1,7 @@
 package views.login;
 
+import com.badlogic.gdx.Gdx;
+import services.ProfileServiceImpl;
 import services.auth.AuthService;
 import data.auth.AuthCode;
 import services.managers.SessionManager;
@@ -17,6 +19,7 @@ public class LoginPresenter {
         var result = authService.login(username, password);
         if (result.returnedCode == AuthCode.SUCCESS) {
             SessionManager.getInstance().startSession(result.token);
+            Gdx.app.log("Game", new ProfileServiceImpl().getUserData().toString());
             view.showLoginSuccess();
             view.navigateToRanch();
         } else {

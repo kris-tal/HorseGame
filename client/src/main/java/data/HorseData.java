@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 // Represent one horse
 public class HorseData {
-    private int id;
+    private final int id;
     private final String name;
     private final int level;
 
@@ -17,7 +17,6 @@ public class HorseData {
 
     // getters & setters
     public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public String getName() { return name; }
     public int getLevel() { return level; }
 

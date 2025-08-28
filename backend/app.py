@@ -27,7 +27,6 @@ app.register_blueprint(shop_bp) # Shop management blueprint
 
 with app.app_context():
     db.create_all()
-
-initialize()
+    initialize()
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=4000)

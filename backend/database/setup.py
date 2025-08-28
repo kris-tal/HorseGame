@@ -1,4 +1,4 @@
-from models import db, HorseTypes
+from database.models import db, HorseTypes
 
 DEFAULT_HORSE_TYPES = [
     {"name": "Ariel", "purchase_price": 500},
