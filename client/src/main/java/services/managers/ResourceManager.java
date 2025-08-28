@@ -16,7 +16,7 @@ public class ResourceManager {
 
     //asset paths
     public static final String AUTH_SCREEN_BG_PATH = "images/background/auth_screen_background.png";
-    public static final String RANCH_SCREEN_BG_PATH = "images/background/ranch_screen_background.png";
+    public static final String RANCH_SCREEN_BG_PATH = "images/background/bg.png";
     public static final String RACE_SCREEN_BG_PATH = "images/background/race_screen_background.png";
     public static final String LOGO_PATH = "images/other/logo.png";
     public static final String UI_TEXTURE_PATH_ATLAS = "skins/uiskin.atlas";
@@ -62,7 +62,6 @@ public class ResourceManager {
         authScreenBgTexture = assetManager.get(AUTH_SCREEN_BG_PATH, Texture.class);
         ranchScreenBgTexture = assetManager.get(RANCH_SCREEN_BG_PATH, Texture.class);
         raceScreenBgTexture = assetManager.get(RACE_SCREEN_BG_PATH, Texture.class);
-
         logoTexture = assetManager.get(LOGO_PATH, Texture.class);
         uiSkin = assetManager.get(UI_SKIN_PATH, Skin.class);
         uiTextureAtlas = assetManager.get(UI_TEXTURE_PATH_ATLAS, TextureAtlas.class);

@@ -1,7 +1,27 @@
 horses.png
-size:64,64
+size:256,64
 repeat:none
+:P
+bounds:104,32,32,32
 Boring Horse
 bounds:2,32,32,32
+Ctrl+V(ictory)
+bounds:36,0,32,32
+Horse
+bounds:104,0,32,32
+Lana del Rey
+bounds:70,0,32,32
+Normal_Horse_(Average)
+bounds:172,0,32,32
 Pink Princess Ballerina
 bounds:2,0,32,32
+Piotr
+bounds:172,32,32,32
+Probability & Computing 2nd Edition
+bounds:70,32,32,32
+Rage
+bounds:138,0,32,32
+Saw I (2004)
+bounds:138,32,32,32
+Turing Machine
+bounds:36,32,32,32
