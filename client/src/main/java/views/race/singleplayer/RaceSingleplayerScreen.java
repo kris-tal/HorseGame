@@ -4,42 +4,73 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
-import data.race.GameMap;
-import race.MapRenderer;
+import race.RaceWorld;
 import services.managers.ResourceManager;
+import views.race.RaceStatsPanel;
+import views.ranch.RanchScreen;
 
 public class RaceSingleplayerScreen implements Screen {
-    private final HorseGame game;
     private final ResourceManager resourceManager;
+    private final HorseGame game;
+    private final RaceSingleplayerPresenter presenter;
 
-    private ShapeRenderer shapeRenderer;
-    private GameMap gameMap;
-    private MapRenderer renderer;
-
-    private final int lanes = 3;
-    private final int mapLength = 50;
-    private final int visibleCols = 10;
+    private Stage uiStage;
+    private SpriteBatch batch;
+    private Label distanceLabel;
+    private Label coinLabel;
+    private RaceStatsPanel statsPanel;
+    private boolean statsPanelShown = false;
 
     public RaceSingleplayerScreen(HorseGame game, ResourceManager resourceManager) {
         this.game = game;
         this.resourceManager = resourceManager;
+        this.presenter = new RaceSingleplayerPresenter();
     }
 
     @Override
     public void show() {
-        shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
 
-        int[][][] mapData = new int[lanes][mapLength][1];
-        for (int lane = 0; lane < lanes; lane++) {
-            for (int col = 0; col < mapLength; col++) {
-                mapData[lane][col][0] = Math.random() < 0.2 ? 1 : 0;
+        // UI setup
+        uiStage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(uiStage);
+
+        Image background = new Image(ResourceManager.raceScreenBgTexture);
+        background.setFillParent(true);
+        uiStage.addActor(background);
+
+        distanceLabel = new Label("Distance: 0m", ResourceManager.uiSkin);
+        distanceLabel.setPosition(30, Gdx.graphics.getHeight() - 50);
+        uiStage.addActor(distanceLabel);
+
+        coinLabel = new Label("Coins: 0", ResourceManager.uiSkin);
+        coinLabel.setPosition(distanceLabel.getX() + 300, Gdx.graphics.getHeight() - 50);
+        uiStage.addActor(coinLabel);
+
+        statsPanel = new RaceStatsPanel(600, 400);
+        statsPanel.setX((Gdx.graphics.getWidth() - statsPanel.getWidth()) / 2f);
+        statsPanel.setY((Gdx.graphics.getHeight() - statsPanel.getHeight()) / 2f);
+        uiStage.addActor(statsPanel);
+
+        statsPanel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!statsPanel.isOpen()) {
+                    game.setScreen(new RanchScreen(game, resourceManager));
+                }
             }
-        }
+        });
 
-        gameMap = new GameMap(lanes, mapLength, mapData, visibleCols);
-        renderer = new MapRenderer(gameMap);
+        // Initialize model/presenter
+        presenter.init(resourceManager);
     }
 
     @Override
@@ -51,24 +82,35 @@ public class RaceSingleplayerScreen implements Screen {
             Gdx.app.exit();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            gameMap.scroll();
+        // Update
+        presenter.update(delta);
+
+        if (presenter.isRaceFinished() && !statsPanelShown) {
+            statsPanel.updateStats(presenter.getDistance(), presenter.getCoins());
+            statsPanel.setVisible(true);
+            statsPanelShown = true;
+            return;
         }
 
-        renderer.render(shapeRenderer);
+        // Update UI
+        distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
+        coinLabel.setText("Coins: " + presenter.getCoins());
+        uiStage.act(delta);
+        uiStage.draw();
+
+        // Draw world + UI
+        batch.begin();
+        RaceWorld world = presenter.getWorld();
+        world.render(batch);
+        batch.end();
     }
 
-    @Override
-    public void resize(int width, int height) {}
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {}
-    @Override
-    public void hide() {}
+    @Override public void resize(int width, int height) {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
     @Override
     public void dispose() {
-        if (shapeRenderer != null) shapeRenderer.dispose();
-        if (renderer != null) renderer.dispose();
+        if (batch != null) batch.dispose();
     }
 }

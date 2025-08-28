@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import views.common.Panel;
+import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
 import views.ranch.race.LobbyPanel;
 import views.ranch.race.RaceMenuPanel;
@@ -126,6 +127,10 @@ public class RanchScreen implements Screen, RanchView {
         }
         stage.act(delta);
         stage.draw();
+        /// For debug purposes
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            game.setScreen(new RaceSingleplayerScreen(game, resourceManager));
+        }
     }
 
     @Override
