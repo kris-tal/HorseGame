@@ -16,7 +16,7 @@ public class ResourceManager {
 
     //asset paths
     public static final String AUTH_SCREEN_BG_PATH = "images/background/auth_screen_background.png";
-    public static final String RANCH_SCREEN_BG_PATH = "images/background/ranch_screen_background.png";
+    public static final String RANCH_SCREEN_BG_PATH = "images/background/bg.png";
     public static final String LOGO_PATH = "images/other/logo.png";
     public static final String UI_TEXTURE_PATH_ATLAS = "skins/uiskin.atlas";
     public static final String UI_SKIN_PATH = "skins/uiskin.json";

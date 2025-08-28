@@ -1,15 +1,18 @@
 package views.ranch.shop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import data.PurchaseResult;
 import data.ShopItem;
 import data.ShopResponse;
 import services.ShopServiceImpl;
 import services.dummy.MockShopService;
+import services.managers.ResourceManager;
 import views.common.HorseFactory;
 import views.common.ListPanel;
 import views.common.UIFactory;
@@ -81,9 +84,13 @@ public class ShopPanel extends ListPanel<ShopItem> {
         if(item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
         else row.setBackground(UIFactory.createDefaultBackgroundDrawable());
 
-        row.add(HorseFactory.createHorseImage("Boring Horse")).expandX().left().pad(10);
-        row.add(UIFactory.createLabel("name: " + item.getId())).expandX().left().pad(10);
-        row.add(UIFactory.createLabel("price: " + item.getPrice())).expandX();
+        row.add(HorseFactory.createHorseImage(item.getName())).expandX().left().padLeft(20);
+        row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
+        row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
+
+        TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
+        Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
+        row.add(coinImage).expandX().right().padRight(20);
     }
 
     @Override
