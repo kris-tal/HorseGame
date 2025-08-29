@@ -9,13 +9,14 @@ import race.objects.CoinObject;
 import race.objects.EmptyObject;
 import race.objects.ObstacleObject;
 import services.managers.ResourceManager;
+import animations.HorseAnimationActor;
+
 
 public class RaceSingleplayerPresenter {
     private RaceWorld world;
     private boolean raceFinished = false;
 
     public void init(ResourceManager resourceManager) {
-        // Currently fixed values
         int lanes = 3;
         int length = 50;
         float speed = 4f;
@@ -34,8 +35,10 @@ public class RaceSingleplayerPresenter {
         }
 
         GameMap map = new GameMap(lanes, length, mapData);
-        Texture playerTexture = new Texture("images/race/player.png");
-        Player player = new Player(playerTexture, map.getLanes() / 2, speed);
+        HorseAnimationActor horseActor = new HorseAnimationActor();
+        horseActor.setMoving(true);
+
+        Player player = new Player(horseActor, map.getLanes() / 2, speed);
 
         world = new RaceWorld(map, player);
     }
