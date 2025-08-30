@@ -43,20 +43,20 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public PurchaseResult postHorsePurchase(int horseId) {
-        return sendPurchaseRequest("/shop/horse", horseId);
+        return sendPurchaseRequest(horseId);
     }
 
     @Override
     public PurchaseResult postUpgradePurchase(int horseId) {
-        return sendPurchaseRequest("/shop/upgrade", horseId);
+        return sendPurchaseRequest(horseId);
     }
 
-    private PurchaseResult sendPurchaseRequest(String endpoint, int horseId) {
-        String requestBody = gson.toJson(Map.of("horseId", horseId));
+    private PurchaseResult sendPurchaseRequest(int horseId) {
+        String requestBody = gson.toJson(Map.of("id", horseId));
 
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
-                .ProtectedPost(endpoint,
+                .ProtectedPost("/shop",
                         HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
 

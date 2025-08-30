@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.dialects.postgresql import ENUM
 
 db = SQLAlchemy()
 
@@ -23,7 +22,7 @@ class User(db.Model):
 class Horse(db.Model):
     __tablename__ = 'horses'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), db.ForeignKey('horse_types.name'), nullable=False)
+    name_id = db.Column(db.Integer, db.ForeignKey('horse_types.id'), nullable=False)
     level = db.Column(db.Integer, default=1)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     owner = db.relationship('User', backref=db.backref('horses', cascade='all, delete'))
@@ -34,6 +33,6 @@ class Horse(db.Model):
 # Reference for horses one can purchase and maintain
 class HorseTypes(db.Model):
     __tablename__ = 'horse_types'
-    name = db.Column(db.String(80), unique=True, primary_key=True)
-    purchase_price = db.Column(db.Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Integer)
     default = db.Column(db.Boolean, default=False)

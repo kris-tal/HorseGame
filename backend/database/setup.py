@@ -5,9 +5,18 @@ from managers.file_manager import CONTENT_DIR, DEFAULT_DATA_DIR, DEFAULT_FILES, 
 from routes.shop import initialize_shop
 
 DEFAULT_HORSE_TYPES = [
-    {"name": "Ariel", "purchase_price": 500, "default":True},
-    {"name": "Ash", "purchase_price": 800, "default":False},
-    {"name": "Twilight", "purchase_price": 1200, "default":False},
+    {"id": 1, "price": 100, "default":True},
+    {"id": 2, "price": 200, "default":False},
+    {"id": 3, "price": 330, "default":False},
+    {"id": 4, "price": 500, "default":False},
+    {"id": 5, "price": 600, "default":False},
+    {"id": 6, "price": 777, "default":False},
+    {"id": 7, "price": 800, "default":False},
+    {"id": 8, "price":1000, "default":False},
+    {"id": 9, "price":1600, "default":False},
+	{"id": 10, "price": 2004, "default":False},
+	{"id": 11, "price": 4008, "default":False},
+	{"id": 12, "price": 9999, "default":False}
 ]
 
 

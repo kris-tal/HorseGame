@@ -15,11 +15,11 @@ public class MockShopService extends ShopServiceImpl {
     @Override
     public ShopResponse getShopData() {
         ShopResponse response = new ShopResponse();
-        response.availableHorses = List.of(
-                new ShopResponse.HorseToBuy(1, "Turing Machine", 500),
-                new ShopResponse.HorseToBuy(2, "Saw I (2004)", 750),
-                new ShopResponse.HorseToBuy(3, "Piotr", 600),
-                new ShopResponse.HorseToBuy(4, "Probability & Computing 2nd Edition", 1)
+        response.horses = List.of(
+                new ShopResponse.HorseToBuy("Turing Machine", 500),
+                new ShopResponse.HorseToBuy("Saw I (2004)", 750),
+                new ShopResponse.HorseToBuy("Piotr", 600),
+                new ShopResponse.HorseToBuy("Probability & Computing 2nd Edition", 1)
         );
         response.upgrades = List.of(
 
