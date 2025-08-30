@@ -2,6 +2,7 @@ package views.register;
 
 import data.auth.AuthCode;
 import services.auth.AuthService;
+import services.managers.SessionManager;
 
 public class RegisterPresenter {
     private final RegisterView view;
@@ -17,10 +18,11 @@ public class RegisterPresenter {
             view.showRegisterFailure();
             return;
         }
-
-        if (authService.register(username, password).returnedCode != AuthCode.SUCCESS) {
+        var result = authService.register(username, password);
+        if (result.returnedCode != AuthCode.SUCCESS) {
             view.showRegisterFailure();
         } else {
+            SessionManager.getInstance().startSession(result.token);
             view.showRegisterSuccess();
             view.navigateToRanch();
         }
