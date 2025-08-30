@@ -1,18 +1,18 @@
 package race;
 
+import animations.HorseAnimationActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
 
 public class Player {
-    private Texture texture;
+    private final HorseAnimationActor horse;
     private int lane;
     private float col = 0f;
     private int coins = 0;
     private final float speed;
     private boolean alive = true;
 
-    public Player(Texture texture, int startingLane, float speed) {
-        this.texture = texture;
+    public Player(HorseAnimationActor horse, int startingLane, float speed) {
+        this.horse = horse;
         lane = startingLane;
         this.speed = speed;
     }
@@ -29,11 +29,16 @@ public class Player {
 
     public void update(float delta) {
         col += delta * speed;
+        horse.setMoving(true);
+        horse.act(delta);
     }
 
     public void render(SpriteBatch batch, float x, float y, float size) {
-        batch.draw(texture, x, y, size, size);
+        horse.setPosition(x, y);
+        horse.setSize(size, size);
+        horse.draw(batch, 1f);
     }
+
 
     // getters / setters
 
