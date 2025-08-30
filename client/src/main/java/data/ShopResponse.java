@@ -7,21 +7,21 @@ public class ShopResponse {
     public List<Upgrade> upgrades;
 
     public static class HorseToBuy {
-        public String name;
+        public int id;
         public int price;
 
-        public HorseToBuy(String race, int price) {
-            this.name = race;
+        public HorseToBuy(int id, int price) {
+            this.id = id;
             this.price = price;
         }
     }
 
     public static class Upgrade {
-        public String name;
+        public int id;
         public int price;
 
-        public Upgrade(String race, int price) {
-            this.name = race;
+        public Upgrade(int id, int price) {
+            this.id = id;
             this.price = price;
         }
     }

@@ -16,11 +16,7 @@ public class MockShopService extends ShopServiceImpl {
     public ShopResponse getShopData() {
         ShopResponse response = new ShopResponse();
         response.horses = List.of(
-                new ShopResponse.HorseToBuy("Turing Machine", 500),
-                new ShopResponse.HorseToBuy("Saw I (2004)", 750),
-                new ShopResponse.HorseToBuy("Piotr", 600),
-                new ShopResponse.HorseToBuy("Probability & Computing 2nd Edition", 1)
-        );
+                );
         response.upgrades = List.of(
 
         );

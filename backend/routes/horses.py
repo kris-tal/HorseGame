@@ -47,7 +47,7 @@ def get_user_horse(horse_id):
             "level": horse.level
         }), 200
 
-
+# Helper functions (for shop functionalities)
 def add_horse(user_id, name_id):
     new_horse = Horse(owner_id=user_id, name_id=name_id)
     db.session.add(new_horse)
@@ -58,12 +58,7 @@ def upgrade_user_horse(user_id, name_id):
     horse = Horse.query.filter_by(owner_id=user_id, name_id = name_id).first()
     if horse is None:
         return
-    upgrade_horse(horse.id)
-
-def upgrade_horse(horse_id):
-    horse = Horse.query.filter_by(id=horse_id).first()
-    if horse is None:
-        return
     horse.level += 1
     db.session.commit()
+
 

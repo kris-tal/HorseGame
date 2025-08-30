@@ -57,7 +57,7 @@ def buy():
 
     data = request.get_json()
     if not data or "id" not in data:
-        return jsonify({"success": False, "message": "Invalid query: missing id"}), 400
+        return jsonify({"success": False, "message": "Invalid query: missing id"}), 401
 
     horse_id = data["id"]
 
@@ -65,7 +65,7 @@ def buy():
     shop_data = get_user_file(user.id, DataType.Shop)
 
     if not shop_data:
-        return jsonify({"success": False, "message": "Shop data not found"}), 400
+        return jsonify({"success": False, "message": "Shop data not found"}), 404
 
     # --- 1) Check if horse is in "horses" (buy new) ---
     for horse in shop_data.get("horses", []):
@@ -96,6 +96,6 @@ def buy():
             return jsonify({"success": True, "message": "Horse upgraded"}), 200
 
     # --- 3) Not found in either ---
-    return jsonify({"success": False, "message": "Invalid query: invalid id"}), 400
+    return jsonify({"success": False, "message": "Invalid query: invalid id"}), 401
 
 
