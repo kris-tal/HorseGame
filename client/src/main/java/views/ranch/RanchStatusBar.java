@@ -47,21 +47,16 @@ public class RanchStatusBar extends Table {
 
             usernameLabel = UIFactory.createLabel("");
 
-            TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
-            Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
-            moneyLabel = new Label(String.valueOf(money), UIStyles.getDefaultLabelStyle());
-
-            TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion("prestige_icon");
-            Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
+            moneyLabel = UIFactory.createLabel(String.valueOf(money));
             prestigeLabel = UIFactory.createLabel("");
 
             //layout
-            pad(5).padLeft(10).padRight(10); // padding inside the background
+            pad(5).padLeft(10).padRight(10); //padding inside the background
 
             add(usernameLabel).padRight(20).left();
-            add(coinImage).size(32, 32).padRight(5);
+            add(UIFactory.createCoinImage()).size(32, 32).padRight(5);
             add(moneyLabel).padRight(20);
-            add(prestigeImage).size(32, 32).padRight(5);
+            add(UIFactory.createPrestigeImage()).size(32, 32).padRight(5);
             add(prestigeLabel);
 
             setTransform(true);

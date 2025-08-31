@@ -88,9 +88,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
         row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
         row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
 
-        TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
-        Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
-        row.add(coinImage).expandX().right().padRight(20);
+        row.add(UIFactory.createCoinImage()).expandX().right().padRight(20);
     }
 
     @Override

@@ -1,10 +1,14 @@
 package views.common;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import services.managers.ResourceManager;
 
 public class UIFactory {
     private static final float SCALE = 1.5f;
@@ -46,5 +50,15 @@ public class UIFactory {
 
     public static NinePatchDrawable createDarkerBackgroundDrawable() {
         return new NinePatchDrawable(UIStyles.getDarkerBackgroundPatch());
+    }
+
+    public static Image createCoinImage() {
+        TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");      //idk czy to tu powinno byc (skonsultuj)
+        return new Image(new TextureRegionDrawable(coinRegion));
+    }
+
+    public static Image createPrestigeImage() {
+        TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion(("prestige_icon"));
+        return new Image(new TextureRegionDrawable(prestigeRegion));
     }
 }
