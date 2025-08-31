@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.HorseType;
 import views.common.Panel;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
@@ -24,7 +25,6 @@ import services.managers.ResourceManager;
 
 public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
-    private final ResourceManager resourceManager;
     private final RanchPresenter presenter;
     private final MenuContext menuContext;
     private Stage stage;
@@ -40,9 +40,8 @@ public class RanchScreen implements Screen, RanchView {
     private final Array<Float> waitTimers = new Array<>();
     private Rectangle fence;
 
-    public RanchScreen(HorseGame game, ResourceManager resourceManager) {
+    public RanchScreen(HorseGame game) {
         this.game = game;
-        this.resourceManager = resourceManager;
         this.menuContext = new MenuContext();
         this.presenter = new RanchPresenter(this, menuContext);
     }
@@ -56,7 +55,7 @@ public class RanchScreen implements Screen, RanchView {
 
         Skin skin = ResourceManager.uiSkin;
         for (int i = 0; i < 20; i++) {
-            HorseAnimationActor horse = new HorseAnimationActor();
+            HorseAnimationActor horse = new HorseAnimationActor(HorseType.BORING_HORSE);
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
             horse.setPosition(x, y);
@@ -96,7 +95,7 @@ public class RanchScreen implements Screen, RanchView {
     }
 
     private RanchStatusBar getStatusBar(Skin skin) {
-        RanchStatusBar statusBar = new RanchStatusBar(game, resourceManager, skin);
+        RanchStatusBar statusBar = new RanchStatusBar(game, skin);
         statusBar.setListener(action -> {
             switch (action) {
                 case SHOP:
@@ -136,7 +135,7 @@ public class RanchScreen implements Screen, RanchView {
         stage.draw();
         /// For debug purposes
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            game.setScreen(new RaceSingleplayerScreen(game, resourceManager));
+            game.setScreen(new RaceSingleplayerScreen(game));
         }
         stage.act(delta);
         stage.draw();

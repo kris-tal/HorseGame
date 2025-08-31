@@ -35,7 +35,6 @@ public enum HorseType {
         return name().toLowerCase() + "_" + action;
     }
 
-    // Lookup table for id -> HorseType
     private static final Map<Integer, HorseType> BY_ID = new HashMap<>();
     static {
         for (HorseType horse : values()) {

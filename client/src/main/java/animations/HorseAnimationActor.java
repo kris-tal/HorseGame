@@ -1,14 +1,17 @@
 package animations;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
+import data.HorseType;
+import services.managers.ResourceManager;
 
 public class HorseAnimationActor extends Actor {
-    private final Animation<TextureRegion> walkAnimation;
+    private final HorseType horseType;
+    private final Animation<TextureRegion> danceAnimation;
     private final TextureRegion idleFrame;
     private float stateTime = 0f;
     private boolean moving = false;
@@ -16,21 +19,26 @@ public class HorseAnimationActor extends Actor {
 
     private final float scale = 3f;
 
-    public HorseAnimationActor() {
-        Texture texture = new Texture(Gdx.files.internal("horses/animations/run.png"));
+    public HorseAnimationActor(HorseType horseType) {
+        this.horseType = horseType;
 
-        TextureRegion frame1 = new TextureRegion(texture, 44, 2, 40, 32);
-        TextureRegion frame2 = new TextureRegion(texture, 128, 2, 40, 32);
-        TextureRegion frame3 = new TextureRegion(texture, 86, 2, 40, 32); // idle
-        TextureRegion frame4 = new TextureRegion(texture, 2, 2, 40, 32);
+        TextureAtlas animationsAtlas = ResourceManager.horseAnimationsAtlas;
+        System.out.println(horseType.getAtlasKey(AnimationAction.DANCE.getName()));
+        System.out.println(animationsAtlas.getRegions());
 
-        walkAnimation = new Animation<>(0.1f, frame1, frame2, frame3, frame4);
-        walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        Array<TextureAtlas.AtlasRegion> danceFrames = findAnimationRegions(animationsAtlas, horseType.getAtlasKey(AnimationAction.DANCE.getName()));
+        System.out.println(danceFrames);
 
-        idleFrame = frame3;
+        danceAnimation = new Animation<>(AnimationAction.DANCE.getFrameDuration(), danceFrames, AnimationAction.DANCE.getPlayMode());
+
+
+        TextureAtlas idleFrameAtlas = ResourceManager.horsesAtlas;
+        idleFrame = idleFrameAtlas.findRegion(horseType.getAtlasKey());
+
+
 
         // 3 razy większy rozmiar
-        setSize(frame1.getRegionWidth() * scale, frame1.getRegionHeight() * scale);
+        setSize(idleFrame.getRegionWidth() * scale, idleFrame.getRegionHeight() * scale);
     }
 
     @Override
@@ -43,7 +51,7 @@ public class HorseAnimationActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         TextureRegion currentFrame;
         if (moving) {
-            currentFrame = walkAnimation.getKeyFrame(stateTime);
+            currentFrame = danceAnimation.getKeyFrame(stateTime);
         } else {
             currentFrame = idleFrame;
         }
@@ -79,5 +87,17 @@ public class HorseAnimationActor extends Actor {
 
     public boolean isFacingRight() {
         return facingRight;
+    }
+
+    public static Array<TextureAtlas.AtlasRegion> findAnimationRegions(TextureAtlas atlas, String prefix) {
+        Array<TextureAtlas.AtlasRegion> frames = new Array<>();
+        int index = 1;
+        while (true) {
+            TextureAtlas.AtlasRegion frame = atlas.findRegion(prefix + "_" + index);
+            if (frame == null) break;
+            frames.add(frame);
+            index++;
+        }
+        return frames;
     }
 }

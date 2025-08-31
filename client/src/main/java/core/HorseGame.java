@@ -13,9 +13,9 @@ public class HorseGame extends Game {
 
     @Override
     public void create() {
-        resourceManager = new ResourceManager();
-        loginScreen = new LoginScreen(this, resourceManager);
-        registerScreen = new RegisterScreen(this, resourceManager);
+        //resourceManager = new ResourceManager();
+        loginScreen = new LoginScreen(this);
+        registerScreen = new RegisterScreen(this);
         setScreen(loginScreen);
     }
 

@@ -21,9 +21,7 @@ public class RanchStatusBar extends Table {
     }
     private StatusBarListener listener;
 
-
     private final HorseGame game;
-    private final ResourceManager resourceManager;
 
     public static class PlayerStatusItem extends Table {
 
@@ -73,10 +71,9 @@ public class RanchStatusBar extends Table {
     private final Table leftStack;
     private final Table rightStack;
 
-    public RanchStatusBar(HorseGame game, ResourceManager resourceManager, Skin skin) {
+    public RanchStatusBar(HorseGame game, Skin skin) {
         super(skin);
         this.game = game;
-        this.resourceManager = resourceManager;
 
         this.skin = skin;
 

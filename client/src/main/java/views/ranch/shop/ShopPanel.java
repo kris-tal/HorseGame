@@ -84,8 +84,8 @@ public class ShopPanel extends ListPanel<ShopItem> {
         if(item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
         else row.setBackground(UIFactory.createDefaultBackgroundDrawable());
 
-        row.add(HorseFactory.createHorseImage(item.getName())).expandX().left().padLeft(20);
-        row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
+        row.add(HorseFactory.createHorseImage(item.getHorseType())).expandX().left().padLeft(20);
+        row.add(UIFactory.createLabel(item.getHorseType().name())).expandX().left().pad(10);
         row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
 
         TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
@@ -107,10 +107,10 @@ public class ShopPanel extends ListPanel<ShopItem> {
                 List<ShopItem> allItems = new ArrayList<>();
 
                 for (ShopResponse.HorseToBuy h : response.availableHorses)
-                    allItems.add(new ShopItem(h.id, h.race, h.price, false, false));
+                    allItems.add(new ShopItem(h.horseType, h.price, false, false));
 
-                for (ShopResponse.Upgrade u : response.upgrades)
-                    allItems.add(new ShopItem(u.horseId, u.race, u.price, true, true));
+                //for (ShopResponse.Upgrade u : response.upgrades)
+                    //allItems.add(new ShopItem(u.horseId, u.race, u.price, true, true));
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception e) {
@@ -141,13 +141,13 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
     public void onBuyButtonClicked(ShopItem item) {
         if (!item.isOwned() && !item.isUpgrade()) {
-            sendBuyHorseRequest(item.getId());
+            sendBuyHorseRequest(item.getHorseType().getId());
         }
     }
 
     public void onUpgradeButtonClicked(ShopItem item) {
         if (item.isOwned() || item.isUpgrade()) {
-            sendUpgradeRequest(item.getId());
+            sendUpgradeRequest(item.getHorseType().getId());
         }
     }
 }

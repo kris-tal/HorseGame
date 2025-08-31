@@ -7,13 +7,11 @@ public class ShopResponse {
     public List<Upgrade> upgrades;
 
     public static class HorseToBuy {
-        public int id;
-        public String race;
+        public HorseType horseType;
         public int price;
 
-        public HorseToBuy(int id, String race, int price) {
-            this.id = id;
-            this.race = race;
+        public HorseToBuy(HorseType horseType, int price) {
+            this.horseType = horseType;
             this.price = price;
         }
     }

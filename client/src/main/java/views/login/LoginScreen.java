@@ -20,13 +20,11 @@ import services.managers.ResourceManager;
 
 public class LoginScreen implements Screen, LoginView {
     private final HorseGame game;
-    private final ResourceManager resourceManager;
     private final LoginPresenter presenter;
     private Stage stage;
 
-    public LoginScreen(HorseGame game, ResourceManager resourceManager) {
+    public LoginScreen(HorseGame game) {
         this.game = game;
-        this.resourceManager = resourceManager;
         this.presenter = new LoginPresenter(this, new AuthServiceImpl());
     }
 
@@ -135,12 +133,12 @@ public class LoginScreen implements Screen, LoginView {
 
     @Override
     public void navigateToRegister() {
-        game.setScreen(new RegisterScreen(game, resourceManager));
+        game.setScreen(new RegisterScreen(game));
     }
 
     @Override
     public void navigateToRanch() {
-        game.setScreen(new RanchScreen(game, resourceManager));
+        game.setScreen(new RanchScreen(game));
     }
 
     @Override

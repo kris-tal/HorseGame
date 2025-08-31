@@ -3,6 +3,7 @@ package views.race.singleplayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import data.HorseType;
 import data.race.GameMap;
 import race.*;
 import race.objects.CoinObject;
@@ -16,7 +17,7 @@ public class RaceSingleplayerPresenter {
     private RaceWorld world;
     private boolean raceFinished = false;
 
-    public void init(ResourceManager resourceManager) {
+    public void init() {
         int lanes = 3;
         int length = 50;
         float speed = 4f;
@@ -35,7 +36,7 @@ public class RaceSingleplayerPresenter {
         }
 
         GameMap map = new GameMap(lanes, length, mapData);
-        HorseAnimationActor horseActor = new HorseAnimationActor();
+        HorseAnimationActor horseActor = new HorseAnimationActor(HorseType.BORING_HORSE);
         horseActor.setMoving(true);
 
         Player player = new Player(horseActor, map.getLanes() / 2, speed);

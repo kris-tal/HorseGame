@@ -4,16 +4,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import data.HorseType;
 import services.managers.ResourceManager;
 
 public class HorseFactory {
 
-    public static Image createHorseImage(String horseName, float size) {
+    public static Image createHorseImage(HorseType horseType, float size) {
         TextureAtlas atlas = ResourceManager.horsesAtlas;
-        TextureAtlas.AtlasRegion region = atlas.findRegion(horseName);
+        TextureAtlas.AtlasRegion region = atlas.findRegion(horseType.getAtlasKey());
 
         if (region == null) {
-            throw new IllegalArgumentException("No horse region found for name: " + horseName);
+            throw new IllegalArgumentException("No horse region found for name: " + horseType.name());
         }
 
         Image image = new Image(new TextureRegionDrawable(region));
@@ -22,7 +23,7 @@ public class HorseFactory {
         return image;
     }
 
-    public static Image createHorseImage(String horseName) {
-        return createHorseImage(horseName, 32f);
+    public static Image createHorseImage(HorseType horseType) {
+        return createHorseImage(horseType, 32f);
     }
 }

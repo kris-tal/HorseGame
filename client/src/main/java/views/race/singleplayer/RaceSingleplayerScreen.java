@@ -18,7 +18,6 @@ import views.race.RaceStatsPanel;
 import views.ranch.RanchScreen;
 
 public class RaceSingleplayerScreen implements Screen {
-    private final ResourceManager resourceManager;
     private final HorseGame game;
     private final RaceSingleplayerPresenter presenter;
 
@@ -29,9 +28,8 @@ public class RaceSingleplayerScreen implements Screen {
     private RaceStatsPanel statsPanel;
     private boolean statsPanelShown = false;
 
-    public RaceSingleplayerScreen(HorseGame game, ResourceManager resourceManager) {
+    public RaceSingleplayerScreen(HorseGame game) {
         this.game = game;
-        this.resourceManager = resourceManager;
         this.presenter = new RaceSingleplayerPresenter();
     }
 
@@ -39,7 +37,7 @@ public class RaceSingleplayerScreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
 
-        // UI setup
+        //UI setup
         uiStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(uiStage);
 
@@ -64,13 +62,13 @@ public class RaceSingleplayerScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!statsPanel.isOpen()) {
-                    game.setScreen(new RanchScreen(game, resourceManager));
+                    game.setScreen(new RanchScreen(game));
                 }
             }
         });
 
         // Initialize model/presenter
-        presenter.init(resourceManager);
+        presenter.init();
     }
 
     @Override

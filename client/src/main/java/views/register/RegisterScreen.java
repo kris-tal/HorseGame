@@ -19,13 +19,11 @@ import views.ranch.RanchScreen;
 
 public class RegisterScreen implements Screen, RegisterView {
     private final HorseGame game;
-    private final ResourceManager resourceManager;
     private final RegisterPresenter presenter;
     private Stage stage;
 
-    public RegisterScreen(HorseGame game, ResourceManager resourceManager) {
+    public RegisterScreen(HorseGame game) {
         this.game = game;
-        this.resourceManager = resourceManager;
         this.presenter = new RegisterPresenter(this, new AuthServiceImpl());
     }
 
@@ -143,12 +141,12 @@ public class RegisterScreen implements Screen, RegisterView {
 
     @Override
     public void navigateToLogin() {
-        game.setScreen(new LoginScreen(game, resourceManager));
+        game.setScreen(new LoginScreen(game));
     }
 
     @Override
     public void navigateToRanch() {
-        game.setScreen(new RanchScreen(game, resourceManager));
+        game.setScreen(new RanchScreen(game));
     }
 
     @Override

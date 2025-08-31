@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class ResourceManager {
+
     private static final AssetManager assetManager = new AssetManager();
     private static final InternalFileHandleResolver filePathResolver =  new InternalFileHandleResolver();
 
@@ -27,6 +28,7 @@ public class ResourceManager {
     public static final String UI_FONT_PATH = "ui/fonts/uifont.fnt";
     public static final String ICONS_ATLAS_PATH = "ui/icons/icons.atlas";
     public static final String HORSES_ATLAS_PATH = "horses/horses.atlas";
+    public static final String HORSE_ANIMATIONS_ATLAS_PATH = "horses/animations/animations.atlas";
 
     //preloaded assets
     public static Texture authScreenBgTexture;
@@ -42,8 +44,9 @@ public class ResourceManager {
     public static BitmapFont uiLargeFont;
     public static TextureAtlas iconsAtlas;
     public static TextureAtlas horsesAtlas;
+    public static TextureAtlas horseAnimationsAtlas;
 
-    public ResourceManager() {
+    static {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
         assetManager.load(RANCH_SCREEN_BG_PATH, Texture.class);
         assetManager.load(RACE_SCREEN_BG_PATH, Texture.class);
@@ -56,6 +59,7 @@ public class ResourceManager {
         assetManager.load(UI_FONT_PATH, BitmapFont.class);
         assetManager.load(ICONS_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(HORSES_ATLAS_PATH, TextureAtlas.class);
+        assetManager.load(HORSE_ANIMATIONS_ATLAS_PATH, TextureAtlas.class);
 
         assetManager.finishLoading();
 
@@ -72,6 +76,7 @@ public class ResourceManager {
         uiLargeFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
         iconsAtlas = assetManager.get(ICONS_ATLAS_PATH, TextureAtlas.class);
         horsesAtlas = assetManager.get(HORSES_ATLAS_PATH, TextureAtlas.class);
+        horseAnimationsAtlas = assetManager.get(HORSE_ANIMATIONS_ATLAS_PATH, TextureAtlas.class);
 
     }
 
