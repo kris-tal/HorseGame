@@ -86,9 +86,9 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
         row.add(HorseFactory.createHorseImage(item.getHorseType())).expandX().left().padLeft(20);
         row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
-        row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
+        row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).right().pad(10);
 
-        row.add(UIFactory.createCoinImage()).expandX().right().padRight(20);
+        row.add(UIFactory.createCoinImage()).right().padRight(20);
     }
 
     @Override
