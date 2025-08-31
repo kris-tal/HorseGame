@@ -15,11 +15,13 @@ public class UIStyles {
     private final static Color defaultFontColor = new Color(216/255f, 204/255f, 193/255f, 1f);
     private final static Color darkerFontColor = new Color(144/255f, 113/255f, 96/255f, 1f);
     private final static BitmapFont defaultFont = ResourceManager.uiDefaultFont;
+    private final static BitmapFont mediumFont = ResourceManager.uiMediumFont;
     private final static BitmapFont largeFont = ResourceManager.uiLargeFont;
 
 
     static {
         defaultFont.getData().setScale(0.5f);
+        mediumFont.getData().setScale(0.8f);
         largeFont.getData().setScale(1.5f);
     }
 
@@ -55,6 +57,14 @@ public class UIStyles {
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = defaultFontColor;
         style.font = defaultFont;
+
+        return style;
+    }
+
+    public static Label.LabelStyle getMediumLabelStyle() {
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.fontColor = defaultFontColor;
+        style.font = mediumFont;
 
         return style;
     }

@@ -1,6 +1,11 @@
 package views.common;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,14 +20,27 @@ public class UIFactory {
     //buttons
 
     public static TextButton createTextButton(String text) {
-        return new TextButton(text, UIStyles.getDefaultButtonStyle());
+        TextButton button = new TextButton(text, UIStyles.getDefaultButtonStyle());
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            }
+        });
+        return button;
     }
 
     public static TextButton createLargeTextButton(String text) {
-        TextButton button = new TextButton(text, UIStyles.getDefaultButtonStyle());
+        TextButton button = createTextButton(text);
         button.setTransform(true);
         button.setOrigin(Align.center);
         button.setScale(1.5f);
+
         return button;
     }
 
@@ -30,6 +48,8 @@ public class UIFactory {
     public static Label createLabel(String text) {
         return new Label(text, UIStyles.getDefaultLabelStyle());
     }
+
+    public static Label createMediumLabel(String text) {return new Label(text, UIStyles.getMediumLabelStyle()); }
 
     public static Label createLargeLabel(String text) {
         return new Label(text, UIStyles.getLargerLabelStyle());
@@ -41,6 +61,17 @@ public class UIFactory {
 
         TextField textField = new TextField("", style);
         textField.setMessageText(message);
+        textField.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Ibeam);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            }
+        });
         return textField;
     }
 

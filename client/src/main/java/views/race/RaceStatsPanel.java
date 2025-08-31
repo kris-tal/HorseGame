@@ -3,6 +3,7 @@ package views.race;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import views.common.Panel;
 import services.managers.ResourceManager;
+import views.common.UIFactory;
 
 public class RaceStatsPanel extends Panel {
     private Label distanceLabel;
@@ -14,13 +15,13 @@ public class RaceStatsPanel extends Panel {
 
     @Override
     protected String getTitle() {
-        return "Race Results";
+        return "RACE RESULTS";
     }
 
     @Override
     protected void addContent(float width, float height) {
-        distanceLabel = new Label("Distance: 0m", ResourceManager.uiSkin);
-        coinsLabel = new Label("Coins: 0", ResourceManager.uiSkin);
+        distanceLabel = UIFactory.createMediumLabel("distance: 0m");
+        coinsLabel = UIFactory.createMediumLabel("coins: 0");
 
         content.add(distanceLabel).padBottom(defaultPadding).row();
         content.add(coinsLabel).padBottom(defaultPadding).row();

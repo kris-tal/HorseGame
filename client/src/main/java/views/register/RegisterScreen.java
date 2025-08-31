@@ -3,8 +3,11 @@ package views.register;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,6 +15,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import services.auth.AuthServiceImpl;
+import views.common.UIFactory;
 import views.common.UIStyles;
 import services.managers.ResourceManager;
 import views.login.LoginScreen;
@@ -59,21 +63,19 @@ public class RegisterScreen implements Screen, RegisterView {
         float logoHeight = logoTexture.getHeight() * (logoWidth / logoTexture.getWidth());
 
         //username / password field
-        TextField usernameField = new TextField("", UIStyles.getTextFieldStyle());
-        usernameField.setMessageText("username");
+        TextField usernameField = UIFactory.createTextField("username");
 
-        TextField passwordField = new TextField("", UIStyles.getTextFieldStyle());
-        passwordField.setMessageText("password");
+        TextField passwordField = UIFactory.createTextField("password");
+
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
-        TextField repeatPasswordField = new TextField("", UIStyles.getTextFieldStyle());
-        repeatPasswordField.setMessageText("repeat password");
+        TextField repeatPasswordField = UIFactory.createTextField("repeat password");
         repeatPasswordField.setPasswordMode(true);
         repeatPasswordField.setPasswordCharacter('*');
 
         //register button
-        TextButton registerButton = new TextButton("register!", UIStyles.getDefaultButtonStyle());
+        TextButton registerButton = UIFactory.createTextButton("register!");
         registerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -85,11 +87,22 @@ public class RegisterScreen implements Screen, RegisterView {
             }
         });
 
-        Label loginLabel = new Label("Actually I do have an account..", UIStyles.getDefaultLabelStyle());
+        Label loginLabel = UIFactory.createLabel("Actually I do have an account..");
         loginLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 presenter.onLoginLabelClicked();
+            }
+        });
+        loginLabel.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
             }
         });
 

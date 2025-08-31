@@ -41,6 +41,7 @@ public class ResourceManager {
     public static Sound horseSound1;
     public static Sound snortSound;
     public static BitmapFont uiDefaultFont;
+    public static BitmapFont uiMediumFont;
     public static BitmapFont uiLargeFont;
     public static TextureAtlas iconsAtlas;
     public static TextureAtlas horsesAtlas;
@@ -73,6 +74,7 @@ public class ResourceManager {
         snortSound = assetManager.get(SNORT_SOUND_PATH, Sound.class);
         uiAtlas = assetManager.get(UI_ATLAS_PATH, TextureAtlas.class);
         uiDefaultFont = assetManager.get(UI_FONT_PATH, BitmapFont.class);
+        uiMediumFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
         uiLargeFont = new BitmapFont(Gdx.files.internal(UI_FONT_PATH), false);
         iconsAtlas = assetManager.get(ICONS_ATLAS_PATH, TextureAtlas.class);
         horsesAtlas = assetManager.get(HORSES_ATLAS_PATH, TextureAtlas.class);
