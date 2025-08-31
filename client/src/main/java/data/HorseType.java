@@ -17,15 +17,15 @@ public enum HorseType {
     HORSE(12, "Horse");
 
     private final int id;
-    private final String displayName;
+    private final String name;
 
-    HorseType(int id, String displayName) {
+    HorseType(int id, String name) {
         this.id = id;
-        this.displayName = displayName;
+        this.name = name;
     }
 
     public int getId() { return id; }
-    public String getDisplayName() { return displayName; }
+    public String getName() { return name; }
 
     public String getAtlasKey() {
         return name().toLowerCase();

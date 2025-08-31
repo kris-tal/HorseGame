@@ -84,7 +84,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
         if(item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
         else row.setBackground(UIFactory.createDefaultBackgroundDrawable());
 
-        row.add(HorseFactory.createHorseImage(item.getAtlasKey())).expandX().left().padLeft(20);
+        row.add(HorseFactory.createHorseImage(item.getHorseType())).expandX().left().padLeft(20);
         row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
         row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
 
