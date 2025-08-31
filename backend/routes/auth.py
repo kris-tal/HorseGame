@@ -7,6 +7,9 @@ from database.models import db, User
 from flask_jwt_extended import create_access_token
 import re
 
+from routes.profile import setup_new_account
+
+
 def is_valid_email(email):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
     return re.match(pattern, email) is not None
@@ -33,7 +36,7 @@ def signup():
     db.session.add(user)
     db.session.commit()
 
-    create_user_files(user_id=user.id)
+    setup_new_account(user.id)
 
     token = create_access_token(identity=json.dumps({"id": user.id, "username": user.username}))
     return jsonify({"token": token}), 201 # Created

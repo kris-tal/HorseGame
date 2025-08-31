@@ -16,12 +16,8 @@ public class MockShopService extends ShopServiceImpl {
     @Override
     public ShopResponse getShopData() {
         ShopResponse response = new ShopResponse();
-        response.availableHorses = List.of(
-                new ShopResponse.HorseToBuy(HorseType.fromId(1), 500),
-                new ShopResponse.HorseToBuy(HorseType.fromId(2), 750),
-                new ShopResponse.HorseToBuy(HorseType.fromId(3), 600),
-                new ShopResponse.HorseToBuy(HorseType.fromId(4), 1)
-        );
+        response.horses = List.of(
+                );
         response.upgrades = List.of(
 
         );

@@ -21,7 +21,7 @@ public class RaceSingleplayerScreen implements Screen {
     private final HorseGame game;
     private final RaceSingleplayerPresenter presenter;
 
-    private Stage uiStage;
+    private Stage uiStage, bgStage;
     private SpriteBatch batch;
     private Label distanceLabel;
     private Label coinLabel;
@@ -36,14 +36,13 @@ public class RaceSingleplayerScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-
-        //UI setup
+        bgStage = new Stage(new ScreenViewport());
         uiStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(uiStage);
 
         Image background = new Image(ResourceManager.raceScreenBgTexture);
         background.setFillParent(true);
-        uiStage.addActor(background);
+        bgStage.addActor(background);
 
         distanceLabel = new Label("Distance: 0m", ResourceManager.uiSkin);
         distanceLabel.setPosition(30, Gdx.graphics.getHeight() - 50);
@@ -90,17 +89,19 @@ public class RaceSingleplayerScreen implements Screen {
             return;
         }
 
-        // Update UI
-        distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
-        coinLabel.setText("Coins: " + presenter.getCoins());
-        uiStage.act(delta);
-        uiStage.draw();
+        bgStage.draw();
 
-        // Draw world + UI
+        // Draw the game
         batch.begin();
         RaceWorld world = presenter.getWorld();
         world.render(batch);
         batch.end();
+
+        // Update & draw UI
+        distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
+        coinLabel.setText("Coins: " + presenter.getCoins());
+        uiStage.act(delta);
+        uiStage.draw();
     }
 
     @Override public void resize(int width, int height) {}

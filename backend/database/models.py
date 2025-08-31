@@ -1,6 +1,7 @@
+import os
+
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.dialects.postgresql import ENUM
 
 db = SQLAlchemy()
 
@@ -11,7 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=False, nullable=True)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
-    money = db.Column(db.Integer, default=10)
+    money = db.Column(db.Integer, default=os.getenv("STARTUP_MONEY"))
     prestige = db.Column(db.Integer, default=0)
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -23,7 +24,7 @@ class User(db.Model):
 class Horse(db.Model):
     __tablename__ = 'horses'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), db.ForeignKey('horse_types.name'), nullable=False)
+    name_id = db.Column(db.Integer, db.ForeignKey('horse_types.id'), nullable=False)
     level = db.Column(db.Integer, default=1)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     owner = db.relationship('User', backref=db.backref('horses', cascade='all, delete'))
@@ -34,5 +35,6 @@ class Horse(db.Model):
 # Reference for horses one can purchase and maintain
 class HorseTypes(db.Model):
     __tablename__ = 'horse_types'
-    name = db.Column(db.String(80), unique=True, primary_key=True)
-    purchase_price = db.Column(db.Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    price = db.Column(db.Integer)
+    default = db.Column(db.Boolean, default=False)

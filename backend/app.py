@@ -21,7 +21,6 @@ jwt = JWTManager(app)
 app.register_blueprint(auth_bp) # Authorization blueprint
 app.register_blueprint(profile_bp) # Profile management blueprint
 app.register_blueprint(horses_bp) # Horse management blueprint
-app.register_blueprint(stable_bp) # Stable management blueprint
 app.register_blueprint(shop_bp) # Shop management blueprint
 
 

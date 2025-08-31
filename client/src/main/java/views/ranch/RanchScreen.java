@@ -121,6 +121,7 @@ public class RanchScreen implements Screen, RanchView {
 
     public void hideAllPanels() {
         raceMenuPanel.hide();
+        shopPanel.hide();
         horseSelectionPanel.hide();
         lobbyPanel.hide();
     }

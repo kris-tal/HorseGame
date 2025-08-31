@@ -1,5 +1,6 @@
 package views.ranch;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,9 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
+import data.HorseType;
+import data.ProfileData;
+import data.ShopItem;
+import data.ShopResponse;
+import services.ProfileService;
+import services.ProfileServiceImpl;
 import services.managers.ResourceManager;
 import views.common.UIFactory;
 import views.common.UIStyles;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RanchStatusBar extends Table {
     public enum Action { RANKING, SHOP, RACE }
@@ -25,16 +35,17 @@ public class RanchStatusBar extends Table {
 
     public static class PlayerStatusItem extends Table {
 
+        private final ProfileService service;
         private final Label usernameLabel;
         private final Label moneyLabel;
         private final Label prestigeLabel;
 
         public PlayerStatusItem(String username, int money, int prestige) {
             super();
-
+            service = new ProfileServiceImpl();
             setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
 
-            usernameLabel = UIFactory.createLabel("MajeczkaO4");
+            usernameLabel = UIFactory.createLabel("");
 
             TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
             Image coinImage = new Image(new TextureRegionDrawable(coinRegion));
@@ -42,7 +53,7 @@ public class RanchStatusBar extends Table {
 
             TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion("prestige_icon");
             Image prestigeImage = new Image(new TextureRegionDrawable(prestigeRegion));
-            prestigeLabel = UIFactory.createLabel("prestige");
+            prestigeLabel = UIFactory.createLabel("");
 
             //layout
             pad(5).padLeft(10).padRight(10); // padding inside the background
@@ -56,8 +67,22 @@ public class RanchStatusBar extends Table {
             setTransform(true);
             setOrigin(Align.center);
             setScale(1.5f);
+            loadData();
         }
 
+        public void loadData() {
+            new Thread(() -> {
+                try {
+                    ProfileData response = service.getUserData();
+                    updateMoney(response.getMoney());
+                    updatePrestige(response.getPrestige());
+                    setUsername(response.getUsername());
+                } catch (Exception e) {
+                    Gdx.app.error("Profile", "Failed to fetch profile data", e);
+                }
+            }).start();
+        }
+        public void setUsername(String username) { usernameLabel.setText(username);}
         public void updateMoney(int money) {
             moneyLabel.setText(String.valueOf(money));
         }
@@ -127,7 +152,6 @@ public class RanchStatusBar extends Table {
 
         addToRight(shopButton);
         addToRight(raceButton);
-
     }
 
     private void addToLeft(Actor actor) {

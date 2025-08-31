@@ -1,5 +1,6 @@
 package services;
 
+import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.PurchaseResult;
 import data.ShopResponse;
@@ -43,20 +44,21 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public PurchaseResult postHorsePurchase(int horseId) {
-        return sendPurchaseRequest("/shop/horse", horseId);
+        return sendPurchaseRequest(horseId);
     }
 
     @Override
     public PurchaseResult postUpgradePurchase(int horseId) {
-        return sendPurchaseRequest("/shop/upgrade", horseId);
+        return sendPurchaseRequest(horseId);
     }
 
-    private PurchaseResult sendPurchaseRequest(String endpoint, int horseId) {
-        String requestBody = gson.toJson(Map.of("horseId", horseId));
+    private PurchaseResult sendPurchaseRequest(int horseId) {
+        String requestBody = gson.toJson(Map.of("id", horseId));
 
+        Gdx.app.log("purchase", requestBody);
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
-                .ProtectedPost(endpoint,
+                .ProtectedPost("/shop",
                         HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
 
@@ -66,12 +68,9 @@ public class ShopServiceImpl implements ShopService {
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 200) {
+            if (response.statusCode() == 200 || response.statusCode() == 400
+                    || response.statusCode() == 401 || response.statusCode() == 404) {
                 return gson.fromJson(response.body(), PurchaseResult.class);
-            } else if (response.statusCode() == 400) {
-                return new PurchaseResult(false, "Invalid request data");
-            } else if (response.statusCode() == 401) {
-                return new PurchaseResult(false, "Unauthorized");
             }
         } catch (IOException | InterruptedException e) {
             return new PurchaseResult(false, "Request failed: " + e.getMessage());

@@ -8,7 +8,7 @@ public enum HorseType {
     TURING_MACHINE(3, "Turing Machine"),
     RAGE(4, "Rage"),
     PINK_PRINCESS_BALLERINA(5, "Pink Princess Ballerina"),
-    CTRL_VICTORY(6, "Ctrl+V(ictiory)"),
+    CTRL_VICTORY(6, "Ctrl+V(ictory)"),
     PROBABILITY_BOOK(7, "Probability & Computing 2nd Edition"),
     LANA_DEL_REY(8, "Lana del Rey"),
     SILLY(9, ":P"),

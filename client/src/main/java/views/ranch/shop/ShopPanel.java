@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import data.HorseType;
 import data.PurchaseResult;
 import data.ShopItem;
 import data.ShopResponse;
 import services.ShopServiceImpl;
-import services.dummy.MockShopService;
 import services.managers.ResourceManager;
 import views.common.HorseFactory;
 import views.common.ListPanel;
@@ -28,7 +28,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
     public ShopPanel(float width, float height) {
         super(width, height);
-        this.shopService = new MockShopService();
+        this.shopService = new ShopServiceImpl();
         refreshShop();
     }
 
@@ -84,8 +84,8 @@ public class ShopPanel extends ListPanel<ShopItem> {
         if(item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
         else row.setBackground(UIFactory.createDefaultBackgroundDrawable());
 
-        row.add(HorseFactory.createHorseImage(item.getHorseType())).expandX().left().padLeft(20);
-        row.add(UIFactory.createLabel(item.getHorseType().name())).expandX().left().pad(10);
+        row.add(HorseFactory.createHorseImage(item.getAtlasKey())).expandX().left().padLeft(20);
+        row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
         row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).expandX().right();
 
         TextureRegion coinRegion = ResourceManager.iconsAtlas.findRegion("coin_icon");
@@ -105,12 +105,11 @@ public class ShopPanel extends ListPanel<ShopItem> {
             try {
                 ShopResponse response = shopService.getShopData();
                 List<ShopItem> allItems = new ArrayList<>();
+                for (ShopResponse.HorseToBuy h : response.horses)
+                    allItems.add(new ShopItem(HorseType.fromId(h.id), h.price, false, false));
 
-                for (ShopResponse.HorseToBuy h : response.availableHorses)
-                    allItems.add(new ShopItem(h.horseType, h.price, false, false));
-
-                //for (ShopResponse.Upgrade u : response.upgrades)
-                    //allItems.add(new ShopItem(u.horseId, u.race, u.price, true, true));
+                for (ShopResponse.Upgrade u : response.upgrades)
+                    allItems.add(new ShopItem(HorseType.fromId(u.id), u.price,true, true));
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception e) {
