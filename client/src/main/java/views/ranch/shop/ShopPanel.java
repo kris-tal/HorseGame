@@ -12,15 +12,16 @@ import data.PurchaseResult;
 import data.ShopItem;
 import data.ShopResponse;
 import services.ShopServiceImpl;
-import services.managers.ResourceManager;
 import views.common.HorseFactory;
 import views.common.ListPanel;
 import views.common.UIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ShopPanel extends ListPanel<ShopItem> {
+    private Consumer<PurchaseResult> onPurchaseComplete;
 
     private final ShopServiceImpl shopService;
     private TextButton buyButton;
@@ -116,12 +117,20 @@ public class ShopPanel extends ListPanel<ShopItem> {
         }).start();
     }
 
+    public void setOnPurchaseComplete(Consumer<PurchaseResult> callback) {
+        this.onPurchaseComplete = callback;
+    }
+
     private void sendBuyHorseRequest(int horseId) {
         new Thread(() -> {
             PurchaseResult result = shopService.postHorsePurchase(horseId);
             Gdx.app.postRunnable(() -> {
-                if (result.success) refreshShop();
-                else Gdx.app.error("Shop", "Horse purchase failed: " + result.message);
+                if (result.success) {
+                    refreshShop();
+                    if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
+                } else {
+                    Gdx.app.error("Shop", "Horse purchase failed: " + result.message);
+                }
             });
         }).start();
     }
@@ -130,8 +139,12 @@ public class ShopPanel extends ListPanel<ShopItem> {
         new Thread(() -> {
             PurchaseResult result = shopService.postUpgradePurchase(horseId);
             Gdx.app.postRunnable(() -> {
-                if (result.success) refreshShop();
-                else Gdx.app.error("Shop", "Upgrade purchase failed: " + result.message);
+                if (result.success) {
+                    refreshShop();
+                    if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
+                } else {
+                    Gdx.app.error("Shop", "Upgrade purchase failed: " + result.message);
+                }
             });
         }).start();
     }
