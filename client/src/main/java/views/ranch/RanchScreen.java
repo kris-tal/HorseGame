@@ -85,6 +85,9 @@ public class RanchScreen implements Screen, RanchView {
         horseSelectionPanel = new HorseSelectionPanel(panelWidth, panelHeight);
         lobbyPanel = new LobbyPanel(panelWidth, panelHeight);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
+        shopPanel.setOnPurchaseComplete(result -> {
+            statusBar.updateMoney(result.newBalance);
+        });
 
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
