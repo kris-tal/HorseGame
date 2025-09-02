@@ -1,10 +1,12 @@
 package data;
 
 public class PurchaseResult {
+    public int money;
     public boolean success;
     public String message;
 
-    public PurchaseResult(boolean success, String message) {
+    public PurchaseResult(int money, boolean success, String message) {
+        this.money = money;
         this.success = success;
         this.message = message;
     }
