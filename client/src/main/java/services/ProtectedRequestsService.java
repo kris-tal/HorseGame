@@ -7,4 +7,6 @@ public interface ProtectedRequestsService {
     public HttpRequest.Builder ProtectedGet(String path);
     public HttpRequest.Builder ProtectedPost(String path, HttpRequest.BodyPublisher body);
     public HttpClient GetHttpClient();
+
+    public String GetSessionToken();
 }

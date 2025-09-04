@@ -2,7 +2,6 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from managers.file_manager import create_user_files
 from database.models import db, User
 from flask_jwt_extended import create_access_token
 import re

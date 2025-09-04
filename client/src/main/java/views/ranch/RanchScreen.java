@@ -18,6 +18,7 @@ import views.common.Panel;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
 import views.ranch.race.LobbyPanel;
+import views.ranch.race.MockMenuListener;
 import views.ranch.race.RaceMenuPanel;
 import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
@@ -39,6 +40,8 @@ public class RanchScreen implements Screen, RanchView {
     private final Array<Float> targetY = new Array<>();
     private final Array<Float> waitTimers = new Array<>();
     private Rectangle fence;
+
+    private RaceMenuPanel.RaceMenuListener listener = new MockMenuListener();
 
     public RanchScreen(HorseGame game) {
         this.game = game;
@@ -88,7 +91,7 @@ public class RanchScreen implements Screen, RanchView {
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.newBalance);
         });
-
+        raceMenuPanel.setListener(listener);
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
         stage.addActor(lobbyPanel);

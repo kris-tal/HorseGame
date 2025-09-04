@@ -47,4 +47,9 @@ public class ProtectedRequestsServiceImpl implements ProtectedRequestsService {
     public HttpClient GetHttpClient() {
         return client;
     }
+
+    @Override
+    public String GetSessionToken() {
+        return session;
+    }
 }
