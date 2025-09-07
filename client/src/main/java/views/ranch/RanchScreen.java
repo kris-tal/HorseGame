@@ -13,7 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.HorseData;
 import data.HorseType;
+import services.HorseService;
+import services.HorseServiceImpl;
 import views.common.Panel;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
@@ -23,6 +26,8 @@ import views.ranch.race.RaceMenuPanel;
 import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
 import services.managers.ResourceManager;
+
+import java.util.List;
 
 public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
@@ -57,14 +62,18 @@ public class RanchScreen implements Screen, RanchView {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = ResourceManager.uiSkin;
-        for (int i = 0; i < 20; i++) {
-            HorseAnimationActor horse = new HorseAnimationActor(HorseType.BORING_HORSE);
+        HorseService horseService = new HorseServiceImpl();
+        List<HorseData> ownedHorses = horseService.getUserHorses();
+
+        for (HorseData horse : ownedHorses) {
+            HorseType horseType = HorseType.fromId(Integer.parseInt(horse.getName()));
+            HorseAnimationActor horseActor = new HorseAnimationActor(horseType);
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
-            horse.setPosition(x, y);
+            horseActor.setPosition(x, y);
 
-            horses.add(horse);
-            stage.addActor(horse);
+            horses.add(horseActor);
+            stage.addActor(horseActor);
             float targetXval = MathUtils.random(fence.x, fence.x + fence.width);
             float targetYval = MathUtils.random(fence.y, fence.y + fence.height);
             targetX.add(targetXval);
