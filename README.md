@@ -24,7 +24,7 @@ W rozgrywce możemy wyróżnić dwa główne moduły:
 > W trybie wieloosobowym celem jest przebiegnięcie określonego dystansu w jak najkrótszym czasie.
 > Czym wyższa lokata końcowa tym wyższych zdobyczy możemy oczekiwać z wyścigu.
 
-W grze obowiązuje system monetarny. Za tą walutę można m.in. kupować oraz ulepszać konie.
+W grze obowiązuje system monetarny. Za tę walutę można m.in. kupować oraz ulepszać konie.
 Każdy gracz ma przypisaną również pewną nieujemną wartość zwaną "prestiżem". Jest ona zdobywana
 wyłącznie poprzez wyścigi z innymi graczami. Można domniemać, że jego wartość koreluje z 
 umiejętnościami i doświadczeniem danego gracza. 
