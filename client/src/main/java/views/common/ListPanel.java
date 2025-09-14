@@ -32,7 +32,6 @@ public abstract class ListPanel<T> extends Panel {
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(true, false);
 
-
         content.row();
         content.add(scrollPane).width(width * 0.8f).height(height * 0.5f).center().row();
     }
@@ -94,5 +93,9 @@ public abstract class ListPanel<T> extends Panel {
                 onItemSelected(item, row);
             }
         }
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
     }
 }

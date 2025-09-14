@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -17,6 +18,7 @@ import data.HorseData;
 import data.HorseType;
 import services.HorseService;
 import services.HorseServiceImpl;
+import views.common.ListPanel;
 import views.common.Panel;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
@@ -132,6 +134,11 @@ public class RanchScreen implements Screen, RanchView {
     public void showPanel(Panel panel) {
         hideAllPanels();
         panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Make it scrollable without prior contact
+        if(panel instanceof ListPanel listPanel) {
+            stage.setScrollFocus(listPanel.getScrollPane());
+        }
     }
 
     public void hideAllPanels() {
