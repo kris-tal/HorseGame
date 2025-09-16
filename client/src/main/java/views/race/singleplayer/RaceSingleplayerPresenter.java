@@ -8,8 +8,10 @@ import data.race.GameMap;
 import race.*;
 import race.objects.CoinObject;
 import race.objects.EmptyObject;
-import race.objects.ObstacleObject;
-import services.managers.ResourceManager;
+import race.objects.DeathStoneObject;
+import race.objects.BushObject;
+import race.objects.ElectricBarrierObject;
+import race.objects.PuddleObject;
 import animations.HorseAnimationActor;
 
 
@@ -19,19 +21,34 @@ public class RaceSingleplayerPresenter {
 
     public void init() {
         int lanes = 3;
-        int length = 50;
+        int length = 300; // 300 kolumn * 10 m = 3000 m (3 km)
         float speed = 4f;
 
-        Texture obstacleTexture = new Texture("images/race/obstacle.png");
+        Texture deathStoneTexture = new Texture("images/race/stone.png");
         Texture coinTexture = new Texture("images/other/coin.png");
+        Texture puddleTexture = new Texture("images/race/puddle.png");
+        Texture bushTexture = new Texture("images/race/bush.png");
+        Texture electricBarrierTexture = new Texture("images/race/electricbarrier.png");
 
         MapObject[][] mapData = new MapObject[lanes][length];
         for (int lane = 0; lane < lanes; lane++) {
             for (int col = 0; col < length; col++) {
                 double r = Math.random();
-                if (r < 0.1 && col > 2) mapData[lane][col] = new ObstacleObject(obstacleTexture);
-                else if (r < 0.2 && col > 2) mapData[lane][col] = new CoinObject(coinTexture);
-                else mapData[lane][col] = new EmptyObject();
+                if (col <= 2) {
+                    mapData[lane][col] = new EmptyObject();
+                } else if (r < 0.03) { // DeathStone - najrzadszy
+                    mapData[lane][col] = new DeathStoneObject(deathStoneTexture);
+                } else if (r < 0.07) { // Coin
+                    mapData[lane][col] = new CoinObject(coinTexture);
+                } else if (r < 0.1) { // Puddle
+                    mapData[lane][col] = new PuddleObject(puddleTexture);
+                } else if (r < 0.15) { // Bush
+                    mapData[lane][col] = new BushObject(bushTexture);
+                } else if (r < 0.17) { // ElectricBarrier (
+                    mapData[lane][col] = new ElectricBarrierObject(electricBarrierTexture);
+                } else { // reszta pusta
+                    mapData[lane][col] = new EmptyObject();
+                }
             }
         }
 
@@ -40,6 +57,7 @@ public class RaceSingleplayerPresenter {
         horseActor.setMoving(true);
 
         Player player = new Player(horseActor, map.getLanes() / 2, speed);
+        player.makeSprintAvailable();
 
         world = new RaceWorld(map, player);
     }

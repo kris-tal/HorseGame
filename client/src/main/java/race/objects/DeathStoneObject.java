@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import race.MapObject;
 import race.Player;
 
-public class ObstacleObject extends MapObject {
-    public ObstacleObject(Texture texture) {
+public class DeathStoneObject extends MapObject {
+    public DeathStoneObject(Texture texture) {
         super(texture);
     }
 

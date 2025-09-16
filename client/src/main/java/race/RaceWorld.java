@@ -2,9 +2,9 @@ package race;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
+import services.managers.ResourceManager;
 
 public class RaceWorld {
     private final GameMap map;
@@ -23,9 +23,8 @@ public class RaceWorld {
         this.player = player;
         this.collisionHandler = new CollisionHandler();
 
-        // Make cells as big as possible
-        int maxCellHeight = Gdx.graphics.getWidth() / (visibleCols);
-        int maxCellWidth = Gdx.graphics.getHeight() / (map.getLanes());
+        int maxCellHeight = Gdx.graphics.getWidth() / visibleCols;
+        int maxCellWidth = Gdx.graphics.getHeight() / map.getLanes();
 
         cellSize = Math.max(32, Math.min(maxCellWidth, maxCellHeight));
         leftOffset = (Gdx.graphics.getWidth() - visibleCols * cellSize) / 2;
@@ -33,20 +32,17 @@ public class RaceWorld {
     }
 
     public void update(float delta) {
-        if (!player.isAlive()) {
-            return;
-        }
+        if (!player.isAlive()) return;
 
         scrollX = player.getCol();
         if (scrollX > map.getLength() - visibleCols) {
             scrollX = map.getLength() - visibleCols;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            player.moveUp();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            player.moveDown();
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) player.moveUp();
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) player.moveDown();
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) player.startSprint();
+
         player.update(delta);
         collisionHandler.checkCollisions(player, map);
 
@@ -66,18 +62,20 @@ public class RaceWorld {
                 if (obj != null) {
                     float x = (col - scrollX) * cellSize;
                     float y = lane * cellSize;
-                    obj.render(batch, x+leftOffset, y+downOffset, cellSize);
+                    obj.render(batch, x + leftOffset, y + downOffset, cellSize);
                 }
             }
         }
-
-        // player at fixed X (left edge)
         float px = 0;
         float py = player.getLane() * cellSize;
-        player.render(batch, px+leftOffset, py+downOffset, cellSize);
+        player.render(batch, px + leftOffset, py + downOffset, cellSize);
+        if (player.isVisionLimited()) {
+            batch.draw(ResourceManager.visionLimitedTexture, 0, 0,
+                    Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
-    public float getScrollX() { return scrollX; };
+    public float getScrollX() { return scrollX; }
     public Player getPlayer() { return player; }
     public GameMap getMap() { return map; }
 }

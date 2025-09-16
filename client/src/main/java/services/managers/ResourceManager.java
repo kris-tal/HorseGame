@@ -15,7 +15,6 @@ public class ResourceManager {
     private static final AssetManager assetManager = new AssetManager();
     private static final InternalFileHandleResolver filePathResolver =  new InternalFileHandleResolver();
 
-    //asset paths
     public static final String AUTH_SCREEN_BG_PATH = "images/background/auth_screen_background.png";
     public static final String RANCH_SCREEN_BG_PATH = "images/background/bg.png";
     public static final String RACE_SCREEN_BG_PATH = "images/background/race_screen_background.png";
@@ -29,8 +28,8 @@ public class ResourceManager {
     public static final String ICONS_ATLAS_PATH = "ui/icons/icons.atlas";
     public static final String HORSES_ATLAS_PATH = "horses/horses.atlas";
     public static final String HORSE_ANIMATIONS_ATLAS_PATH = "horses/animations/animations.atlas";
+    public static final String VISION_LIMITED_PATH = "images/race/bigbush.png";
 
-    //preloaded assets
     public static Texture authScreenBgTexture;
     public static Texture ranchScreenBgTexture;
     public static Texture raceScreenBgTexture;
@@ -46,6 +45,8 @@ public class ResourceManager {
     public static TextureAtlas iconsAtlas;
     public static TextureAtlas horsesAtlas;
     public static TextureAtlas horseAnimationsAtlas;
+    public static Texture visionLimitedTexture;
+
 
     static {
         assetManager.load(AUTH_SCREEN_BG_PATH, Texture.class);
@@ -61,6 +62,7 @@ public class ResourceManager {
         assetManager.load(ICONS_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(HORSES_ATLAS_PATH, TextureAtlas.class);
         assetManager.load(HORSE_ANIMATIONS_ATLAS_PATH, TextureAtlas.class);
+        assetManager.load(VISION_LIMITED_PATH, Texture.class);
 
         assetManager.finishLoading();
 
@@ -79,6 +81,7 @@ public class ResourceManager {
         iconsAtlas = assetManager.get(ICONS_ATLAS_PATH, TextureAtlas.class);
         horsesAtlas = assetManager.get(HORSES_ATLAS_PATH, TextureAtlas.class);
         horseAnimationsAtlas = assetManager.get(HORSE_ANIMATIONS_ATLAS_PATH, TextureAtlas.class);
+        visionLimitedTexture = assetManager.get(VISION_LIMITED_PATH, Texture.class);
 
     }
 

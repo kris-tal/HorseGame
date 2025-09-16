@@ -13,5 +13,14 @@ out
 # Other
 .DS_Store
 .log
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
 
+# Backend
+backend/instance/
+
+# JVM crash logs
+hs_err_pid*.log
 

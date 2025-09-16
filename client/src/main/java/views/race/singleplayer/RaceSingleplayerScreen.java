@@ -16,6 +16,7 @@ import race.RaceWorld;
 import services.managers.ResourceManager;
 import views.race.RaceStatsPanel;
 import views.ranch.RanchScreen;
+import views.race.buttons.SprintButton;
 
 public class RaceSingleplayerScreen implements Screen {
     private final HorseGame game;
@@ -66,8 +67,13 @@ public class RaceSingleplayerScreen implements Screen {
             }
         });
 
-        // Initialize model/presenter
         presenter.init();
+
+        final views.race.buttons.SprintButton sprintButton = new views.race.buttons.SprintButton(presenter.getWorld().getPlayer(), "SPRINT", ResourceManager.uiSkin);
+        float bw = 200f, bh = 60f;
+        sprintButton.setSize(bw, bh);
+        sprintButton.setPosition((Gdx.graphics.getWidth() - bw) / 2f, 20f);
+        uiStage.addActor(sprintButton);
     }
 
     @Override
@@ -79,7 +85,6 @@ public class RaceSingleplayerScreen implements Screen {
             Gdx.app.exit();
         }
 
-        // Update
         presenter.update(delta);
 
         if (presenter.isRaceFinished() && !statsPanelShown) {
@@ -91,13 +96,11 @@ public class RaceSingleplayerScreen implements Screen {
 
         bgStage.draw();
 
-        // Draw the game
         batch.begin();
         RaceWorld world = presenter.getWorld();
         world.render(batch);
         batch.end();
 
-        // Update & draw UI
         distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
         coinLabel.setText("Coins: " + presenter.getCoins());
         uiStage.act(delta);
