@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import race.RaceWorld;
 import services.managers.ResourceManager;
+import views.common.UIFactory;
 import views.race.RaceStatsPanel;
 import views.ranch.RanchScreen;
 import views.race.buttons.SprintButton;
@@ -45,11 +46,11 @@ public class RaceSingleplayerScreen implements Screen {
         background.setFillParent(true);
         bgStage.addActor(background);
 
-        distanceLabel = new Label("Distance: 0m", ResourceManager.uiSkin);
+        distanceLabel = UIFactory.createMediumLabel("distance: 0m");
         distanceLabel.setPosition(30, Gdx.graphics.getHeight() - 50);
         uiStage.addActor(distanceLabel);
 
-        coinLabel = new Label("Coins: 0", ResourceManager.uiSkin);
+        coinLabel = UIFactory.createMediumLabel("coins: 0");
         coinLabel.setPosition(distanceLabel.getX() + 300, Gdx.graphics.getHeight() - 50);
         uiStage.addActor(coinLabel);
 
@@ -107,10 +108,22 @@ public class RaceSingleplayerScreen implements Screen {
         uiStage.draw();
     }
 
-    @Override public void resize(int width, int height) {}
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
     @Override
     public void dispose() {
         if (batch != null) batch.dispose();

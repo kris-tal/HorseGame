@@ -1,14 +1,16 @@
 package race.objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import race.MapObject;
 import race.Player;
+import services.managers.ResourceManager;
 
 public class CoinObject extends MapObject {
     boolean taken = false;
 
-    public CoinObject(Texture texture) {
-        super(texture);
+    public CoinObject() {
+        super(ResourceManager.iconsAtlas.findRegion("coin_icon"));
     }
 
     @Override

@@ -1,15 +1,17 @@
 package race.objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import race.MapObject;
 import race.Player;
+import services.managers.ResourceManager;
 
 public class ElectricBarrierObject extends MapObject {
 
     private boolean destroyed = false;
 
-    public ElectricBarrierObject(Texture texture) {
-        super(texture);
+    public ElectricBarrierObject() {
+        super(ResourceManager.obstaclesAtlas.findRegion("barrier"));
     }
 
     @Override

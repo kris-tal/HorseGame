@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Align;
 import services.managers.ResourceManager;
 
 public class UIFactory {
-    private static final float SCALE = 1.5f;
     //buttons
 
     public static TextButton createTextButton(String text) {
@@ -49,7 +48,9 @@ public class UIFactory {
         return new Label(text, UIStyles.getDefaultLabelStyle());
     }
 
-    public static Label createMediumLabel(String text) {return new Label(text, UIStyles.getMediumLabelStyle()); }
+    public static Label createMediumLabel(String text) {
+        return new Label(text, UIStyles.getMediumLabelStyle());
+    }
 
     public static Label createLargeLabel(String text) {
         return new Label(text, UIStyles.getLargerLabelStyle());
