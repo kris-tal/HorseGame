@@ -73,8 +73,8 @@ public class ShopServiceImpl implements ShopService {
                 return gson.fromJson(response.body(), PurchaseResult.class);
             }
         } catch (IOException | InterruptedException e) {
-            return new PurchaseResult(false, "Request failed: " + e.getMessage());
+            return new PurchaseResult(0, false, "Request failed: " + e.getMessage());
         }
-        return new PurchaseResult(false, "Unknown error");
+        return new PurchaseResult(0, false, "Unknown error");
     }
 }

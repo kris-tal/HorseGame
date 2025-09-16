@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RanchStatusBar extends Table {
+
+    private PlayerStatusItem playerStatusItem;
+
     public enum Action { RANKING, SHOP, RACE }
 
     public interface StatusBarListener {
@@ -47,7 +50,7 @@ public class RanchStatusBar extends Table {
 
             usernameLabel = UIFactory.createLabel("");
 
-            moneyLabel = UIFactory.createLabel(String.valueOf(money));
+            moneyLabel = UIFactory.createLabel("0");
             prestigeLabel = UIFactory.createLabel("");
 
             //layout
@@ -78,8 +81,9 @@ public class RanchStatusBar extends Table {
             }).start();
         }
         public void setUsername(String username) { usernameLabel.setText(username);}
-        public void updateMoney(int money) {
-            moneyLabel.setText(String.valueOf(money));
+
+        public void updateMoney(int newBalance) {
+            moneyLabel.setText(String.valueOf(newBalance));
         }
 
         public void updatePrestige(int prestige) {
@@ -120,7 +124,7 @@ public class RanchStatusBar extends Table {
     }
 
     private void addItems() {
-        PlayerStatusItem playerStatusItem = new PlayerStatusItem("Majeczka04", 1, 99999);
+        playerStatusItem = new PlayerStatusItem("Majeczka04", 1, 99999);
 
         addToLeft(playerStatusItem);
 
@@ -159,5 +163,9 @@ public class RanchStatusBar extends Table {
 
     public void setListener(StatusBarListener listener) {
         this.listener = listener;
+    }
+
+    public void updateMoney(int newBalance) {
+        playerStatusItem.updateMoney(newBalance);
     }
 }

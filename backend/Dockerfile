@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-EXPOSE 4999
+EXPOSE 4000
 COPY . .
 
 # Run Flask app

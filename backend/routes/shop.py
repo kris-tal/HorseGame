@@ -57,7 +57,7 @@ def buy():
 
     data = request.get_json()
     if not data or "id" not in data:
-        return jsonify({"success": False, "message": "Invalid query: missing id"}), 401
+        return jsonify({"money":user.money, "success": False, "message": "Invalid query: missing id"}), 401
 
     horse_id = data["id"]
 
@@ -72,7 +72,7 @@ def buy():
         if horse["id"] == horse_id:
             # Check if funds are sufficient, purchase success is based on it
             if user.money < horse["price"]:
-                return jsonify({"success": False, "message": "Insufficient funds"}), 400
+                return jsonify({"money":user.money, "success": False, "message": "Insufficient funds"}), 400
 
             user.money -= horse["price"]
             add_horse(user.id, horse_id)
@@ -83,19 +83,19 @@ def buy():
             })
             db.session.commit()
             save_user_file(user.id, DataType.Shop, shop_data)
-            return jsonify({"success": True, "message": "Horse purchased"}), 200
+            return jsonify({"money":user.money, "success": True, "message": "Horse purchased"}), 200
 
     # --- 2) Check if horse is in "upgrades" ---
     for upgrade in shop_data.get("upgrades", []):
         if upgrade["id"] == horse_id:
             if user.money < upgrade["price"]:
-                return jsonify({"success": False, "message": "Insufficient funds"}), 400
+                return jsonify({"money":user.money, "success": False, "message": "Insufficient funds"}), 400
             user.money -= upgrade["price"]
             upgrade_user_horse(user.id, horse_id)
             db.session.commit()
-            return jsonify({"success": True, "message": "Horse upgraded"}), 200
+            return jsonify({"money":user.money, "success": True, "message": "Horse upgraded"}), 200
 
     # --- 3) Not found in either ---
-    return jsonify({"success": False, "message": "Invalid query: invalid id"}), 401
+    return jsonify({"money":user.money, "success": False, "message": "Invalid query: invalid id"}), 401
 
 

@@ -9,19 +9,27 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.HorseData;
 import data.HorseType;
+import services.HorseService;
+import services.HorseServiceImpl;
+import views.common.ListPanel;
 import views.common.Panel;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
 import views.ranch.race.LobbyPanel;
+import views.ranch.race.MockMenuListener;
 import views.ranch.race.RaceMenuPanel;
 import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
 import services.managers.ResourceManager;
+
+import java.util.List;
 
 public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
@@ -40,6 +48,8 @@ public class RanchScreen implements Screen, RanchView {
     private final Array<Float> waitTimers = new Array<>();
     private Rectangle fence;
 
+    private RaceMenuPanel.RaceMenuListener listener = new MockMenuListener();
+
     public RanchScreen(HorseGame game) {
         this.game = game;
         this.menuContext = new MenuContext();
@@ -54,14 +64,18 @@ public class RanchScreen implements Screen, RanchView {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = ResourceManager.uiSkin;
-        for (int i = 0; i < 20; i++) {
-            HorseAnimationActor horse = new HorseAnimationActor(HorseType.BORING_HORSE);
+        HorseService horseService = new HorseServiceImpl();
+        List<HorseData> ownedHorses = horseService.getUserHorses();
+
+        for (HorseData horse : ownedHorses) {
+            HorseType horseType = HorseType.fromId(Integer.parseInt(horse.getName()));
+            HorseAnimationActor horseActor = new HorseAnimationActor(horseType);
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
-            horse.setPosition(x, y);
+            horseActor.setPosition(x, y);
 
-            horses.add(horse);
-            stage.addActor(horse);
+            horses.add(horseActor);
+            stage.addActor(horseActor);
             float targetXval = MathUtils.random(fence.x, fence.x + fence.width);
             float targetYval = MathUtils.random(fence.y, fence.y + fence.height);
             targetX.add(targetXval);
@@ -85,7 +99,10 @@ public class RanchScreen implements Screen, RanchView {
         horseSelectionPanel = new HorseSelectionPanel(panelWidth, panelHeight);
         lobbyPanel = new LobbyPanel(panelWidth, panelHeight);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
-
+        shopPanel.setOnPurchaseComplete(result -> {
+            statusBar.updateMoney(result.newBalance);
+        });
+        raceMenuPanel.setListener(listener);
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
         stage.addActor(lobbyPanel);
@@ -117,6 +134,11 @@ public class RanchScreen implements Screen, RanchView {
     public void showPanel(Panel panel) {
         hideAllPanels();
         panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Make it scrollable without prior contact
+        if(panel instanceof ListPanel listPanel) {
+            stage.setScrollFocus(listPanel.getScrollPane());
+        }
     }
 
     public void hideAllPanels() {

@@ -1,9 +1,11 @@
 import os
 
+from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+socketio = SocketIO(cors_allowed_origins="*")
 
 class User(db.Model):
     __tablename__ = 'users'

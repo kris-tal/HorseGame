@@ -26,11 +26,11 @@ public class MockShopService extends ShopServiceImpl {
 
     @Override
     public PurchaseResult postHorsePurchase(int horseId) {
-        return new PurchaseResult(true, "Mock: Horse " + horseId + " purchased!");
+        return new PurchaseResult(0, true, "Mock: Horse " + horseId + " purchased!");
     }
 
     @Override
     public PurchaseResult postUpgradePurchase(int horseId) {
-        return new PurchaseResult(true, "Mock: Upgrade for horse " + horseId + " purchased!");
+        return new PurchaseResult(0, true, "Mock: Upgrade for horse " + horseId + " purchased!");
     }
 }

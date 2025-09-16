@@ -1,7 +1,11 @@
 package views.common;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -27,7 +31,6 @@ public abstract class ListPanel<T> extends Panel {
         scrollPane = new ScrollPane(listTable);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(true, false);
-
 
         content.row();
         content.add(scrollPane).width(width * 0.8f).height(height * 0.5f).center().row();
@@ -72,6 +75,17 @@ public abstract class ListPanel<T> extends Panel {
                     onItemSelected(item, row);
                 }
             });
+            row.addListener(new InputListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+                }
+            });
 
             listTable.add(row).expandX().fillX().pad(5).center().row();
 
@@ -79,5 +93,9 @@ public abstract class ListPanel<T> extends Panel {
                 onItemSelected(item, row);
             }
         }
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
     }
 }
