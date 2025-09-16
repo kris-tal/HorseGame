@@ -1,9 +1,8 @@
 package services.dummy;
 
-import data.HorseType;
 import data.PurchaseResult;
 import data.ShopResponse;
-import services.ShopServiceImpl;
+import services.shop.ShopServiceImpl;
 
 import java.util.List;
 

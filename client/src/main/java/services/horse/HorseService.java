@@ -1,4 +1,4 @@
-package services;
+package services.horse;
 
 import data.HorseData;
 

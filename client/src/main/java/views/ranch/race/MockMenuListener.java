@@ -1,13 +1,9 @@
 package views.ranch.race;
 
 import com.badlogic.gdx.Gdx;
-import services.LobbyService;
-import services.LobbyServiceImpl;
-import services.managers.SessionManager;
+import services.lobby.LobbyService;
+import services.lobby.LobbyServiceImpl;
 import views.common.MenuContext;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import org.json.JSONObject;
 
 public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {
     public LobbyService lobbyService = new LobbyServiceImpl();

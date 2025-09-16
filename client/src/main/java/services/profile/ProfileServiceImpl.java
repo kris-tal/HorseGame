@@ -1,15 +1,12 @@
-package services;
+package services.profile;
 
 import com.google.gson.Gson;
-import data.HorseData;
-import data.HorsesResponse;
 import data.ProfileData;
 import services.managers.SessionManager;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 public class ProfileServiceImpl implements ProfileService {
 

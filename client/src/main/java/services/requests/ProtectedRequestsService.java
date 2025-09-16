@@ -1,4 +1,4 @@
-package services;
+package services.requests;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

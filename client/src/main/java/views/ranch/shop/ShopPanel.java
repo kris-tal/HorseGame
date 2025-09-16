@@ -1,17 +1,15 @@
 package views.ranch.shop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import data.HorseType;
 import data.PurchaseResult;
 import data.ShopItem;
 import data.ShopResponse;
-import services.ShopServiceImpl;
+import services.shop.ShopServiceImpl;
 import views.common.HorseFactory;
 import views.common.ListPanel;
 import views.common.UIFactory;

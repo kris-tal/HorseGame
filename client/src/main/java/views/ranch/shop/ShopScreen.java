@@ -10,7 +10,7 @@
 //import data.ShopItem;
 //import data.ShopResponse;
 //import views.common.ListScreen;
-//import services.ShopServiceImpl;
+//import services.shop.ShopServiceImpl;
 //import services.dummy.MockShopService;
 //
 //import java.util.ArrayList;

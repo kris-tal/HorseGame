@@ -1,27 +1,18 @@
 package views.ranch;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
-import data.HorseType;
 import data.ProfileData;
-import data.ShopItem;
-import data.ShopResponse;
-import services.ProfileService;
-import services.ProfileServiceImpl;
-import services.managers.ResourceManager;
+import services.profile.ProfileService;
+import services.profile.ProfileServiceImpl;
 import views.common.UIFactory;
 import views.common.UIStyles;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RanchStatusBar extends Table {
 

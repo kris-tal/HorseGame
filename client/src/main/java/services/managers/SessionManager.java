@@ -1,7 +1,7 @@
 package services.managers;
 
-import services.ProtectedRequestsService;
-import services.ProtectedRequestsServiceImpl;
+import services.requests.ProtectedRequestsService;
+import services.requests.ProtectedRequestsServiceImpl;
 
 public class SessionManager {
     private static SessionManager instance;

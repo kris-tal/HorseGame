@@ -1,4 +1,4 @@
-package services;
+package services.profile;
 
 import data.ProfileData;
 
