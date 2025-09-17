@@ -23,11 +23,7 @@ public class HorseAnimationActor extends Actor {
         this.horseType = horseType;
 
         TextureAtlas animationsAtlas = ResourceManager.horseAnimationsAtlas;
-        System.out.println(horseType.getAtlasKey(AnimationAction.DANCE.getName()));
-        System.out.println(animationsAtlas.getRegions());
-
         Array<TextureAtlas.AtlasRegion> danceFrames = findAnimationRegions(animationsAtlas, horseType.getAtlasKey(AnimationAction.DANCE.getName()));
-        System.out.println(danceFrames);
 
         danceAnimation = new Animation<>(AnimationAction.DANCE.getFrameDuration(), danceFrames, AnimationAction.DANCE.getPlayMode());
 
