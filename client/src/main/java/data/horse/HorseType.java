@@ -1,4 +1,4 @@
-package data;
+package data.horse;
 
 import com.badlogic.gdx.graphics.Color;
 

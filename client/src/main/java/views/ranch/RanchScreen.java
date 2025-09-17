@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
-import data.HorseData;
-import data.HorseType;
+import data.horse.HorseData;
+import data.horse.HorseType;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import views.common.ListPanel;
@@ -68,7 +68,7 @@ public class RanchScreen implements Screen, RanchView {
         List<HorseData> ownedHorses = horseService.getUserHorses();
 
         for (HorseData horse : ownedHorses) {
-            HorseType horseType = HorseType.fromId(Integer.parseInt(horse.getName()));
+            HorseType horseType = HorseType.fromId(horse.getName());
             HorseAnimationActor horseActor = new HorseAnimationActor(horseType);
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
@@ -100,10 +100,11 @@ public class RanchScreen implements Screen, RanchView {
         lobbyMenuPanel = new LobbyMenuPanel(panelWidth, panelHeight);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
         shopPanel.setOnPurchaseComplete(result -> {
-            statusBar.updateMoney(result.newBalance);
+            Gdx.app.log("Shop", result.toString());
+            statusBar.updateMoney(result.money);
         });
         raceMenuPanel.setListener(listener);
-        raceMenuPanel.setListener(mode -> {
+        /*raceMenuPanel.setListener(mode -> {
             switch (mode) {
                 case SINGLEPLAYER -> {
                     presenter.onSingleplayerClicked();
@@ -112,7 +113,7 @@ public class RanchScreen implements Screen, RanchView {
                     presenter.onMultiplayerClicked(lobbyMenuPanel);
                 }
             }
-        });
+        });*/
 
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);

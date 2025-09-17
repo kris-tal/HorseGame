@@ -12,8 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.horse.HorseData;
+import data.training.TrainingData;
+import data.training.TrainingResponse;
 import race.RaceWorld;
+import services.horse.HorseService;
+import services.horse.HorseServiceImpl;
 import services.managers.ResourceManager;
+import services.training.TrainingService;
+import services.training.TrainingServiceImpl;
 import views.common.UIFactory;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
@@ -29,10 +36,15 @@ public class RaceSingleplayerScreen implements Screen {
     private Label coinLabel;
     private RaceStatsPanel statsPanel;
     private boolean statsPanelShown = false;
+    private boolean onRaceFinished = false;
+    private final TrainingService trainingService;
+    private final HorseService horseService;
 
     public RaceSingleplayerScreen(HorseGame game) {
         this.game = game;
         this.presenter = new RaceSingleplayerPresenter();
+        trainingService = new TrainingServiceImpl();
+        horseService = new HorseServiceImpl();
     }
 
     @Override
@@ -74,6 +86,7 @@ public class RaceSingleplayerScreen implements Screen {
         final SprintWidget sprintWidget = new SprintWidget(presenter.getWorld().getPlayer(), bw, bh);
         sprintWidget.setPosition((Gdx.graphics.getWidth() - bw) / 2f, 30f);
         uiStage.addActor(sprintWidget);
+
     }
 
     @Override
@@ -91,15 +104,29 @@ public class RaceSingleplayerScreen implements Screen {
             statsPanel.updateStats(presenter.getDistance(), presenter.getCoins());
             statsPanel.setVisible(true);
             statsPanelShown = true;
+            if(!onRaceFinished) {
+                HorseData horse = horseService.getUserHorses().getFirst(); // For now selection of a horse not implemented
+                Gdx.app.log("Training", "Using horse:" + horse.toString());
+                TrainingData result = new TrainingData();
+                result.distance = presenter.getDistance();
+                result.money = presenter.getCoins();
+                result.horseId = horse.getId();
+
+                TrainingResponse response = trainingService.performTraining(result);
+                Gdx.app.log("Training", response.toString());
+                onRaceFinished = true;
+            }
             return;
         }
-
+        onRaceFinished = false;
         bgStage.draw();
 
         batch.begin();
         RaceWorld world = presenter.getWorld();
         world.render(batch);
         batch.end();
+
+
 
         distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
         coinLabel.setText("Coins: " + presenter.getCoins());

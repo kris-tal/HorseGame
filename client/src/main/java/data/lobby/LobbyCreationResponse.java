@@ -1,4 +1,4 @@
-package data;
+package data.lobby;
 
 public class LobbyCreationResponse {
     private String room_code;

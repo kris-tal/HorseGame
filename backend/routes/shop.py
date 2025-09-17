@@ -82,8 +82,9 @@ def buy():
                 "price": horse["price"]
             })
             db.session.commit()
+            money = user.money
             save_user_file(user.id, DataType.Shop, shop_data)
-            return jsonify({"money":user.money, "success": True, "message": "Horse purchased"}), 200
+            return jsonify({"money":money, "success": True, "message": "Horse purchased"}), 200
 
     # --- 2) Check if horse is in "upgrades" ---
     for upgrade in shop_data.get("upgrades", []):
@@ -91,9 +92,10 @@ def buy():
             if user.money < upgrade["price"]:
                 return jsonify({"money":user.money, "success": False, "message": "Insufficient funds"}), 400
             user.money -= upgrade["price"]
+            money = user.money
             upgrade_user_horse(user.id, horse_id)
             db.session.commit()
-            return jsonify({"money":user.money, "success": True, "message": "Horse upgraded"}), 200
+            return jsonify({"money":money, "success": True, "message": "Horse upgraded"}), 200
 
     # --- 3) Not found in either ---
     return jsonify({"money":user.money, "success": False, "message": "Invalid query: invalid id"}), 401

@@ -1,8 +1,8 @@
 package services.horse;
 
 import com.google.gson.Gson;
-import data.HorseData;
-import data.HorsesResponse;
+import data.horse.HorseData;
+import data.horse.HorsesResponse;
 import services.managers.SessionManager;
 
 import java.io.IOException;
@@ -26,6 +26,24 @@ public class HorseServiceImpl implements HorseService {
             if(result.statusCode() == 200) {
                 HorsesResponse response = gson.fromJson(result.body(), HorsesResponse.class);
                 return response.getHorses();
+            }
+        } catch (IOException | InterruptedException e) {
+            return null;
+        }
+        return null;
+    }
+
+    @Override
+    public HorseData getHorseData(int horseId) {
+        HttpRequest request = SessionManager.getInstance()
+                .getProtectedRequestsService().ProtectedGet("/horses/" + horseId).build();
+        try {
+            HttpResponse<String> result =
+                    SessionManager.getInstance().getProtectedRequestsService()
+                            .GetHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            if(result.statusCode() == 200) {
+                HorseData response = gson.fromJson(result.body(), HorseData.class);
+                return response;
             }
         } catch (IOException | InterruptedException e) {
             return null;

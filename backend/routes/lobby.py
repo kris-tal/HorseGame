@@ -179,5 +179,4 @@ def disconnect_handler():
                 else:
                     player.sid = None  # mark player disconnected, keep in room
                     log_and_emit("player_left", {"id": player.id}, to=room_code)
-                log_lobby_state()
                 return

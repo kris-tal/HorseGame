@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import data.HorseType;
+import data.horse.HorseType;
 import services.managers.ResourceManager;
 
 public class HorseAnimationActor extends Actor {

@@ -1,4 +1,6 @@
-from flask import Blueprint, jsonify
+import os
+
+from flask import Blueprint, jsonify, request
 
 from managers.identity_manager import get_user
 from database.models import Horse, HorseTypes, db
@@ -22,7 +24,8 @@ def get_user_horses():
         {
             "id": horse.id,
             "name": horse.name_id,
-            "level": horse.level
+            "level": horse.level,
+            "training_points": horse.training_points
         } for horse in horses
     ]
 
@@ -43,8 +46,9 @@ def get_user_horse(horse_id):
     return jsonify(
         {
             "id": horse.id,
-            "name": horse.name,
-            "level": horse.level
+            "name": horse.name_id,
+            "level": horse.level,
+            "training_points": horse.training_points
         }), 200
 
 # Helper functions (for shop functionalities)
@@ -60,5 +64,46 @@ def upgrade_user_horse(user_id, name_id):
         return
     horse.level += 1
     db.session.commit()
+
+@horses_bp.route('/train', methods=['POST'])
+@jwt_required()
+def finish_training():
+    identity = get_jwt_identity()
+    data, status = get_user(identity)
+    if status != 200:
+        return jsonify({
+            "success":False,
+            "msg":"Invalid user credentials!"
+        }), status
+
+    query_data = request.get_json()
+    horse_id, money = query_data["horseId"], query_data["money"]
+    horse = Horse.query.filter_by(id=horse_id, owner_id = data.id).first()
+    if horse is None:
+        return jsonify({
+            "success": False,
+            "msg": "Horse not found or belongs to a different user"
+        }), status
+
+    data.money += money
+    money = data.money
+    if horse.training_points >= 10:#os.getenv("LEVELUP_TRAINING_SESSIONS"):
+        horse.training_points = 0
+        horse.level += 1
+    else:
+        horse.training_points += 1
+    level = horse.level
+    training_points = horse.training_points
+
+    db.session.commit()
+    return jsonify({
+        "success": True,
+        "money": money,
+        "training_points": training_points,
+        "level": level
+    })
+
+
+
 
 

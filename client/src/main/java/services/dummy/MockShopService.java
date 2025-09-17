@@ -1,7 +1,7 @@
 package services.dummy;
 
-import data.PurchaseResult;
-import data.ShopResponse;
+import data.shop.PurchaseResult;
+import data.shop.ShopResponse;
 import services.shop.ShopServiceImpl;
 
 import java.util.List;

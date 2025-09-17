@@ -1,7 +1,7 @@
 package services.shop;
 
-import data.PurchaseResult;
-import data.ShopResponse;
+import data.shop.PurchaseResult;
+import data.shop.ShopResponse;
 
 public interface ShopService {
     ShopResponse getShopData();

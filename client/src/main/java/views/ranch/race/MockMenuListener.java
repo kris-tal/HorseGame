@@ -20,4 +20,9 @@ public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {
             lobbyService.joinLobby(code);
         }
     }
+
+    @Override
+    public void onInputRoomCode(String roomCode) {
+        code = roomCode;
+    }
 }

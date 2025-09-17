@@ -2,7 +2,7 @@ package services.lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import data.LobbyCreationResponse;
+import data.lobby.LobbyCreationResponse;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import services.managers.SessionManager;

@@ -2,9 +2,7 @@ package views.race.singleplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import data.HorseType;
+import data.horse.HorseType;
 import data.race.GameMap;
 import race.*;
 import race.objects.CoinObject;
@@ -13,7 +11,6 @@ import race.objects.DeathStoneObject;
 import race.objects.BushObject;
 import race.objects.ElectricBarrierObject;
 import race.objects.PuddleObject;
-import animations.HorseAnimationActor;
 
 
 public class RaceSingleplayerPresenter {

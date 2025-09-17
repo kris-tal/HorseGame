@@ -2,8 +2,8 @@ package services.shop;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import data.PurchaseResult;
-import data.ShopResponse;
+import data.shop.PurchaseResult;
+import data.shop.ShopResponse;
 import services.managers.SessionManager;
 
 import java.io.IOException;

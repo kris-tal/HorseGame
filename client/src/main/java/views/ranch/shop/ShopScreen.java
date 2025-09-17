@@ -6,9 +6,9 @@
 //import com.badlogic.gdx.scenes.scene2d.Touchable;
 //import com.badlogic.gdx.scenes.scene2d.ui.*;
 //import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-//import data.PurchaseResult;
-//import data.ShopItem;
-//import data.ShopResponse;
+//import data.shop.PurchaseResult;
+//import data.shop.ShopItem;
+//import data.shop.ShopResponse;
 //import views.common.ListScreen;
 //import services.shop.ShopServiceImpl;
 //import services.dummy.MockShopService;

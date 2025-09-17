@@ -1,4 +1,4 @@
-package data;
+package data.shop;
 
 import com.google.gson.Gson;
 

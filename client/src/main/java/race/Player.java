@@ -2,7 +2,7 @@ package race;
 
 import animations.HorseAnimationActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import data.HorseType;
+import data.horse.HorseType;
 
 public class Player {
     private final HorseType horseType;

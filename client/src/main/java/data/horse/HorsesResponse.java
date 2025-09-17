@@ -1,4 +1,4 @@
-package data;
+package data.horse;
 
 import java.util.List;
 
