@@ -13,24 +13,29 @@ public class RanchPresenter {
     }
 
     public void onRaceButtonClicked(Panel panel) {
+        view.hideAllPanels();
         view.showPanel(panel);
     }
 
     public void onShopButtonClicked(Panel panel) {
+        view.hideAllPanels();
         view.showPanel(panel);
     }
 
     public void onRankingButtonClicked(Panel panel) {
+        view.hideAllPanels();
         view.showPanel(panel);
     }
 
-    public void onSingleplayerClicked(Panel horseSelectionPanel) {
-        menuContext.setMode(MenuContext.Mode.SINGLEPLAYER);
-        view.showPanel(horseSelectionPanel);
+    public void onSingleplayerClicked() {
+        menuContext.setMode(MenuContext.RaceMode.SINGLEPLAYER);
+        view.hideAllPanels();
+        view.navigateToRace();
     }
 
-    public void onMultiplayerClicked(Panel horseSelectionPanel) {
-        menuContext.setMode(MenuContext.Mode.MULTIPLAYER);
-        view.showPanel(horseSelectionPanel);
+    public void onMultiplayerClicked(Panel panel) {
+        menuContext.setMode(MenuContext.RaceMode.MULTIPLAYER);
+        view.hideAllPanels();
+        view.showPanel(panel);
     }
 }

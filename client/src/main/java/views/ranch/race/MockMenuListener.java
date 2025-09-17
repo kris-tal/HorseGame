@@ -8,15 +8,15 @@ import views.common.MenuContext;
 public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {
     public LobbyService lobbyService = new LobbyServiceImpl();
     public String code;
+
     @Override
-    public void onModeSelected(MenuContext.Mode mode) {
-        if(mode.equals(MenuContext.Mode.SINGLEPLAYER)) {
-            new Thread(()-> {
+    public void onModeSelected(MenuContext.RaceMode raceMode) {
+        if (raceMode.equals(MenuContext.RaceMode.SINGLEPLAYER)) {
+            new Thread(() -> {
                 code = lobbyService.createLobby();
                 Gdx.app.log("Lobby", code);
             }).start();
-        }
-        else {
+        } else {
             lobbyService.joinLobby(code);
         }
     }

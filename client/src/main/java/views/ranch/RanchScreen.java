@@ -19,9 +19,10 @@ import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import views.common.ListPanel;
 import views.common.Panel;
+import views.race.multiplayer.RaceMultiplayerScreen;
 import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.race.HorseSelectionPanel;
-import views.ranch.race.LobbyPanel;
+import views.ranch.race.LobbyMenuPanel;
 import views.ranch.race.MockMenuListener;
 import views.ranch.race.RaceMenuPanel;
 import views.ranch.shop.ShopPanel;
@@ -38,7 +39,7 @@ public class RanchScreen implements Screen, RanchView {
 
     private RaceMenuPanel raceMenuPanel;
     private HorseSelectionPanel horseSelectionPanel;
-    private LobbyPanel lobbyPanel;
+    private LobbyMenuPanel lobbyMenuPanel;
     private ShopPanel shopPanel;
 
     private Array<HorseAnimationActor> horses = new Array<>();
@@ -96,15 +97,26 @@ public class RanchScreen implements Screen, RanchView {
 
         raceMenuPanel = new RaceMenuPanel(panelWidth, panelHeight);
         horseSelectionPanel = new HorseSelectionPanel(panelWidth, panelHeight);
-        lobbyPanel = new LobbyPanel(panelWidth, panelHeight);
+        lobbyMenuPanel = new LobbyMenuPanel(panelWidth, panelHeight);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.newBalance);
         });
         raceMenuPanel.setListener(listener);
+        raceMenuPanel.setListener(mode -> {
+            switch (mode) {
+                case SINGLEPLAYER -> {
+                    presenter.onSingleplayerClicked();
+                }
+                case MULTIPLAYER -> {
+                    presenter.onMultiplayerClicked(lobbyMenuPanel);
+                }
+            }
+        });
+
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
-        stage.addActor(lobbyPanel);
+        stage.addActor(lobbyMenuPanel);
         stage.addActor(shopPanel);
 
         hideAllPanels();
@@ -135,7 +147,7 @@ public class RanchScreen implements Screen, RanchView {
         panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Make it scrollable without prior contact
-        if(panel instanceof ListPanel listPanel) {
+        if (panel instanceof ListPanel listPanel) {
             stage.setScrollFocus(listPanel.getScrollPane());
         }
     }
@@ -144,7 +156,15 @@ public class RanchScreen implements Screen, RanchView {
         raceMenuPanel.hide();
         shopPanel.hide();
         horseSelectionPanel.hide();
-        lobbyPanel.hide();
+        lobbyMenuPanel.hide();
+    }
+
+    @Override
+    public void navigateToRace() {
+        switch (menuContext.getMode()) {
+            case SINGLEPLAYER -> game.setScreen(new RaceSingleplayerScreen(game));
+            case MULTIPLAYER -> game.setScreen(new RaceMultiplayerScreen(game));
+        }
     }
 
 
@@ -174,7 +194,7 @@ public class RanchScreen implements Screen, RanchView {
 
             float dx = targetX.get(i) - horse.getX();
             float dy = targetY.get(i) - horse.getY();
-            float distance = (float) Math.sqrt(dx*dx + dy*dy);
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
             if (distance < 2f) {
                 waitTimers.set(i, 10f);
@@ -197,16 +217,20 @@ public class RanchScreen implements Screen, RanchView {
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+    }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
 
     private void onRaceMenuButtonClicked() {
@@ -223,5 +247,6 @@ public class RanchScreen implements Screen, RanchView {
         // showPanel(lobbyPanel);
     }
 
-    public void dispose() {}
+    public void dispose() {
+    }
 }

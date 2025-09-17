@@ -1,7 +1,6 @@
 package views.ranch.race;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import views.common.MenuContext;
@@ -10,7 +9,7 @@ import views.common.UIFactory;
 
 public class RaceMenuPanel extends Panel {
     public interface RaceMenuListener {
-        void onModeSelected(MenuContext.Mode mode);
+        void onModeSelected(MenuContext.RaceMode raceMode);
     }
 
     private RaceMenuListener listener;
@@ -30,7 +29,7 @@ public class RaceMenuPanel extends Panel {
         singleplayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (listener != null) listener.onModeSelected(MenuContext.Mode.SINGLEPLAYER);
+                if (listener != null) listener.onModeSelected(MenuContext.RaceMode.SINGLEPLAYER);
             }
         });
         content.add(singleplayerButton).padTop(smallPadding).padBottom(defaultPadding).row();
@@ -39,7 +38,8 @@ public class RaceMenuPanel extends Panel {
         multiplayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (listener != null) listener.onModeSelected(MenuContext.Mode.MULTIPLAYER);
+                if (listener != null) listener.onModeSelected(MenuContext.RaceMode.MULTIPLAYER);
+
             }
         });
         content.add(multiplayerButton).padBottom(defaultPadding).row();

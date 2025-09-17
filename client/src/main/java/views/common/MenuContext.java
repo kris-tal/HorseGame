@@ -1,14 +1,26 @@
 package views.common;
 
 public class MenuContext {
-    public enum Mode { SINGLEPLAYER, MULTIPLAYER }
+    public enum RaceMode {SINGLEPLAYER, MULTIPLAYER}
 
-    private Mode mode;
+    public enum LobbyMode {CREATE, JOIN}
+
+    private RaceMode mode;
     private String chosenHorse;
 
-    public void setMode(Mode mode) { this.mode = mode; }
-    public Mode getMode() { return mode; }
+    public void setMode(RaceMode raceMode) {
+        this.mode = raceMode;
+    }
 
-    public void setChosenHorse(String horse) { this.chosenHorse = horse; }
-    public String getChosenHorse() { return chosenHorse; }
+    public RaceMode getMode() {
+        return mode;
+    }
+
+    public void setChosenHorse(String horse) {
+        this.chosenHorse = horse;
+    }
+
+    public String getChosenHorse() {
+        return chosenHorse;
+    }
 }
