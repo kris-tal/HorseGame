@@ -1,15 +1,13 @@
 package views.common;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -92,5 +90,9 @@ public class UIFactory {
     public static Image createPrestigeImage() {
         TextureRegion prestigeRegion = ResourceManager.iconsAtlas.findRegion(("prestige_icon"));
         return new Image(new TextureRegionDrawable(prestigeRegion));
+    }
+
+    public static ProgressBar createProgressBar(float min, float max, float stepSize, Color color) {
+        return new ProgressBar(min, max, stepSize, false, UIStyles.getProgressBarStyle(color));
     }
 }

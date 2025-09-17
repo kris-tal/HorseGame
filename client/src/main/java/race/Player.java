@@ -2,9 +2,11 @@ package race;
 
 import animations.HorseAnimationActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import data.HorseType;
 
 public class Player {
-    private final HorseAnimationActor horse;
+    private final HorseType horseType;
+    private final HorseAnimationActor horseActor;
     private int lane;
     private float col = 0f;
     private int coins = 0;
@@ -22,10 +24,12 @@ public class Player {
     private float visionLimitTime = 0f;
     private float visionLimitColsLeft = 0f;
 
-    public Player(HorseAnimationActor horse, int startingLane, float speed) {
-        this.horse = horse;
+    public Player(HorseType horseType, int startingLane, float speed) {
+        this.horseType = horseType;
         lane = startingLane;
         this.baseSpeed = speed;
+        this.horseActor = new HorseAnimationActor(horseType);
+        this.horseActor.setMoving(true);
     }
 
     //Ruch
@@ -33,9 +37,11 @@ public class Player {
         if (lane < 2)
             lane++;
     }
+
     public void slowDown(float seconds) {
         slowDownTimeLeft = seconds;
     }
+
     public void moveDown() {
         if (lane > 0)
             lane--;
@@ -78,14 +84,14 @@ public class Player {
             visionLimitColsLeft = Math.max(0f, visionLimitColsLeft - advancedCols);
         }
 
-        horse.setMoving(true);
-        horse.act(delta);
+        horseActor.setMoving(true);
+        horseActor.act(delta);
     }
 
     public void render(SpriteBatch batch, float x, float y, float size) {
-        horse.setPosition(x, y);
-        horse.setSize(size, size);
-        horse.draw(batch, 1f);
+        horseActor.setPosition(x, y);
+        horseActor.setSize(size, size);
+        horseActor.draw(batch, 1f);
     }
 
     // Sprint
@@ -113,8 +119,17 @@ public class Player {
         return !sprinting && cooldownTimer > 0f;
     }
 
-    public float getSprintTimeLeft() { return sprintTimeLeft; }
-    public float getSprintDuration() { return sprintDuration; }
+    public float getSprintTimeLeft() {
+        return sprintTimeLeft;
+    }
+
+    public float getSprintDuration() {
+        return sprintDuration;
+    }
+
+    public float getSprintCooldown() {
+        return sprintCooldown;
+    }
 
     public void resetSprint() {
         sprinting = false;
@@ -148,12 +163,35 @@ public class Player {
         return visionLimitTime > 0f || visionLimitColsLeft > 0f;
     }
 
-    public int getLane() { return lane; }
-    public float getCol() { return col; }
-    public boolean isAlive() { return alive; }
-    public float getSpeed() { return baseSpeed; }
-    public int getCoins() { return coins; }
+    public int getLane() {
+        return lane;
+    }
 
-    public void kill() { alive = false; }
-    public void addCoins(int amount) { coins += amount; }
+    public float getCol() {
+        return col;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public float getSpeed() {
+        return baseSpeed;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void kill() {
+        alive = false;
+    }
+
+    public void addCoins(int amount) {
+        coins += amount;
+    }
+
+    public HorseType getHorseType() {
+        return horseType;
+    }
 }

@@ -1,8 +1,7 @@
-package views.race;
+package views.race.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import views.common.Panel;
-import services.managers.ResourceManager;
 import views.common.UIFactory;
 
 public class RaceStatsPanel extends Panel {

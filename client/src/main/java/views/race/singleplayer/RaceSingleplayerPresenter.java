@@ -48,10 +48,8 @@ public class RaceSingleplayerPresenter {
         }
 
         GameMap map = new GameMap(lanes, length, mapData);
-        HorseAnimationActor horseActor = new HorseAnimationActor(HorseType.BORING_HORSE);
-        horseActor.setMoving(true);
 
-        Player player = new Player(horseActor, map.getLanes() / 2, speed);
+        Player player = new Player(HorseType.BORING_HORSE, map.getLanes() / 2, speed);
         player.makeSprintAvailable();
 
         world = new RaceWorld(map, player);

@@ -15,9 +15,9 @@ import core.HorseGame;
 import race.RaceWorld;
 import services.managers.ResourceManager;
 import views.common.UIFactory;
-import views.race.RaceStatsPanel;
+import views.race.ui.RaceStatsPanel;
+import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
-import views.race.buttons.SprintButton;
 
 public class RaceSingleplayerScreen implements Screen {
     private final HorseGame game;
@@ -70,11 +70,10 @@ public class RaceSingleplayerScreen implements Screen {
 
         presenter.init();
 
-        final views.race.buttons.SprintButton sprintButton = new views.race.buttons.SprintButton(presenter.getWorld().getPlayer(), "SPRINT", ResourceManager.uiSkin);
-        float bw = 200f, bh = 60f;
-        sprintButton.setSize(bw, bh);
-        sprintButton.setPosition((Gdx.graphics.getWidth() - bw) / 2f, 20f);
-        uiStage.addActor(sprintButton);
+        float bw = 500f, bh = 30f;
+        final SprintWidget sprintWidget = new SprintWidget(presenter.getWorld().getPlayer(), bw, bh);
+        sprintWidget.setPosition((Gdx.graphics.getWidth() - bw) / 2f, 30f);
+        uiStage.addActor(sprintWidget);
     }
 
     @Override
