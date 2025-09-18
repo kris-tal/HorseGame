@@ -1,7 +1,5 @@
 package views.ranch;
 
-
-import com.badlogic.gdx.Screen;
 import views.common.Panel;
 
 public interface RanchView {

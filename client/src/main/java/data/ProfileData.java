@@ -2,8 +2,6 @@ package data;
 
 import com.google.gson.Gson;
 
-import java.util.Date;
-
 public class ProfileData {
     private final String username;
     private final String email;

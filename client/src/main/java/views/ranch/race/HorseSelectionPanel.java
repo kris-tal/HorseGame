@@ -1,9 +1,7 @@
 package views.ranch.race;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import views.common.ListPanel;
-import views.common.UIFactory;
 
 public class HorseSelectionPanel extends ListPanel {
     public HorseSelectionPanel(float width, float height) {

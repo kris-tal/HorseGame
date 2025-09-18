@@ -18,7 +18,6 @@ import views.ranch.RanchScreen;
 import views.register.RegisterScreen;
 import services.auth.AuthServiceImpl;
 import views.common.UIFactory;
-import views.common.UIStyles;
 import services.managers.ResourceManager;
 
 public class LoginScreen implements Screen, LoginView {
