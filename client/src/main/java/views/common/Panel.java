@@ -6,13 +6,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public abstract class Panel extends Table {
-    protected float smallPadding = 20f;
-    protected float defaultPadding = 50f;
-    protected float bigPadding = 70f;
+    protected final float smallPadding = 20f;
+    protected final float defaultPadding = 50f;
+    protected final float bigPadding = 70f;
+
     protected Table content = new Table();
+    private final float width;
+    private final float height;
 
     public Panel(float width, float height) {
         super();
+        this.width = width;
+        this.height = height;
+        build();
+        setVisible(false);
+    }
+
+    protected void build() {
+        content.clear();
 
         setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
         setSize(width, height);
@@ -40,8 +51,6 @@ public abstract class Panel extends Table {
 
         addActor(closeButton);
         closeButton.setPosition(getWidth() - closeButton.getWidth() - smallPadding, getHeight() - closeButton.getHeight() - smallPadding);
-
-        setVisible(false);
     }
 
     public void show(float screenWidth, float screenHeight) {

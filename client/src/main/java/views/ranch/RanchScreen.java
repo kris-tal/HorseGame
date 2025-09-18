@@ -17,6 +17,7 @@ import data.horse.HorseData;
 import data.horse.HorseType;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import views.common.ConfirmationPanel;
 import views.common.ListPanel;
 import views.common.Panel;
 import views.race.multiplayer.RaceMultiplayerScreen;
@@ -172,7 +173,7 @@ public class RanchScreen implements Screen, RanchView {
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+            showExitConfirmation();
         }
         stage.act(delta);
         stage.draw();
@@ -233,7 +234,6 @@ public class RanchScreen implements Screen, RanchView {
     public void hide() {
     }
 
-
     private void onRaceMenuButtonClicked() {
         showPanel(raceMenuPanel);
     }
@@ -246,6 +246,15 @@ public class RanchScreen implements Screen, RanchView {
         showPanel(horseSelectionPanel);
         // after horse selection:
         // showPanel(lobbyPanel);
+    }
+
+    private void showExitConfirmation() {
+        ConfirmationPanel confirmationPanel = ConfirmationPanel.getInstance(400, 200, "Exit?", () -> {
+            Gdx.app.log("RanchScreen", "confirmed exit");
+            Gdx.app.exit();
+        });
+        stage.addActor(confirmationPanel);
+        showPanel(confirmationPanel);
     }
 
     public void dispose() {
