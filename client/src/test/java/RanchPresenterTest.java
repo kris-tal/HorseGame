@@ -26,6 +26,7 @@ class RanchPresenterTest {
     @Test
     void raceButton_showsRacePanel() {
         presenter.onRaceButtonClicked(dummyPanel);
+        verify(view).hideAllPanels();
         verify(view).showPanel(dummyPanel);
         verifyNoMoreInteractions(view, menuContext);
     }
@@ -33,6 +34,7 @@ class RanchPresenterTest {
     @Test
     void shopButton_showsShopPanel() {
         presenter.onShopButtonClicked(dummyPanel);
+        verify(view).hideAllPanels();
         verify(view).showPanel(dummyPanel);
         verifyNoMoreInteractions(view, menuContext);
     }
@@ -40,6 +42,7 @@ class RanchPresenterTest {
     @Test
     void rankingButton_showsRankingPanel() {
         presenter.onRankingButtonClicked(dummyPanel);
+        verify(view).hideAllPanels();
         verify(view).showPanel(dummyPanel);
         verifyNoMoreInteractions(view, menuContext);
     }
@@ -47,16 +50,17 @@ class RanchPresenterTest {
     @Test
     void singleplayer_setsModeAndShowsPanel() {
         presenter.onSingleplayerClicked();
-
         verify(menuContext).setMode(MenuContext.RaceMode.SINGLEPLAYER);
+        verify(view).hideAllPanels();
+        verify(view).navigateToRace();
         verifyNoMoreInteractions(view, menuContext);
     }
 
     @Test
     void multiplayer_setsModeAndShowsPanel() {
         presenter.onMultiplayerClicked(dummyPanel);
-
         verify(menuContext).setMode(MenuContext.RaceMode.MULTIPLAYER);
+        verify(view).hideAllPanels();
         verify(view).showPanel(dummyPanel);
         verifyNoMoreInteractions(view, menuContext);
     }
