@@ -15,4 +15,9 @@ public class PuddleObject extends MapObject {
         player.slowDown();
         player.resetSprint();
     }
+
+    @Override
+    public boolean isObstacle() {
+        return true;
+    }
 }

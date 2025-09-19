@@ -15,4 +15,9 @@ public class BushObject extends MapObject {
         player.limitVisionByMeters(10f);
         player.resetSprint();
     }
+
+    @Override
+    public boolean isObstacle() {
+        return true;
+    }
 }

@@ -13,4 +13,15 @@ public class DeathStoneObject extends MapObject {
     public void onCollision(Player player) {
         player.kill();
     }
+
+    @Override
+    public boolean isObstacle() {
+        return true;
+    }
+
+    @Override
+    public boolean isFatal() {
+        return true;
+    }
+
 }

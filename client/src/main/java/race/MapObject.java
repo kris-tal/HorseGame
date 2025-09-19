@@ -19,4 +19,13 @@ public abstract class MapObject {
         if (texture != null)
             batch.draw(texture, x, y, size, size);
     }
+
+    public boolean isObstacle() {
+        return false;
+    }
+
+    public boolean isFatal() {
+        return false;
+    }
+
 }

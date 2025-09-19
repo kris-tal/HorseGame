@@ -22,27 +22,30 @@ public class RaceSingleplayerPresenter {
         int length = 300; // 300 kolumn * 10 m = 3000 m (3 km)
         float speed = 4f;
 
-        MapObject[][] mapData = new MapObject[lanes][length];
-        for (int lane = 0; lane < lanes; lane++) {
-            for (int col = 0; col < length; col++) {
-                double r = Math.random();
-                if (col <= 2) {
-                    mapData[lane][col] = new EmptyObject();
-                } else if (r < 0.03) { // DeathStone - najrzadszy
-                    mapData[lane][col] = new DeathStoneObject();
-                } else if (r < 0.07) { // Coin
-                    mapData[lane][col] = new CoinObject();
-                } else if (r < 0.1) { // Puddle
-                    mapData[lane][col] = new PuddleObject();
-                } else if (r < 0.15) { // Bush
-                    mapData[lane][col] = new BushObject();
-                } else if (r < 0.17) { // ElectricBarrier (
-                    mapData[lane][col] = new ElectricBarrierObject();
-                } else { // reszta pusta
-                    mapData[lane][col] = new EmptyObject();
-                }
-            }
-        }
+        MapObject[][] mapData = MapGenerator.generate(lanes, length);
+
+//                new MapObject[lanes][length];
+//
+//        for (int col = 0; col < length; col++) {
+//            for (int lane = 0; lane < lanes; lane++) {
+//                double r = Math.random();
+//                if (col <= 2) {
+//                    mapData[lane][col] = new EmptyObject();
+//                } else if (r < 0.03) { // DeathStone - najrzadszy
+//                    mapData[lane][col] = new DeathStoneObject();
+//                } else if (r < 0.07) { // Coin
+//                    mapData[lane][col] = new CoinObject();
+//                } else if (r < 0.1) { // Puddle
+//                    mapData[lane][col] = new PuddleObject();
+//                } else if (r < 0.15) { // Bush
+//                    mapData[lane][col] = new BushObject();
+//                } else if (r < 0.17) { // ElectricBarrier (
+//                    mapData[lane][col] = new ElectricBarrierObject();
+//                } else { // reszta pusta
+//                    mapData[lane][col] = new EmptyObject();
+//                }
+//            }
+//        }
 
         GameMap map = new GameMap(lanes, length, mapData);
 

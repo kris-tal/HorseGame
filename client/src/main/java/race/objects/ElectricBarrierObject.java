@@ -25,7 +25,19 @@ public class ElectricBarrierObject extends MapObject {
         }
     }
 
+    @Override
+    public boolean isObstacle() {
+        return true;
+    }
+
+    @Override
+    public boolean isFatal() {
+        return true;
+    }
+
     public boolean isDestroyed() {
         return destroyed;
     }
+
+
 }
