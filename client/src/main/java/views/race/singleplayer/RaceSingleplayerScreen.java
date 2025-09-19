@@ -1,7 +1,6 @@
 package views.race.singleplayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,7 +41,13 @@ public class RaceSingleplayerScreen implements Screen {
 
     public RaceSingleplayerScreen(HorseGame game) {
         this.game = game;
-        this.presenter = new RaceSingleplayerPresenter();
+
+        race.config.RaceConfig config = race.config.RaceConfig.createDefault();//tutaj se ustalamy nasz config na razie jestesmy basic i nudni
+        race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
+        race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
+        race.factory.RaceFactory raceFactory = new race.factory.RaceFactory(mapGenerator, inputHandler);
+        
+        this.presenter = new RaceSingleplayerPresenter(raceFactory, config);
         trainingService = new TrainingServiceImpl();
         horseService = new HorseServiceImpl();
     }
@@ -94,8 +99,9 @@ public class RaceSingleplayerScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+        race.input.InputManager inputManager = new race.input.InputManager();
+        if (inputManager.processGlobalInput()) {
+            return;
         }
 
         presenter.update(delta);
@@ -106,14 +112,14 @@ public class RaceSingleplayerScreen implements Screen {
             statsPanelShown = true;
             if(!onRaceFinished) {
                 HorseData horse = horseService.getUserHorses().getFirst(); // For now selection of a horse not implemented
-                Gdx.app.log("Training", "Using horse:" + horse.toString());
+                //Gdx.app.log("Training", "Using horse:" + horse.toString());
                 TrainingData result = new TrainingData();
                 result.distance = presenter.getDistance();
                 result.money = presenter.getCoins();
                 result.horseId = horse.getId();
 
                 TrainingResponse response = trainingService.performTraining(result);
-                Gdx.app.log("Training", response.toString());
+                //Gdx.app.log("Training", response.toString());
                 onRaceFinished = true;
             }
             return;

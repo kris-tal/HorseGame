@@ -20,7 +20,7 @@ enum MapObjectType {
     }
 
     static MapObject random(int col) {
-        if (col <= 2) return new EmptyObject(); // starting safe zone
+        if (col <= 2) return new EmptyObject();
         double r = Math.random();
         double cumulative = 0.0;
         for (MapObjectType type : values()) {

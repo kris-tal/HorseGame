@@ -5,7 +5,7 @@ import race.Player;
 
 public class EmptyObject extends MapObject {
     public EmptyObject() {
-        super(null); // no texture
+        super(null);
     }
 
     @Override

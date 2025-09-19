@@ -1,81 +1,34 @@
 package race;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
-import services.managers.ResourceManager;
+import race.coordination.GameLoop;
 
 public class RaceWorld {
     private final GameMap map;
     private final Player player;
-    private final CollisionHandler collisionHandler;
+    private final HorseVisualComponent horseVisual;
+    private final GameLoop gameLoop;
 
-    private float scrollX = 0f;
-    private int visibleCols = 10;
-    private final float cellSize;
-
-    private final float leftOffset;
-    private final float downOffset;
-
-    public RaceWorld(GameMap map, Player player) {
+    public RaceWorld(GameMap map, Player player, HorseVisualComponent horseVisual, 
+                    GameLoop gameLoop) {
         this.map = map;
         this.player = player;
-        this.collisionHandler = new CollisionHandler();
-
-        int maxCellHeight = Gdx.graphics.getWidth() / visibleCols;
-        int maxCellWidth = Gdx.graphics.getHeight() / map.getLanes();
-
-        cellSize = Math.max(32, Math.min(maxCellWidth, maxCellHeight));
-        leftOffset = (Gdx.graphics.getWidth() - visibleCols * cellSize) / 2;
-        downOffset = (Gdx.graphics.getHeight() - map.getLanes() * cellSize) / 2;
+        this.horseVisual = horseVisual;
+        this.gameLoop = gameLoop;
     }
 
     public void update(float delta) {
-        if (!player.isAlive()) return;
-
-        scrollX = player.getCol();
-        if (scrollX > map.getLength() - visibleCols) {
-            scrollX = map.getLength() - visibleCols;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) player.moveUp();
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) player.moveDown();
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) player.startSprint();
-
-        player.update(delta);
-        collisionHandler.checkCollisions(player, map);
-
         if (!player.isAlive()) {
-            Gdx.app.log("RaceWorld", "Player is dead");
+            return;
         }
+        gameLoop.update(player, horseVisual, map, delta);
     }
 
     public void render(SpriteBatch batch) {
-        scrollX = player.getCol();
-        int startCol = (int) scrollX - 1;
-        int endCol = Math.min(startCol + visibleCols + 1, map.getLength()) + 1;
-
-        for (int lane = 0; lane < map.getLanes(); lane++) {
-            for (int col = startCol; col < endCol; col++) {
-                MapObject obj = map.getObject(lane, col);
-                if (obj != null) {
-                    float x = (col - scrollX) * cellSize;
-                    float y = lane * cellSize;
-                    obj.render(batch, x + leftOffset, y + downOffset, cellSize);
-                }
-            }
-        }
-        float px = 0;
-        float py = player.getLane() * cellSize;
-        player.render(batch, px + leftOffset, py + downOffset, cellSize);
-        if (player.isVisionLimited()) {
-            batch.draw(ResourceManager.visionLimitedTexture, 0, 0,
-                    Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        }
+        gameLoop.render(batch, map, player, horseVisual);
     }
-
-    public float getScrollX() { return scrollX; }
     public Player getPlayer() { return player; }
     public GameMap getMap() { return map; }
+    public HorseVisualComponent getHorseVisual() { return horseVisual; }
 }

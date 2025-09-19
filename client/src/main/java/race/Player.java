@@ -1,12 +1,9 @@
 package race;
 
-import animations.HorseAnimationActor;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.horse.HorseType;
 
 public class Player {
     private final HorseType horseType;
-    private final HorseAnimationActor horseActor;
     private int lane;
     private float col = 0f;
     private int coins = 0;
@@ -28,8 +25,6 @@ public class Player {
         this.horseType = horseType;
         lane = startingLane;
         this.baseSpeed = speed;
-        this.horseActor = new HorseAnimationActor(horseType);
-        this.horseActor.setMoving(true);
     }
 
     //Ruch
@@ -83,16 +78,8 @@ public class Player {
             float advancedCols = Math.max(0f, col - prevCol);
             visionLimitColsLeft = Math.max(0f, visionLimitColsLeft - advancedCols);
         }
-
-        horseActor.setMoving(true);
-        horseActor.act(delta);
     }
 
-    public void render(SpriteBatch batch, float x, float y, float size) {
-        horseActor.setPosition(x, y);
-        horseActor.setSize(size, size);
-        horseActor.draw(batch, 1f);
-    }
 
     // Sprint
     public void startSprint() {

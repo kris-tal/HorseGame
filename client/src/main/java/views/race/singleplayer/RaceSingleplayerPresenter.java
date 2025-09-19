@@ -1,70 +1,32 @@
 package views.race.singleplayer;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import data.horse.HorseType;
-import data.race.GameMap;
 import race.*;
-import race.objects.CoinObject;
-import race.objects.EmptyObject;
-import race.objects.DeathStoneObject;
-import race.objects.BushObject;
-import race.objects.ElectricBarrierObject;
-import race.objects.PuddleObject;
-
+import race.config.RaceConfig;
+import race.factory.RaceFactory;
+import race.state.GameStateManager;
 
 public class RaceSingleplayerPresenter {
     private RaceWorld world;
-    private boolean raceFinished = false;
+    private final GameStateManager gameStateManager;
+    private final RaceFactory raceFactory;
+    private final RaceConfig raceConfig;
+
+    public RaceSingleplayerPresenter(RaceFactory raceFactory, RaceConfig raceConfig) {
+        this.raceFactory = raceFactory;
+        this.raceConfig = raceConfig;
+        this.gameStateManager = new GameStateManager();
+    }
 
     public void init() {
-        int lanes = 3;
-        int length = 300; // 300 kolumn * 10 m = 3000 m (3 km)
-        float speed = 4f;
-
-        MapObject[][] mapData = MapGenerator.generate(lanes, length);
-
-//                new MapObject[lanes][length];
-//
-//        for (int col = 0; col < length; col++) {
-//            for (int lane = 0; lane < lanes; lane++) {
-//                double r = Math.random();
-//                if (col <= 2) {
-//                    mapData[lane][col] = new EmptyObject();
-//                } else if (r < 0.03) { // DeathStone - najrzadszy
-//                    mapData[lane][col] = new DeathStoneObject();
-//                } else if (r < 0.07) { // Coin
-//                    mapData[lane][col] = new CoinObject();
-//                } else if (r < 0.1) { // Puddle
-//                    mapData[lane][col] = new PuddleObject();
-//                } else if (r < 0.15) { // Bush
-//                    mapData[lane][col] = new BushObject();
-//                } else if (r < 0.17) { // ElectricBarrier (
-//                    mapData[lane][col] = new ElectricBarrierObject();
-//                } else { // reszta pusta
-//                    mapData[lane][col] = new EmptyObject();
-//                }
-//            }
-//        }
-
-        GameMap map = new GameMap(lanes, length, mapData);
-
-        Player player = new Player(HorseType.BORING_HORSE, map.getLanes() / 2, speed);
-        player.makeSprintAvailable();
-
-        world = new RaceWorld(map, player);
+        world = raceFactory.createRaceWorld(raceConfig);
+        gameStateManager.reset();
     }
 
     public void update(float delta) {
-        if (raceFinished) return;
+        if (gameStateManager.isRaceFinished()) return;
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-        }
         world.update(delta);
-        if (!world.getPlayer().isAlive() || world.getPlayer().getCol() > world.getMap().getLength()) {
-            raceFinished = true;
-        }
+        gameStateManager.update(world.getPlayer(), world.getMap());
     }
 
     public RaceWorld getWorld() {
@@ -80,6 +42,14 @@ public class RaceSingleplayerPresenter {
     }
 
     public boolean isRaceFinished() {
-        return raceFinished;
+        return gameStateManager.isRaceFinished();
+    }
+
+    public boolean isPlayerDead() {
+        return gameStateManager.isPlayerDead();
+    }
+
+    public boolean isRaceCompleted() {
+        return gameStateManager.isRaceCompleted();
     }
 }

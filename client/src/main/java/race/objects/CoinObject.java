@@ -8,7 +8,7 @@ public class CoinObject extends MapObject {
     boolean taken = false;
 
     public CoinObject() {
-        super(ResourceManager.iconsAtlas.findRegion("coin_icon"));
+        super(ResourceManager.iconsAtlas.findRegion("coin_icon"), 0.5f);
     }
 
     @Override

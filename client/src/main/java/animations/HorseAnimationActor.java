@@ -11,7 +11,7 @@ import services.managers.ResourceManager;
 
 public class HorseAnimationActor extends Actor {
     private final HorseType horseType;
-    private final Animation<TextureRegion> danceAnimation;
+    private final Animation<TextureRegion> runAnimation;
     private final TextureRegion idleFrame;
     private float stateTime = 0f;
     private boolean moving = false;
@@ -23,15 +23,12 @@ public class HorseAnimationActor extends Actor {
         this.horseType = horseType;
 
         TextureAtlas animationsAtlas = ResourceManager.horseAnimationsAtlas;
-        Array<TextureAtlas.AtlasRegion> danceFrames = findAnimationRegions(animationsAtlas, horseType.getAtlasKey(AnimationAction.DANCE.getName()));
+        Array<TextureAtlas.AtlasRegion> runFrames = findAnimationRegions(animationsAtlas, horseType.getAtlasKey(AnimationAction.RUN.getName()));
 
-        danceAnimation = new Animation<>(AnimationAction.DANCE.getFrameDuration(), danceFrames, AnimationAction.DANCE.getPlayMode());
-
+        runAnimation = new Animation<>(AnimationAction.RUN.getFrameDuration(), runFrames, AnimationAction.RUN.getPlayMode());
 
         TextureAtlas idleFrameAtlas = ResourceManager.horsesAtlas;
         idleFrame = idleFrameAtlas.findRegion(horseType.getAtlasKey());
-
-
 
         // 3 razy większy rozmiar
         setSize(idleFrame.getRegionWidth() * scale, idleFrame.getRegionHeight() * scale);
@@ -47,7 +44,7 @@ public class HorseAnimationActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         TextureRegion currentFrame;
         if (moving) {
-            currentFrame = danceAnimation.getKeyFrame(stateTime);
+            currentFrame = runAnimation.getKeyFrame(stateTime);
         } else {
             currentFrame = idleFrame;
         }
