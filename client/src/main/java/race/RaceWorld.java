@@ -2,6 +2,7 @@ package race;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
+import race.VisualComponent.HorseVisualComponent;
 import race.coordination.GameLoop;
 
 public class RaceWorld {

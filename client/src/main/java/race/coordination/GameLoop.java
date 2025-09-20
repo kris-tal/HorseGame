@@ -1,7 +1,7 @@
 package race.coordination;
 
 import race.Player;
-import race.HorseVisualComponent;
+import race.VisualComponent.HorseVisualComponent;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
 import race.input.InputHandler;

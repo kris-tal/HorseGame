@@ -1,9 +1,10 @@
 package race.factory;
 
+import animations.HorseAnimationActor;
 import data.race.GameMap;
 import race.Player;
 import race.RaceWorld;
-import race.HorseVisualComponent;
+import race.VisualComponent.HorseVisualComponent;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
 import race.coordination.GameLoop;
@@ -26,7 +27,8 @@ public class RaceFactory {
         Player player = new Player(config.getHorseType(), config.getLanes() / 2, config.getSpeed());
         player.makeSprintAvailable();
 
-        HorseVisualComponent horseVisual = new HorseVisualComponent(config.getHorseType());
+        HorseAnimationActor horseActor = new HorseAnimationActor(config.getHorseType());
+        HorseVisualComponent horseVisual = new HorseVisualComponent(config.getHorseType(), horseActor);
         CameraSystem cameraSystem = new CameraSystem(map, config.getVisibleCols());
         RendererSystem rendererSystem = new RendererSystem(cameraSystem);
         CollisionSystem collisionSystem = new CollisionSystem();
