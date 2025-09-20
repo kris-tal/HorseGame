@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
 import race.Player;
 import race.camera.CameraSystem;
-import race.HorseVisualComponent;
+import race.VisualComponent.HorseVisualComponent;
 import services.managers.ResourceManager;
 
 public class RendererSystem {
