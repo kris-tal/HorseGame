@@ -11,7 +11,6 @@ import views.common.UIFactory;
 public class RaceMenuPanel extends Panel {
     public interface RaceMenuListener {
         void onModeSelected(MenuContext.RaceMode mode);
-        void onInputRoomCode(String roomCode);
     }
 
     private RaceMenuListener listener;
@@ -36,20 +35,17 @@ public class RaceMenuPanel extends Panel {
         });
         content.add(singleplayerButton).padTop(smallPadding).padBottom(defaultPadding).row();
 
-        TextField usernameField = UIFactory.createTextField("lobby");
         TextButton multiplayerButton = UIFactory.createLargeTextButton("multiplayer");
         multiplayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (listener != null) {
-                    listener.onInputRoomCode(usernameField.getText());
                     listener.onModeSelected(MenuContext.RaceMode.MULTIPLAYER);
                 }
             }
         });
 
         content.add(multiplayerButton).padBottom(defaultPadding).row();
-        content.add(usernameField).padBottom(defaultPadding).padBottom(defaultPadding).row();
 
     }
 

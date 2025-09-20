@@ -21,8 +21,4 @@ public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {
         }
     }
 
-    @Override
-    public void onInputRoomCode(String roomCode) {
-        code = roomCode;
-    }
 }

@@ -32,6 +32,9 @@ import services.managers.ResourceManager;
 
 import java.util.List;
 
+import static views.common.MenuContext.RaceMode.MULTIPLAYER;
+import static views.common.MenuContext.RaceMode.SINGLEPLAYER;
+
 public class RanchScreen implements Screen, RanchView {
     private final HorseGame game;
     private final RanchPresenter presenter;
@@ -105,16 +108,19 @@ public class RanchScreen implements Screen, RanchView {
             statusBar.updateMoney(result.money);
         });
         raceMenuPanel.setListener(listener);
-        /*raceMenuPanel.setListener(mode -> {
-            switch (mode) {
-                case SINGLEPLAYER -> {
-                    presenter.onSingleplayerClicked();
-                }
-                case MULTIPLAYER -> {
-                    presenter.onMultiplayerClicked(lobbyMenuPanel);
+        raceMenuPanel.setListener(new RaceMenuPanel.RaceMenuListener() {
+            @Override
+            public void onModeSelected(MenuContext.RaceMode mode) {
+                switch (mode) {
+                    case SINGLEPLAYER -> {
+                        presenter.onSingleplayerClicked();
+                    }
+                    case MULTIPLAYER -> {
+                        presenter.onMultiplayerClicked(lobbyMenuPanel);
+                    }
                 }
             }
-        });*/
+        });
 
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
@@ -135,7 +141,7 @@ public class RanchScreen implements Screen, RanchView {
                     presenter.onRaceButtonClicked(raceMenuPanel);
                     break;
                 case RANKING:
-                    //presenter.onRankingButtonClicked(null);
+                    presenter.onRankingButtonClicked(null);
                     break;
             }
         });
