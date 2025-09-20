@@ -2,6 +2,8 @@ package views.ranch;
 
 import views.common.MenuContext;
 import views.common.Panel;
+import views.ranch.race.CreateLobbyPanel;
+import views.ranch.race.JoinLobbyPanel;
 
 public class RanchPresenter {
     private final RanchView view;
@@ -28,13 +30,25 @@ public class RanchPresenter {
     }
 
     public void onSingleplayerClicked() {
-        menuContext.setMode(MenuContext.RaceMode.SINGLEPLAYER);
+        menuContext.setRaceMode(MenuContext.RaceMode.SINGLEPLAYER);
         view.hideAllPanels();
         view.navigateToRace();
     }
 
     public void onMultiplayerClicked(Panel panel) {
-        menuContext.setMode(MenuContext.RaceMode.MULTIPLAYER);
+        menuContext.setRaceMode(MenuContext.RaceMode.MULTIPLAYER);
+        view.hideAllPanels();
+        view.showPanel(panel);
+    }
+
+    public void onCreateLobbyClicked(CreateLobbyPanel panel) {
+        menuContext.setLobbyMode(MenuContext.LobbyMode.CREATE);
+        view.hideAllPanels();
+        view.showPanel(panel);
+    }
+
+    public void onJoinLobbyClicked(JoinLobbyPanel panel) {
+        menuContext.setLobbyMode(MenuContext.LobbyMode.JOIN);
         view.hideAllPanels();
         view.showPanel(panel);
     }

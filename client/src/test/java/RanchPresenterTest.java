@@ -50,7 +50,7 @@ class RanchPresenterTest {
     @Test
     void singleplayer_setsModeAndShowsPanel() {
         presenter.onSingleplayerClicked();
-        verify(menuContext).setMode(MenuContext.RaceMode.SINGLEPLAYER);
+        verify(menuContext).setRaceMode(MenuContext.RaceMode.SINGLEPLAYER);
         verify(view).hideAllPanels();
         verify(view).navigateToRace();
         verifyNoMoreInteractions(view, menuContext);
@@ -59,7 +59,7 @@ class RanchPresenterTest {
     @Test
     void multiplayer_setsModeAndShowsPanel() {
         presenter.onMultiplayerClicked(dummyPanel);
-        verify(menuContext).setMode(MenuContext.RaceMode.MULTIPLAYER);
+        verify(menuContext).setRaceMode(MenuContext.RaceMode.MULTIPLAYER);
         verify(view).hideAllPanels();
         verify(view).showPanel(dummyPanel);
         verifyNoMoreInteractions(view, menuContext);

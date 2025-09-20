@@ -44,4 +44,8 @@ public class LobbyMenuPanel extends Panel {
         });
         content.add(joinLobbyButton).padBottom(defaultPadding).row();
     }
+
+    public void setListener(LobbyMenuPanel.LobbyMenuListener listener) {
+        this.listener = listener;
+    }
 }

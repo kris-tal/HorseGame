@@ -5,15 +5,24 @@ public class MenuContext {
 
     public enum LobbyMode {CREATE, JOIN}
 
-    private RaceMode mode;
+    private RaceMode raceMode;
+    private LobbyMode lobbyMode;
     private String chosenHorse;
 
-    public void setMode(RaceMode raceMode) {
-        this.mode = raceMode;
+    public void setRaceMode(RaceMode raceMode) {
+        this.raceMode = raceMode;
     }
 
-    public RaceMode getMode() {
-        return mode;
+    public void setLobbyMode(LobbyMode lobbyMode) {
+        this.lobbyMode = lobbyMode;
+    }
+
+    public RaceMode getRaceMode() {
+        return raceMode;
+    }
+
+    public LobbyMode getLobbyMode() {
+        return lobbyMode;
     }
 
     public void setChosenHorse(String horse) {
