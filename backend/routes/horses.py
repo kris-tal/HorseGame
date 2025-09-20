@@ -32,15 +32,35 @@ def get_user_horses():
     return jsonify(horses=horses_data), 200
 
 
-@horses_bp.route('/horses/<int:id>', methods=['GET'])
+@horses_bp.route('/horses/id/<int:id>', methods=['GET'])
 @jwt_required()
-def get_user_horse(horse_id):
+def get_user_horse_by_id(horse_id):
     identity = get_jwt_identity()
     data, status = get_user(identity)
     if status != 200:
         return data, status
 
     horse = Horse.query.filter_by(owner_id=data.id, id = horse_id).first()
+    if not horse:
+        return jsonify({"msg":"Horse not found or belongs to a different user"}), 404
+    return jsonify(
+        {
+            "id": horse.id,
+            "name": horse.name_id,
+            "level": horse.level,
+            "training_points": horse.training_points
+        }), 200
+
+
+@horses_bp.route('/horses/name/<int:id>', methods=['GET'])
+@jwt_required()
+def get_user_horse_by_name(horse_id):
+    identity = get_jwt_identity()
+    data, status = get_user(identity)
+    if status != 200:
+        return data, status
+
+    horse = Horse.query.filter_by(owner_id=data.id, name_id = horse_id).first()
     if not horse:
         return jsonify({"msg":"Horse not found or belongs to a different user"}), 404
     return jsonify(
@@ -83,7 +103,7 @@ def finish_training():
         return jsonify({
             "success": False,
             "msg": "Horse not found or belongs to a different user"
-        }), status
+        }), 404
 
     data.money += money
     money = data.money
