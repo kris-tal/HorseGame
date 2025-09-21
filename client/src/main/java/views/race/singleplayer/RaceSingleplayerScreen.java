@@ -142,6 +142,8 @@ public class RaceSingleplayerScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        bgStage.getViewport().update(width, height, true);
+        uiStage.getViewport().update(width, height, true);
     }
 
     @Override

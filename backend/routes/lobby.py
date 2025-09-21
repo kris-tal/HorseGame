@@ -39,7 +39,6 @@ class PlayerInfo:
             except Exception:
                 connected = False
         return {
-            "id": self.id,
             "username": self.username,
             "role": self.role.name,
             "progress": self.progress,
@@ -130,14 +129,14 @@ def connect(auth):
     if existing:
         existing.sid = request.sid
         join_room(room)
-        log_and_emit("lobby_join", existing.serialize(), to=room)
-        log_lobby_state()
+        log_and_emit("player_joined", {"players": [p.serialize() for p in rooms[room]["players"]]}, to=room)
+        #log_lobby_state()
         return True
 
     player = PlayerInfo(user, PlayerStatus.Player, sid=request.sid)
     rooms[room]["players"].append(player)
     join_room(room)
-    log_and_emit("lobby_join", player.serialize(), to=room)
+    log_and_emit("player_joined", {"players": [p.serialize() for p in rooms[room]["players"]]}, to=room)
     return True
 
 @socketio.on("progress_update")
@@ -177,6 +176,7 @@ def disconnect_handler():
                     log_and_emit("room_closed", {"room": room_code}, to=room_code)
                     del rooms[room_code]
                 else:
-                    player.sid = None  # mark player disconnected, keep in room
-                    log_and_emit("player_left", {"id": player.id}, to=room_code)
+                    rooms[room]["players"].remove(player)
+                    log_and_emit("player_left",
+                                 {"players": [p.serialize() for p in rooms[room]["players"]]}, to=room_code)
                 return

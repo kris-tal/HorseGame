@@ -2,8 +2,16 @@ package views.ranch;
 
 import views.common.MenuContext;
 import views.common.Panel;
-import views.ranch.race.CreateLobbyPanel;
+import views.ranch.race.WaitingLobbyPanel;
 import views.ranch.race.JoinLobbyPanel;
+
+/*
+    TODO:
+    * Change LobbyMode.CREATE to LobbyMode.WAITING
+    * Make LobbyMode.WAITING detect if you are the creator or not
+    * Make the steering for lobby switching be outside of the WAITING section
+    * Make WAITING
+ */
 
 public class RanchPresenter {
     private final RanchView view;
@@ -41,7 +49,8 @@ public class RanchPresenter {
         view.showPanel(panel);
     }
 
-    public void onCreateLobbyClicked(CreateLobbyPanel panel) {
+    public void onCreateLobbyClicked(WaitingLobbyPanel panel) {
+        panel.refresh();
         menuContext.setLobbyMode(MenuContext.LobbyMode.CREATE);
         view.hideAllPanels();
         view.showPanel(panel);

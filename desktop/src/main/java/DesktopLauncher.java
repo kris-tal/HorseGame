@@ -10,6 +10,7 @@ public class DesktopLauncher {
         config.setTitle("Horse Game");
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
         config.setFullscreenMode(displayMode);
+        //config.setWindowedMode(1024, 768);
         new Lwjgl3Application(new HorseGame(), config);
     }
 }

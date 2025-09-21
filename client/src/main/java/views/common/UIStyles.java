@@ -1,5 +1,6 @@
 package views.common;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +28,13 @@ public class UIStyles {
         defaultFont.getData().setScale(0.5f);
         mediumFont.getData().setScale(0.8f);
         largeFont.getData().setScale(1.5f);
+    }
+
+    public static void resizeFonts(int width, int height) {
+        float scale = 1;
+        defaultFont.getData().setScale(0.5f * scale);
+        mediumFont.getData().setScale(0.8f * scale);
+        largeFont.getData().setScale(1.5f * scale);
     }
 
     public static TextButton.TextButtonStyle getDefaultButtonStyle() {

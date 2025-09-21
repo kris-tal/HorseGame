@@ -1,30 +1,33 @@
 package services.lobby;
 
 import com.badlogic.gdx.Gdx;
-import data.PlayerInfoClient;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import data.lobby.PlayerInfoClient;
+import data.lobby.PlayerListResponse;
+import services.managers.LobbyManager;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 
 public class LobbyTracker {
-    private HashMap<String, PlayerInfoClient> players = new HashMap<>();
+    private final Gson gson = new Gson();
 
-    /* Handle the data sent by server */
     public void updateFromServer(String jsonData) {
-        Gdx.app.log("socket", jsonData);
+        try {
+            Gdx.app.log("LobbyTracker", "Received data: " + jsonData);
+            List<PlayerInfoClient> players = gson.fromJson(jsonData, PlayerListResponse.class).getPlayers();
 
-    }
-
-    public void markPlayerLeft(String playerId) {
-        PlayerInfoClient p = players.get(playerId);
-        if (p != null) {
-            p.setConnected(false);
-        }
-    }
-
-    public void printLobbyStatus() {
-        System.out.println("Current Lobby Players:");
-        for (PlayerInfoClient p : players.values()) {
-            System.out.println(p);
+            if (players != null) {
+                HashMap<String, PlayerInfoClient> map = new HashMap<>();
+                for (PlayerInfoClient p : players) {
+                    map.put(p.getUsername(), p);
+                }
+                LobbyManager.getInstance().updatePlayers(map);
+            }
+        } catch (Exception e) {
+            Gdx.app.error("LobbyTracker", "Error parsing player data: " + e.getMessage());
         }
     }
 }

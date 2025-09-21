@@ -42,7 +42,7 @@ public abstract class Panel extends Table {
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                hide();
+                close();
             }
         });
 
@@ -59,6 +59,10 @@ public abstract class Panel extends Table {
                 (screenHeight - getHeight()) / 2f
         );
         setVisible(true);
+    }
+
+    public void close() {
+        hide();
     }
 
     public void hide() {

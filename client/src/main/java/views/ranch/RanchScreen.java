@@ -17,6 +17,7 @@ import data.horse.HorseData;
 import data.horse.HorseType;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import services.managers.LobbyManager;
 import views.common.ConfirmationPanel;
 import views.common.ListPanel;
 import views.common.Panel;
@@ -38,7 +39,7 @@ public class RanchScreen implements Screen, RanchView {
     private RaceMenuPanel raceMenuPanel;
     private HorseSelectionPanel horseSelectionPanel;
     private LobbyMenuPanel lobbyMenuPanel;
-    private CreateLobbyPanel createLobbyPanel;
+    private WaitingLobbyPanel createLobbyPanel;
     private JoinLobbyPanel joinLobbyPanel;
     private ShopPanel shopPanel;
 
@@ -101,11 +102,14 @@ public class RanchScreen implements Screen, RanchView {
         lobbyMenuPanel.setListener(mode -> {
             menuContext.setLobbyMode(mode);
             switch (mode) {
-                case CREATE -> presenter.onCreateLobbyClicked(createLobbyPanel);
+                case CREATE -> {
+                    LobbyManager.getInstance().createLobby();
+                    presenter.onCreateLobbyClicked(createLobbyPanel);
+                }
                 case JOIN -> presenter.onJoinLobbyClicked(joinLobbyPanel);
             }
         });
-        createLobbyPanel = new CreateLobbyPanel(panelWidth, panelHeight);
+        createLobbyPanel = new WaitingLobbyPanel(panelWidth, panelHeight);
         joinLobbyPanel = new JoinLobbyPanel(panelWidth, panelHeight);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
         shopPanel.setOnPurchaseComplete(result -> {
@@ -126,6 +130,7 @@ public class RanchScreen implements Screen, RanchView {
                 }
             }
         });
+        
 
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
@@ -234,6 +239,7 @@ public class RanchScreen implements Screen, RanchView {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
