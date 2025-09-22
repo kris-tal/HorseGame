@@ -1,14 +1,14 @@
 package race.VisualComponent;
 
-import animations.HorseAnimationActor;
+import animations.BaseHorseActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.horse.HorseType;
 
 public class HorseVisualComponent implements VisualComponent {
-    private final HorseAnimationActor horseActor;
+    private final BaseHorseActor horseActor;
     private final HorseType horseType;
 
-    public HorseVisualComponent(HorseType horseType, HorseAnimationActor horseActor) {
+    public HorseVisualComponent(HorseType horseType, BaseHorseActor horseActor) {
         this.horseType = horseType;
         this.horseActor = horseActor;
         this.horseActor.setMoving(true);
@@ -34,7 +34,7 @@ public class HorseVisualComponent implements VisualComponent {
         return horseType;
     }
 
-    public HorseAnimationActor getAnimationActor() {
+    public BaseHorseActor getAnimationActor() {
         return horseActor;
     }
 }

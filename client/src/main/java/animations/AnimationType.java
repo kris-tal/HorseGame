@@ -2,14 +2,14 @@ package animations;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 
-public enum AnimationAction {
+public enum AnimationType {
     IDLE(0.1f, Animation.PlayMode.LOOP),
-    RUN(0.2f, Animation.PlayMode.LOOP);
+    RUN(0.15f, Animation.PlayMode.LOOP);
 
     private final float frameDuration;
     private final Animation.PlayMode playMode;
 
-    AnimationAction(float frameDuration, Animation.PlayMode playMode) {
+    AnimationType(float frameDuration, Animation.PlayMode playMode) {
         this.frameDuration = frameDuration;
         this.playMode = playMode;
     }

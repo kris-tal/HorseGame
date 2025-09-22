@@ -1,6 +1,6 @@
 package views.ranch;
 
-import animations.HorseAnimationActor;
+import animations.StrollingHorseActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -30,7 +30,7 @@ import services.managers.ResourceManager;
 
 import java.util.List;
 
-public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyListener{
+public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyListener {
     private final HorseGame game;
     private final RanchPresenter presenter;
     private final MenuContext menuContext;
@@ -43,10 +43,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
     private JoinLobbyPanel joinLobbyPanel;
     private ShopPanel shopPanel;
 
-    private Array<HorseAnimationActor> horses = new Array<>();
-    private final Array<Float> targetX = new Array<>();
-    private final Array<Float> targetY = new Array<>();
-    private final Array<Float> waitTimers = new Array<>();
+    private Array<StrollingHorseActor> horses = new Array<StrollingHorseActor>();
     private Rectangle fence;
 
     private RaceMenuPanel.RaceMenuListener listener = new MockMenuListener();
@@ -70,20 +67,25 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         for (HorseData horse : ownedHorses) {
             HorseType horseType = HorseType.fromId(horse.getName());
-            HorseAnimationActor horseActor = new HorseAnimationActor(horseType);
+
+            // pass fence bounds to StrollingHorseActor
+            StrollingHorseActor strollingHorseActor = new StrollingHorseActor(
+                    horseType,
+                    fence.x,
+                    fence.x + fence.width,
+                    fence.y,
+                    fence.y + fence.height
+            );
+
+            // place horse at random starting position
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
-            horseActor.setPosition(x, y);
+            strollingHorseActor.setPosition(x, y);
 
-            horses.add(horseActor);
-            stage.addActor(horseActor);
-            float targetXval = MathUtils.random(fence.x, fence.x + fence.width);
-            float targetYval = MathUtils.random(fence.y, fence.y + fence.height);
-            targetX.add(targetXval);
-            targetY.add(targetYval);
-
-            waitTimers.add(0f);
+            horses.add(strollingHorseActor);
+            stage.addActor(strollingHorseActor);
         }
+
         Texture bgTexture = ResourceManager.ranchScreenBgTexture;
         Image background = new Image(bgTexture);
         background.setFillParent(true);
@@ -131,7 +133,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
                 }
             }
         });
-        
+
 
         stage.addActor(raceMenuPanel);
         stage.addActor(horseSelectionPanel);
@@ -195,47 +197,16 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             showExitConfirmation();
         }
+
         stage.act(delta);
-        stage.draw();
-        /// For debug purposes
-        /*if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            game.setScreen(new RaceSingleplayerScreen(game));
-        }*/
-        stage.act(delta);
-        stage.draw();
+
+        horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
 
         for (int i = 0; i < horses.size; i++) {
-            HorseAnimationActor horse = horses.get(i);
-
-            if (waitTimers.get(i) > 0) {
-                // kon stoi i czeka
-                waitTimers.set(i, waitTimers.get(i) - delta);
-                horse.setMoving(false); // idle
-                continue;
-            }
-
-            float dx = targetX.get(i) - horse.getX();
-            float dy = targetY.get(i) - horse.getY();
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 2f) {
-                waitTimers.set(i, 10f);
-                float newTargetX = MathUtils.random(fence.x, fence.x + fence.width);
-                float newTargetY = MathUtils.random(fence.y, fence.y + fence.height);
-                targetX.set(i, newTargetX);
-                targetY.set(i, newTargetY);
-
-                horse.setMoving(false);
-            } else {
-                float horseSpeed = 100f;
-                float moveX = dx / distance * horseSpeed * delta;
-                float moveY = dy / distance * horseSpeed * delta;
-                horse.moveTo(horse.getX() + moveX, horse.getY() + moveY);
-
-                horse.setMoving(true);
-            }
+            horses.get(i).setZIndex(i + 1);
         }
 
+        stage.draw();
     }
 
 
@@ -284,6 +255,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         showPanel(confirmationPanel);
     }
 
-    public void dispose() { }
+    public void dispose() {
+    }
 
 }
