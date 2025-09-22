@@ -8,7 +8,6 @@ import views.ranch.race.JoinLobbyPanel;
 /*
     TODO:
     * Change LobbyMode.CREATE to LobbyMode.WAITING
-    * Make LobbyMode.WAITING detect if you are the creator or not
     * Make the steering for lobby switching be outside of the WAITING section
     * Make WAITING
  */

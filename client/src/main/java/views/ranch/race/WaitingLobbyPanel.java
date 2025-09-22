@@ -19,6 +19,7 @@ import java.util.List;
 public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements LobbyManager.LobbyStateListener {
 
     private TextButton startButton;
+    private Label playerCountLabel;
     private WaitingLobbyListener listener;
 
     public interface WaitingLobbyListener {
@@ -31,6 +32,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         LobbyManager.getInstance().setStateListener(this);
     }
 
+    /* Highlight lobby code */
     @Override
     protected String getTitle() {
         LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
@@ -40,7 +42,6 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         }
         return "LOBBY: " + lobby.getLobbyCode();
     }
-    private Label playerCountLabel;
     @Override
     protected void addContent(float width, float height) {
         listTable = new Table();
@@ -117,21 +118,6 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     public void setListener(WaitingLobbyListener listener) {
         this.listener = listener;
     }
-    @Override
-    public void onPlayersUpdated(List<PlayerInfoClient> players) {
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
-        if (lobby != null) {
-            List<PlayerInfoClient> playerList = new ArrayList<>(lobby.getPlayers().values());
-            populateList(playerList);   // only update rows
-            updateStartButtonVisibility();
-
-            if (playerCountLabel != null) {
-                playerCountLabel.setText("Players: " + lobby.getPlayerCount());
-            }
-        }
-
-    }
-
 
     @Override
     public void onLobbyStarted() {
@@ -149,7 +135,13 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
 
     @Override
     public void onLobbyInitialized() {
-        refresh();
+        refresh(); // Update the display of room code
+        onPlayersUpdated(); // Handle initialization of playerlist
+    }
+
+    /* It is invoked each time a player enters or exits */
+    @Override
+    public void onPlayersUpdated() {
         LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby != null) {
             List<PlayerInfoClient> playerList = new ArrayList<>(lobby.getPlayers().values());
@@ -160,7 +152,9 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
                 playerCountLabel.setText("Players: " + lobby.getPlayerCount());
             }
         }
+
     }
+
 
     @Override
     public void close() {

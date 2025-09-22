@@ -15,13 +15,17 @@ public class LobbyManager {
     private LobbyStateListener stateListener;
     private LobbyConnectionListener connectionListener;
 
+    /* Interface responsible for callback from server responses,
+     Callback is designed to communicate with WaitingLobbyPanel*/
     public interface LobbyStateListener {
-        void onPlayersUpdated(List<PlayerInfoClient> players);
+        void onLobbyInitialized();
+        void onPlayersUpdated();
         void onLobbyStarted();
         void onLobbyClosed();
-        void onLobbyInitialized();
     }
 
+    /* Interface responsible for callback from server responses,
+     Callback is designed to communicate with JoinLobbyPanel*/
     public interface LobbyConnectionListener {
         void onLobbyJoined(boolean success);
     }
@@ -48,8 +52,6 @@ public class LobbyManager {
     }
 
     public void joinLobby(String lobbyCode) {
-        // FIXED: Don't call leaveLobby() first - it clears currentLobby
-        // Instead, only close existing connection without clearing lobby info
         if (currentLobby != null) {
             service.closeConnection();
         }
@@ -99,7 +101,7 @@ public class LobbyManager {
         if (currentLobby != null) {
             currentLobby.setPlayers(newPlayers);
             if (stateListener != null) {
-                stateListener.onPlayersUpdated(newPlayers.values().stream().toList());
+                stateListener.onPlayersUpdated();
             }
         }
     }
@@ -132,27 +134,24 @@ public class LobbyManager {
         String username = ((LobbyServiceImpl) service).getCurrentUserUsername();
         if (username == null) return false;
 
-        PlayerInfoClient player = currentLobby.getPlayers().get(username);
+        PlayerInfoClient player = currentLobby.getPlayer(username);
         if (player == null) return false;
 
         return player.isCreator();
     }
 
-    // FIXED: Handle async connection result properly
     public void onLobbyJoined(boolean success) {
         if (connectionListener != null) {
             connectionListener.onLobbyJoined(success);
         }
 
         if (success) {
-            // Connection successful - lobby already created optimistically
             if (stateListener != null) {
                 stateListener.onLobbyInitialized();
             }
             Gdx.app.log("Lobby", "Successfully joined lobby: " +
                     (currentLobby != null ? currentLobby.getLobbyCode() : "unknown"));
         } else {
-            // Connection failed - clear the optimistically created lobby
             Gdx.app.error("Lobby", "Failed to join lobby - clearing lobby info");
             currentLobby = null;
         }
@@ -176,10 +175,6 @@ public class LobbyManager {
 
         public void setPlayers(HashMap<String, PlayerInfoClient> players) {
             this.players = players;
-        }
-
-        public void removePlayer(String playerId) {
-            players.remove(playerId);
         }
 
         public int getPlayerCount() {

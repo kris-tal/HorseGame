@@ -30,7 +30,7 @@ import services.managers.ResourceManager;
 
 import java.util.List;
 
-public class RanchScreen implements Screen, RanchView {
+public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyListener{
     private final HorseGame game;
     private final RanchPresenter presenter;
     private final MenuContext menuContext;
@@ -111,6 +111,7 @@ public class RanchScreen implements Screen, RanchView {
         });
         createLobbyPanel = new WaitingLobbyPanel(panelWidth, panelHeight);
         joinLobbyPanel = new JoinLobbyPanel(panelWidth, panelHeight);
+        joinLobbyPanel.setListener(this);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
         shopPanel.setOnPurchaseComplete(result -> {
             Gdx.app.log("Shop", result.toString());
@@ -197,9 +198,9 @@ public class RanchScreen implements Screen, RanchView {
         stage.act(delta);
         stage.draw();
         /// For debug purposes
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             game.setScreen(new RaceSingleplayerScreen(game));
-        }
+        }*/
         stage.act(delta);
         stage.draw();
 
@@ -235,6 +236,12 @@ public class RanchScreen implements Screen, RanchView {
             }
         }
 
+    }
+
+
+    @Override
+    public void onLobbyJoined() {
+        presenter.onCreateLobbyClicked(createLobbyPanel);
     }
 
     @Override
@@ -277,6 +284,6 @@ public class RanchScreen implements Screen, RanchView {
         showPanel(confirmationPanel);
     }
 
-    public void dispose() {
-    }
+    public void dispose() { }
+
 }

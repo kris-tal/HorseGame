@@ -176,7 +176,7 @@ def disconnect_handler():
                     log_and_emit("room_closed", {"room": room_code}, to=room_code)
                     del rooms[room_code]
                 else:
-                    rooms[room]["players"].remove(player)
+                    room["players"].remove(player)
                     log_and_emit("player_left",
-                                 {"players": [p.serialize() for p in rooms[room]["players"]]}, to=room_code)
-                return
+                                 {"players": [p.serialize() for p in room["players"]]}, to=room_code)
+                    return

@@ -26,43 +26,6 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         LobbyManager.getInstance().setConnectionListener(this);
     }
 
-    @Override
-    protected String getTitle() {
-        return "JOIN LOBBY";
-    }
-
-    @Override
-    protected void addContent(float width, float height) {
-        // Room code input field
-        roomCodeField = UIFactory.createTextField("Enter Lobby Code");
-        roomCodeField.setMessageText("ABC123");
-        content.add(roomCodeField).width(200f).padTop(smallPadding).padBottom(defaultPadding).row();
-
-        // Join button
-        joinButton = UIFactory.createLargeTextButton("JOIN LOBBY");
-        joinButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                attemptJoinLobby();
-            }
-        });
-        content.add(joinButton).padBottom(defaultPadding).row();
-
-        // Status label for feedback
-        statusLabel = UIFactory.createLabel("");
-        statusLabel.setColor(1f, 0.3f, 0.3f, 1f); // Red color for errors
-        content.add(statusLabel).padTop(10f).row();
-
-        // Instructions
-        Label instructionLabel = UIFactory.createLabel("Ask the lobby host for the code");
-        instructionLabel.setColor(0.7f, 0.7f, 0.7f, 1f); // Gray color
-        content.add(instructionLabel).padTop(20f).row();
-    }
-
-    @Override
-    protected void populateRow(Table row, Object item) {
-        // Not used in this panel
-    }
 
     private void attemptJoinLobby() {
         String lobbyCode = roomCodeField.getText().trim().toUpperCase();
@@ -72,8 +35,8 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
             return;
         }
 
-        if (lobbyCode.length() < 4) {
-            showError("Lobby code too short");
+        if (lobbyCode.length() != 6) {
+            showError("Lobby codes consist of 6 letters and digits");
             return;
         }
 
@@ -118,4 +81,40 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         joinButton.setDisabled(false);
         joinButton.setText("JOIN LOBBY");
     }
+    @Override
+    protected void addContent(float width, float height) {
+        /*
+            TODO:
+            * Make it auto uppercase since the only allowed codes are combined uppercase numbers and letters
+         */
+        roomCodeField = UIFactory.createTextField("Enter Lobby Code");
+        roomCodeField.setMessageText("ABC123");
+        content.add(roomCodeField).width(200f).padTop(smallPadding).padBottom(defaultPadding).row();
+
+        joinButton = UIFactory.createLargeTextButton("JOIN LOBBY");
+        joinButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                attemptJoinLobby();
+            }
+        });
+        content.add(joinButton).padBottom(defaultPadding).row();
+
+        // Status label for feedback
+        statusLabel = UIFactory.createLabel("");
+        statusLabel.setColor(1f, 0.3f, 0.3f, 1f); // Red color for errors
+        content.add(statusLabel).padTop(10f).row();
+
+        // Instructions
+        Label instructionLabel = UIFactory.createLabel("Ask the lobby host for the code");
+        instructionLabel.setColor(0.7f, 0.7f, 0.7f, 1f); // Gray color
+        content.add(instructionLabel).padTop(20f).row();
+    }
+
+    @Override
+    protected String getTitle() {
+        return "JOIN LOBBY";
+    }
+    @Override
+    protected void populateRow(Table row, Object item) {}
 }

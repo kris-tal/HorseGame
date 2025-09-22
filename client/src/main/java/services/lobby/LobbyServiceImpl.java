@@ -126,6 +126,8 @@ public class LobbyServiceImpl implements LobbyService {
                 Gdx.app.log("Lobby", "Player joined: " + data);
                 lobbyTracker.updateFromServer(data);
             } else {
+                String data = args[0].toString();
+                lobbyTracker.updateFromServer(data);
                 Gdx.app.log("Lobby", "player_joined event with no payload");
             }
         });
@@ -138,10 +140,12 @@ public class LobbyServiceImpl implements LobbyService {
         sessionSocket.on("player_left", args -> {
             if (args.length > 1) {
                 String data = args[1].toString();
-                Gdx.app.log("Lobby", "Player left: " + data);
+                Gdx.app.log("Lobby", "player_left primary: " + data);
                 lobbyTracker.updateFromServer(data);
             } else {
-                Gdx.app.log("Lobby", "player_left event with no payload");
+                String data = args[0].toString();
+                lobbyTracker.updateFromServer(data);
+                Gdx.app.log("Lobby", "player_left secondary: " + data );
             }
         });
 
