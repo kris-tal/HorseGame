@@ -164,7 +164,6 @@ public class LobbyServiceImpl implements LobbyService {
                 Gdx.app.log("Lobby", "Connected to lobby successfully!");
                 connected = true;
 
-                // FIXED: Notify LobbyManager that connection succeeded
                 Gdx.app.postRunnable(() -> {
                     LobbyManager.getInstance().onLobbyJoined(true);
                 });
@@ -186,7 +185,6 @@ public class LobbyServiceImpl implements LobbyService {
             Gdx.app.error("Lobby", "Connection error: " + args[0]);
             connected = false;
 
-            // FIXED: Notify LobbyManager that connection failed
             Gdx.app.postRunnable(() -> {
                 LobbyManager.getInstance().onLobbyJoined(false);
             });
