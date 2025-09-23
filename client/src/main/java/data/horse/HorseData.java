@@ -18,10 +18,25 @@ public class HorseData {
     }
 
     // getters & setters
-    public int getId() { return id; }
-    public int getName() { return name; }
-    public int getLevel() { return level; }
-    public int getTrainingPoints() { return training_points; }
+    public int getId() {
+        return id;
+    }
+
+    public int getName() {
+        return name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getTrainingPoints() {
+        return training_points;
+    }
+
+    public HorseType getHorseType() {
+        return HorseType.fromId(id);
+    }
 
     @Override
     public String toString() {

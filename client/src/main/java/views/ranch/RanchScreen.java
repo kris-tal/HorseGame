@@ -4,12 +4,16 @@ import animations.StrollingHorseActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
@@ -23,6 +27,7 @@ import views.common.ListPanel;
 import views.common.Panel;
 import views.race.multiplayer.RaceMultiplayerScreen;
 import views.race.singleplayer.RaceSingleplayerScreen;
+import views.ranch.info.HorseInfoPanel;
 import views.ranch.race.*;
 import views.ranch.shop.ShopPanel;
 import views.common.MenuContext;
@@ -66,18 +71,33 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         List<HorseData> ownedHorses = horseService.getUserHorses();
 
         for (HorseData horse : ownedHorses) {
-            HorseType horseType = HorseType.fromId(horse.getName());
 
-            // pass fence bounds to StrollingHorseActor
             StrollingHorseActor strollingHorseActor = new StrollingHorseActor(
-                    horseType,
+                    horse,
                     fence.x,
                     fence.x + fence.width,
                     fence.y,
                     fence.y + fence.height
             );
+            strollingHorseActor.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    showHorseInfo(strollingHorseActor.getHorseData());
+                }
 
-            // place horse at random starting position
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    // Change cursor to hand
+                    Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    // Revert cursor back to arrow
+                    Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+                }
+            });
+
             float x = MathUtils.random(fence.x, fence.x + fence.width);
             float y = MathUtils.random(fence.y, fence.y + fence.height);
             strollingHorseActor.setPosition(x, y);
@@ -172,6 +192,12 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         if (panel instanceof ListPanel listPanel) {
             stage.setScrollFocus(listPanel.getScrollPane());
         }
+    }
+
+    private void showHorseInfo(HorseData horseData) {
+        HorseInfoPanel infoPanel = new HorseInfoPanel(horseData);
+        stage.addActor(infoPanel);
+        showPanel(infoPanel);
     }
 
     public void hideAllPanels() {

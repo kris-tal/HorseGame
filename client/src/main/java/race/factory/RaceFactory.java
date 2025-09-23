@@ -24,11 +24,11 @@ public class RaceFactory {
 
     public RaceWorld createRaceWorld(RaceConfig config) {
         GameMap map = mapGenerator.generateMap(config.getLanes(), config.getLength());
-        Player player = new Player(config.getHorseType(), config.getLanes() / 2, config.getSpeed());
+        Player player = new Player(config.getHorseData(), config.getLanes() / 2, config.getSpeed());
         player.makeSprintAvailable();
 
-        RaceHorseActor raceHorseActor = new RaceHorseActor(config.getHorseType());
-        HorseVisualComponent horseVisual = new HorseVisualComponent(config.getHorseType(), raceHorseActor);
+        RaceHorseActor raceHorseActor = new RaceHorseActor(config.getHorseData());
+        HorseVisualComponent horseVisual = new HorseVisualComponent(raceHorseActor);
         CameraSystem cameraSystem = new CameraSystem(map, config.getVisibleCols());
         RendererSystem rendererSystem = new RendererSystem(cameraSystem);
         CollisionSystem collisionSystem = new CollisionSystem();

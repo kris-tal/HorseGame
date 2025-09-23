@@ -19,7 +19,7 @@ public class SprintWidget extends Group {
     public SprintWidget(Player player, float width, float height) {
         this.player = player;
 
-        sprintBar = UIFactory.createProgressBar(0f, player.getSprintDuration(), 0.01f, player.getHorseType().getColor());
+        sprintBar = UIFactory.createProgressBar(0f, player.getSprintDuration(), 0.01f, player.getHorseData().getHorseType().getColor());
         sprintBar.setSize(width, height);
 
         pressSpaceLabel = UIFactory.createLabel("PRESS SPACE");

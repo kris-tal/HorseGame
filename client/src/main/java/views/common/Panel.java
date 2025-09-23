@@ -1,5 +1,6 @@
 package views.common;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,10 +15,22 @@ public abstract class Panel extends Table {
     private final float width;
     private final float height;
 
+    private String title;
+
     public Panel(float width, float height) {
         super();
         this.width = width;
         this.height = height;
+        build();
+        setVisible(false);
+    }
+
+    public Panel(float width, float height, String title) {
+        super();
+
+        this.width = width;
+        this.height = height;
+        this.title = title;
         build();
         setVisible(false);
     }
@@ -29,7 +42,9 @@ public abstract class Panel extends Table {
         setSize(width, height);
         pad(smallPadding);
 
-        Label title = UIFactory.createLargeLabel(getTitle());
+        if (this.title == null) this.title = getTitle();
+
+        Label title = UIFactory.createLargeLabel(this.title);
         content.add(title).padBottom(defaultPadding).center().row();
 
         addContent(width, height);

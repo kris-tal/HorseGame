@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
+import data.race.EquippedHorseService;
 import data.training.TrainingData;
 import data.training.TrainingResponse;
 import race.RaceWorld;
@@ -42,11 +43,11 @@ public class RaceSingleplayerScreen implements Screen {
     public RaceSingleplayerScreen(HorseGame game) {
         this.game = game;
 
-        race.config.RaceConfig config = race.config.RaceConfig.createDefault();//tutaj se ustalamy nasz config na razie jestesmy basic i nudni
+        race.config.RaceConfig config = race.config.RaceConfig.createDefault(EquippedHorseService.getInstance().getEquippedHorse());//tutaj se ustalamy nasz config na razie jestesmy basic i nudni
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         race.factory.RaceFactory raceFactory = new race.factory.RaceFactory(mapGenerator, inputHandler);
-        
+
         this.presenter = new RaceSingleplayerPresenter(raceFactory, config);
         trainingService = new TrainingServiceImpl();
         horseService = new HorseServiceImpl();
@@ -110,7 +111,7 @@ public class RaceSingleplayerScreen implements Screen {
             statsPanel.updateStats(presenter.getDistance(), presenter.getCoins());
             statsPanel.setVisible(true);
             statsPanelShown = true;
-            if(!onRaceFinished) {
+            if (!onRaceFinished) {
                 HorseData horse = horseService.getUserHorses().getFirst(); // For now selection of a horse not implemented
                 //Gdx.app.log("Training", "Using horse:" + horse.toString());
                 TrainingData result = new TrainingData();
@@ -131,7 +132,6 @@ public class RaceSingleplayerScreen implements Screen {
         RaceWorld world = presenter.getWorld();
         world.render(batch);
         batch.end();
-
 
 
         distanceLabel.setText("Distance: " + presenter.getDistance() + "m");

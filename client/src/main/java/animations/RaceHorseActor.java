@@ -1,12 +1,13 @@
 package animations;
 
+import data.horse.HorseData;
 import data.horse.HorseType;
 
 public class RaceHorseActor extends BaseHorseActor {
     private float speed = 200f;
 
-    public RaceHorseActor(HorseType horseType) {
-        super(horseType);
+    public RaceHorseActor(HorseData horseData) {
+        super(horseData);
         setMoving(true);
     }
 

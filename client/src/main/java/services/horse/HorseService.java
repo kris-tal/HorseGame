@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface HorseService {
     List<HorseData> getUserHorses();
+
     HorseData getHorseDataById(int horseId);
+
     HorseData getHorseData(HorseType type);
 
 }

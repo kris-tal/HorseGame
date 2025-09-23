@@ -1,9 +1,10 @@
 package race;
 
+import data.horse.HorseData;
 import data.horse.HorseType;
 
 public class Player {
-    private final HorseType horseType;
+    private final HorseData horseData;
     private int lane;
     private float col = 0f;
     private int coins = 0;
@@ -21,8 +22,8 @@ public class Player {
     private float visionLimitTime = 0f;
     private float visionLimitColsLeft = 0f;
 
-    public Player(HorseType horseType, int startingLane, float speed) {
-        this.horseType = horseType;
+    public Player(HorseData horseData, int startingLane, float speed) {
+        this.horseData = horseData;
         lane = startingLane;
         this.baseSpeed = speed;
     }
@@ -178,7 +179,7 @@ public class Player {
         coins += amount;
     }
 
-    public HorseType getHorseType() {
-        return horseType;
+    public HorseData getHorseData() {
+        return horseData;
     }
 }

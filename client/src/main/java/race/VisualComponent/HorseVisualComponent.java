@@ -4,12 +4,12 @@ import animations.BaseHorseActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.horse.HorseType;
 
+//czy tu w ogole chcemy miec horseData
+
 public class HorseVisualComponent implements VisualComponent {
     private final BaseHorseActor horseActor;
-    private final HorseType horseType;
 
-    public HorseVisualComponent(HorseType horseType, BaseHorseActor horseActor) {
-        this.horseType = horseType;
+    public HorseVisualComponent(BaseHorseActor horseActor) {
         this.horseActor = horseActor;
         this.horseActor.setMoving(true);
     }
@@ -30,9 +30,6 @@ public class HorseVisualComponent implements VisualComponent {
         horseActor.setMoving(moving);
     }
 
-    public HorseType getHorseType() {
-        return horseType;
-    }
 
     public BaseHorseActor getAnimationActor() {
         return horseActor;

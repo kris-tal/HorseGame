@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import data.horse.HorseData;
 import data.horse.HorseType;
 import services.managers.ResourceManager;
 
 public abstract class BaseHorseActor extends Actor {
-    protected final HorseType horseType;
+    protected final HorseData horseData;
+    private final HorseType horseType;
     protected final Animation<TextureRegion> runAnimation;
     protected final TextureRegion idleFrame;
 
@@ -20,8 +22,9 @@ public abstract class BaseHorseActor extends Actor {
 
     protected final float scale = 3f;
 
-    public BaseHorseActor(HorseType horseType) {
-        this.horseType = horseType;
+    public BaseHorseActor(HorseData horseData) {
+        this.horseData = horseData;
+        this.horseType = horseData.getHorseType();
 
         TextureAtlas animationsAtlas = ResourceManager.horseAnimationsAtlas;
         Array<TextureAtlas.AtlasRegion> runFrames = findAnimationRegions(

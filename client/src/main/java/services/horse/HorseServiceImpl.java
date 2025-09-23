@@ -13,9 +13,11 @@ import java.util.List;
 
 public class HorseServiceImpl implements HorseService {
     private final Gson gson;
+
     public HorseServiceImpl() {
         gson = new Gson();
     }
+
     @Override
     public List<HorseData> getUserHorses() {
         HttpRequest request = SessionManager.getInstance()
@@ -24,7 +26,7 @@ public class HorseServiceImpl implements HorseService {
             HttpResponse<String> result =
                     SessionManager.getInstance().getProtectedRequestsService()
                             .GetHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            if(result.statusCode() == 200) {
+            if (result.statusCode() == 200) {
                 HorsesResponse response = gson.fromJson(result.body(), HorsesResponse.class);
                 return response.getHorses();
             }
@@ -42,7 +44,7 @@ public class HorseServiceImpl implements HorseService {
             HttpResponse<String> result =
                     SessionManager.getInstance().getProtectedRequestsService()
                             .GetHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            if(result.statusCode() == 200) {
+            if (result.statusCode() == 200) {
                 HorseData response = gson.fromJson(result.body(), HorseData.class);
                 return response;
             }
@@ -60,7 +62,7 @@ public class HorseServiceImpl implements HorseService {
             HttpResponse<String> result =
                     SessionManager.getInstance().getProtectedRequestsService()
                             .GetHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            if(result.statusCode() == 200) {
+            if (result.statusCode() == 200) {
                 HorseData response = gson.fromJson(result.body(), HorseData.class);
                 return response;
             }
