@@ -21,17 +21,14 @@ import data.horse.HorseData;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import services.managers.ResourceManager;
-import views.common.ConfirmationPanel;
-import views.common.MenuContext;
-import views.common.Panel;
+import views.common.ui.ConfirmationPanel;
+import views.common.context.MenuContext;
+import views.common.ui.Panel;
 import views.race.multiplayer.RaceMultiplayerScreen;
 import views.race.singleplayer.RaceSingleplayerScreen;
-import views.ranch.info.HorseInfoPanel;
-import views.ranch.race.JoinLobbyPanel;
-import views.ranch.race.WaitingLobbyPanel;
-import views.ranch.race.LobbyMenuPanel;
-import views.ranch.race.RaceMenuPanel;
+import views.race.menu.*;
 import views.ranch.shop.ShopPanel;
+import views.ranch.info.HorseInfoPanel;
 
 import java.util.List;
 
@@ -182,17 +179,24 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
     @Override
     public void render(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            showExitConfirmation();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            game.showTrainingScreen();
+        }
         stage.act(delta);
+        stage.draw();
+        /// For debug purposes
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            game.setScreen(new RaceSingleplayerScreen(game));
+        }
+        stage.act(delta);
+        stage.draw();
 
         horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
         for (int i = 0; i < horses.size; i++) {
             horses.get(i).setZIndex(i + 1);
-        }
-
-        stage.draw();
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            presenter.onExitPressed();
         }
     }
 
@@ -247,10 +251,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
     @Override
     public void showExitConfirmation() {
         if (exitPanel == null) {
-            exitPanel = ConfirmationPanel.getInstance(400, 200, "exit?", () -> {
-                Gdx.app.log("RanchScreen", "confirmed exit");
-                Gdx.app.exit();
-            });
+            exitPanel = ConfirmationPanel.getInstance(400, 200, "exit?", Gdx.app::exit);
             panelManager.registerPanel(exitPanel);
         }
         panelManager.showPanel(exitPanel);

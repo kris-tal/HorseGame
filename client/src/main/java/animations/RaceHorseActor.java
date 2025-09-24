@@ -11,6 +11,11 @@ public class RaceHorseActor extends BaseHorseActor {
         setMoving(true);
     }
 
+    public RaceHorseActor(HorseType horseType) {
+        super(horseType, 3f);
+        setMoving(true);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);

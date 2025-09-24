@@ -11,9 +11,9 @@ import data.shop.PurchaseResult;
 import data.shop.ShopItem;
 import data.shop.ShopResponse;
 import services.shop.ShopServiceImpl;
-import views.common.HorseFactory;
-import views.common.ListPanel;
-import views.common.UIFactory;
+import views.common.ui.HorseFactory;
+import views.common.ui.ListPanel;
+import views.common.ui.UIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +111,6 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception e) {
-                Gdx.app.error("Shop", "Failed to fetch shop data", e);
             }
         }).start();
     }
@@ -127,8 +126,6 @@ public class ShopPanel extends ListPanel<ShopItem> {
                 if (result.success) {
                     refreshShop();
                     if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
-                } else {
-                    Gdx.app.error("Shop", "Horse purchase failed: " + result.message);
                 }
             });
         }).start();
@@ -141,8 +138,6 @@ public class ShopPanel extends ListPanel<ShopItem> {
                 if (result.success) {
                     refreshShop();
                     if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
-                } else {
-                    Gdx.app.error("Shop", "Upgrade purchase failed: " + result.message);
                 }
             });
         }).start();

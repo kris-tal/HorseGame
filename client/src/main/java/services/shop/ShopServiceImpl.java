@@ -55,7 +55,6 @@ public class ShopServiceImpl implements ShopService {
     private PurchaseResult sendPurchaseRequest(int horseId) {
         String requestBody = gson.toJson(Map.of("id", horseId));
 
-        Gdx.app.log("purchase", requestBody);
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
                 .ProtectedPost("/shop",

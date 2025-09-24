@@ -14,11 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
-import views.common.UIStyles;
+import views.common.ui.UIStyles;
 import views.ranch.RanchScreen;
 import views.register.RegisterScreen;
 import services.auth.AuthServiceImpl;
-import views.common.UIFactory;
+import views.common.ui.UIFactory;
 import services.managers.ResourceManager;
 
 public class LoginScreen implements Screen, LoginView {

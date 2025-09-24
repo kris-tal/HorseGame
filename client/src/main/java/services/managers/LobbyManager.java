@@ -46,7 +46,6 @@ public class LobbyManager {
         String code = service.createLobby();
         if (code != null) {
             currentLobby = new LobbyInfo(code);
-            Gdx.app.log("Lobby", "Created lobby! " + code);
             service.joinLobby(code);
         }
     }
@@ -73,17 +72,10 @@ public class LobbyManager {
 
     public boolean startLobby() {
         if (currentLobby == null) {
-            Gdx.app.log("Lobby", "No current lobby to start!");
             return false;
         }
 
-        if (service.startLobby()) {
-            Gdx.app.log("Lobby", "Started lobby successfully");
-            return true;
-        } else {
-            Gdx.app.log("Lobby", "Failed to start lobby");
-            return false;
-        }
+        return service.startLobby();
     }
 
     public LobbyInfo getCurrentLobby() {
@@ -149,10 +141,7 @@ public class LobbyManager {
             if (stateListener != null) {
                 stateListener.onLobbyInitialized();
             }
-            Gdx.app.log("Lobby", "Successfully joined lobby: " +
-                    (currentLobby != null ? currentLobby.getLobbyCode() : "unknown"));
         } else {
-            Gdx.app.error("Lobby", "Failed to join lobby - clearing lobby info");
             currentLobby = null;
         }
     }

@@ -16,7 +16,7 @@ public class AuthServiceImpl implements AuthService {
     private String authToken;
 
     // Move these as static per-game connection parameters (Maybe perhaps select url during launch?)
-    public static final String BASE_URL = "http://localhost:4000";// tutaj dajemy to na czym pracuje nasz flask
+    public static final String BASE_URL = "http://127.0.0.1:5000";// tutaj dajemy to na czym pracuje nasz flask
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
 
 
@@ -91,16 +91,7 @@ public class AuthServiceImpl implements AuthService {
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                     .build();
 
-            Gdx.app.log("DEBUG", "===[DEBUG] Sending request to /signup ===");
-            Gdx.app.log("DEBUG", "URI: " + request.uri());
-            Gdx.app.log("DEBUG", "Headers: " + request.headers().map());
-            Gdx.app.log("DEBUG", "Body: " + requestBody);
-
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            Gdx.app.log("DEBUG", "===[DEBUG] Received response ===");
-            Gdx.app.log("DEBUG", "Status code: " + response.statusCode());
-            Gdx.app.log("DEBUG", "Response body: " + response.body());
 
             return switch (response.statusCode()) {
                 case 201 -> new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
@@ -115,7 +106,6 @@ public class AuthServiceImpl implements AuthService {
             Thread.currentThread().interrupt();
             return new AuthResult(AuthCode.INTERRUPTED, null);
         } catch (Exception e) {
-            Gdx.app.log("DEBUG", "Exception: " + e.getMessage());
             return new AuthResult(AuthCode.SERVER_ERROR, null);
         }
     }

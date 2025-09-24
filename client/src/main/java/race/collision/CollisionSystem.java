@@ -14,6 +14,10 @@ public class CollisionSystem {
 
             obj.onCollision(player);
 
+            if (obj.isObstacle() && !player.isAlive()) {
+                return;
+            }
+
             if (obj instanceof race.objects.CoinObject coin && coin.isTaken()) {
                 map.setObject(lane, col, new race.objects.EmptyObject());
             }

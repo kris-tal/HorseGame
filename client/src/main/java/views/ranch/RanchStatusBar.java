@@ -11,8 +11,8 @@ import core.HorseGame;
 import data.ProfileData;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
-import views.common.UIFactory;
-import views.common.UIStyles;
+import views.common.ui.UIFactory;
+import views.common.ui.UIStyles;
 
 public class RanchStatusBar extends Table {
 
@@ -66,9 +66,8 @@ public class RanchStatusBar extends Table {
                     updateMoney(response.getMoney());
                     updatePrestige(response.getPrestige());
                     setUsername(response.getUsername());
-                } catch (Exception e) {
-                    Gdx.app.error("Profile", "Failed to fetch profile data", e);
-                }
+            } catch (Exception e) {
+            }
             }).start();
         }
         public void setUsername(String username) { usernameLabel.setText(username);}

@@ -6,11 +6,31 @@ import core.HorseGame;
 public class DesktopLauncher {
     public static void main(String[] args) {
         var config = new Lwjgl3ApplicationConfiguration();
-        config.setForegroundFPS(60);
         config.setTitle("Horse Game");
+        config.setForegroundFPS(60);
+        
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        config.setFullscreenMode(displayMode);
-        //config.setWindowedMode(1024, 768);
-        new Lwjgl3Application(new HorseGame(), config);
+        
+        config.setWindowedMode(displayMode.width, displayMode.height);
+        config.setDecorated(false); 
+        config.setResizable(false);
+        
+        try {
+            new Lwjgl3Application(new HorseGame(), config);
+        } catch (Exception e) {
+            System.err.println("Failed to start in windowed fullscreen mode: " + e.getMessage());
+            var fallbackConfig = new Lwjgl3ApplicationConfiguration();
+            fallbackConfig.setTitle("Horse Game");
+            fallbackConfig.setForegroundFPS(60);
+            fallbackConfig.setWindowedMode(1024, 768);
+            fallbackConfig.setDecorated(true);
+            
+            try {
+                new Lwjgl3Application(new HorseGame(), fallbackConfig);
+            } catch (Exception fallbackException) {
+                System.err.println("Fallback configuration also failed: " + fallbackException.getMessage());
+                System.exit(1);
+            }
+        }
     }
 }

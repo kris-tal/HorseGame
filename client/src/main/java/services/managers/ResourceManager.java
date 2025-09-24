@@ -102,7 +102,6 @@ public class ResourceManager {
         if (assetManager.isLoaded(path)) {
             return assetManager.get(path, Texture.class);
         }
-        Gdx.app.log("ResourceManager", "Texture not loaded: " + path);
         return null;
     }
 
@@ -117,7 +116,6 @@ public class ResourceManager {
         if (assetManager.isLoaded(path)) {
             return assetManager.get(path, Skin.class);
         }
-        Gdx.app.log("ResourceManager", "Skin not loaded: " + path);
         return null;
     }
 

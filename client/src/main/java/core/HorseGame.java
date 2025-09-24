@@ -3,6 +3,10 @@ package core;
 import com.badlogic.gdx.Game;
 import views.login.LoginScreen;
 import views.register.RegisterScreen;
+import views.training.screen.TrainingScreen;
+import views.training.manager.TrainingManager;
+import race.map.TrainingMapGenerator;
+import race.input.KeyboardInputHandler;
 import services.managers.ResourceManager;
 
 public class HorseGame extends Game {
@@ -13,7 +17,7 @@ public class HorseGame extends Game {
 
     @Override
     public void create() {
-        //resourceManager = new ResourceManager();
+        resourceManager = new ResourceManager();
         loginScreen = new LoginScreen(this);
         registerScreen = new RegisterScreen(this);
         setScreen(loginScreen);
@@ -25,6 +29,14 @@ public class HorseGame extends Game {
 
     public void showRegisterScreen() {
         setScreen(registerScreen);
+    }
+
+    public void showTrainingScreen() {
+        TrainingMapGenerator mapGenerator = new TrainingMapGenerator();
+        KeyboardInputHandler inputHandler = new KeyboardInputHandler();
+        TrainingManager trainingManager = new TrainingManager(mapGenerator, inputHandler);
+        TrainingScreen trainingScreen = trainingManager.createTrainingScreen(this);
+        setScreen(trainingScreen);
     }
 
     @Override

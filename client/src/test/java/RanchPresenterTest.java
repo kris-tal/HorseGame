@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import views.common.MenuContext;
-import views.common.Panel;
+import views.common.context.MenuContext;
+import views.common.ui.Panel;
 import views.ranch.RanchPresenter;
 import views.ranch.RanchView;
 

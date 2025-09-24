@@ -16,7 +16,6 @@ public class LobbyTracker {
 
     public void updateFromServer(String jsonData) {
         try {
-            Gdx.app.log("LobbyTracker", "Received data: " + jsonData);
             List<PlayerInfoClient> players = gson.fromJson(jsonData, PlayerListResponse.class).getPlayers();
 
             if (players != null) {
@@ -27,7 +26,6 @@ public class LobbyTracker {
                 LobbyManager.getInstance().updatePlayers(map);
             }
         } catch (Exception e) {
-            Gdx.app.error("LobbyTracker", "Error parsing player data: " + e.getMessage());
         }
     }
 }

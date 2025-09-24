@@ -1,9 +1,16 @@
 package views.ranch;
 
-import views.common.Panel;
-import views.common.MenuContext;
-import views.ranch.race.JoinLobbyPanel;
-import views.ranch.race.WaitingLobbyPanel;
+import views.common.ui.Panel;
+import views.common.context.MenuContext;
+import views.race.menu.WaitingLobbyPanel;
+import views.race.menu.JoinLobbyPanel;
+
+/*
+    TODO:
+    * Change LobbyMode.CREATE to LobbyMode.WAITING
+    * Make the steering for lobby switching be outside of the WAITING section
+    * Make WAITING
+ */
 
 public class RanchPresenter {
     private final RanchView view;

@@ -27,10 +27,11 @@ class Horse(db.Model):
     __tablename__ = 'horses'
     id = db.Column(db.Integer, primary_key=True)
     name_id = db.Column(db.Integer, db.ForeignKey('horse_types.id'), nullable=False)
-    level = db.Column(db.Integer, default=1)
+    level = db.Column(db.Integer, default=0)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     owner = db.relationship('User', backref=db.backref('horses', cascade='all, delete'))
     training_points = db.Column(db.Integer, default=0)
+    longest_run_distance = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f'<Horse {self.name} ({self.level})>'

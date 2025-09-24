@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
 import race.Player;
 import race.camera.CameraSystem;
-import race.VisualComponent.HorseVisualComponent;
+import animations.BaseHorseActor;
 import services.managers.ResourceManager;
 
 public class RendererSystem {
@@ -15,33 +15,41 @@ public class RendererSystem {
         this.camera = camera;
     }
 
-    public void render(SpriteBatch batch, GameMap map, Player player, HorseVisualComponent horseVisual) {
+    public void render(SpriteBatch batch, GameMap map, Player player, BaseHorseActor horseActor) {
         renderMap(batch, map);
-        renderPlayer(batch, player, horseVisual);
+        renderPlayer(batch, player, horseActor);
         renderVisionEffect(batch, player);
     }
 
     private void renderMap(SpriteBatch batch, GameMap map) {
         int startCol = (int) camera.getScrollX() - 1;
-        int endCol = Math.min(startCol + camera.getVisibleCols() + 1, map.getLength()) + 1;
+        int endCol = startCol + camera.getVisibleCols() + 2;
+
+        if (endCol > map.getLength()) {
+            endCol = map.getLength();
+        }
 
         for (int lane = 0; lane < map.getLanes(); lane++) {
             for (int col = startCol; col < endCol; col++) {
-                var obj = map.getObject(lane, col);
-                if (obj != null) {
-                    float x = camera.getScreenX(col);
-                    float y = camera.getScreenY(lane);
-                    obj.render(batch, x, y, camera.getCellSize());
+                if (col >= 0) {
+                    var obj = map.getObject(lane, col);
+                    if (obj != null) {
+                        float x = camera.getScreenX(col);
+                        float y = camera.getScreenY(lane);
+                        obj.render(batch, x, y, camera.getCellSize());
+                    }
                 }
             }
         }
     }
 
-    private void renderPlayer(SpriteBatch batch, Player player, HorseVisualComponent horseVisual) {
-        float px = camera.getLeftOffset() + camera.getCellSize() * 0.5f; // Center-left position
+    private void renderPlayer(SpriteBatch batch, Player player, BaseHorseActor horseActor) {
+        float px = camera.getLeftOffset() + camera.getCellSize() * 0.5f;
         float py = camera.getScreenY(player.getLane());
         
-        horseVisual.render(batch, px, py, camera.getCellSize());
+        horseActor.setPosition(px, py);
+        horseActor.setSize(camera.getCellSize(), camera.getCellSize());
+        horseActor.draw(batch, 1f);
     }
 
     private void renderVisionEffect(SpriteBatch batch, Player player) {

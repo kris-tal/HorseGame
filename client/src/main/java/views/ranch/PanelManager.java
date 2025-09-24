@@ -1,8 +1,9 @@
 package views.ranch;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import views.common.Panel;
-import views.common.ListPanel;
+import views.common.ui.Panel;
+import views.common.ui.ListPanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class PanelManager {
 
     public void showPanel(Panel panel) {
         hideAllPanels();
-        panel.show(stage.getWidth(), stage.getHeight());
+        panel.show(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        panel.toFront();
 
         if (panel instanceof ListPanel listPanel) {
             stage.setScrollFocus(listPanel.getScrollPane());

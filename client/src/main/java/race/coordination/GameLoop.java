@@ -1,13 +1,12 @@
 package race.coordination;
 
 import race.Player;
-import race.VisualComponent.HorseVisualComponent;
+import animations.BaseHorseActor;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
 import race.input.InputHandler;
 import race.rendering.RendererSystem;
 import data.race.GameMap;
-
 
 public class GameLoop {
     private final InputHandler inputHandler;
@@ -23,7 +22,7 @@ public class GameLoop {
         this.rendererSystem = rendererSystem;
     }
 
-    public void update(Player player, HorseVisualComponent horseVisual, GameMap map, float delta) {
+    public void update(Player player, BaseHorseActor horseActor, GameMap map, float delta) {
         if (!player.isAlive()) return;
 
         cameraSystem.update(player, map);
@@ -31,14 +30,14 @@ public class GameLoop {
         inputHandler.processInput(player, delta);
 
         player.update(delta);
-        horseVisual.update(delta);
-        horseVisual.setMoving(true);
+        horseActor.act(delta);
+        horseActor.setMoving(true);
 
         collisionSystem.checkCollisions(player, map);
     }
 
     public void render(com.badlogic.gdx.graphics.g2d.SpriteBatch batch, GameMap map, 
-                      Player player, HorseVisualComponent horseVisual) {
-        rendererSystem.render(batch, map, player, horseVisual);
+                      Player player, BaseHorseActor horseActor) {
+        rendererSystem.render(batch, map, player, horseActor);
     }
 }

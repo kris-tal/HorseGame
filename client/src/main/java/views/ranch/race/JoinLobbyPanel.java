@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import services.managers.LobbyManager;
-import views.common.ListPanel;
-import views.common.UIFactory;
+import views.common.ui.ListPanel;
+import views.common.ui.UIFactory;
 
 public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConnectionListener {
 

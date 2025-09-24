@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
-import views.common.Panel;
-import views.common.UIFactory;
+import views.common.ui.Panel;
+import views.common.ui.UIFactory;
 
 public class HorseInfoPanel extends Panel {
     private final HorseData horseData;
@@ -20,7 +20,6 @@ public class HorseInfoPanel extends Panel {
     public HorseInfoPanel(HorseData horseData) {
         super(400, 600);
         this.horseData = horseData;
-        Gdx.app.log("HorseInfoPanel", horseData.getHorseType().getName());
         super.build();
 
     }

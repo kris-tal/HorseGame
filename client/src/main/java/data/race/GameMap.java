@@ -17,6 +17,9 @@ public class GameMap {
     public MapObject getObject(int lane, int col) {
         if (lane < 0 || lane >= lanes || col < 0 || col >= length)
             return new EmptyObject();
+        if (map == null) {
+            return new EmptyObject();
+        }
         return map[lane][col];
     }
 

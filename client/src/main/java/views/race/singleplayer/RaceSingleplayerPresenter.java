@@ -1,27 +1,18 @@
 package views.race.singleplayer;
 
 import race.*;
-import race.config.RaceConfig;
-import race.factory.RaceFactory;
+import race.config.BaseGameConfig;
+import race.factory.GameFactory;
 import race.state.GameStateManager;
+import presentation.common.BaseGamePresenter;
 
-public class RaceSingleplayerPresenter {
-    private RaceWorld world;
-    private final GameStateManager gameStateManager;
-    private final RaceFactory raceFactory;
-    private final RaceConfig raceConfig;
+public class RaceSingleplayerPresenter extends BaseGamePresenter {
 
-    public RaceSingleplayerPresenter(RaceFactory raceFactory, RaceConfig raceConfig) {
-        this.raceFactory = raceFactory;
-        this.raceConfig = raceConfig;
-        this.gameStateManager = new GameStateManager();
+    public RaceSingleplayerPresenter(GameFactory gameFactory, BaseGameConfig raceConfig) {
+        super(gameFactory, raceConfig);
     }
 
-    public void init() {
-        world = raceFactory.createRaceWorld(raceConfig);
-        gameStateManager.reset();
-    }
-
+    @Override
     public void update(float delta) {
         if (gameStateManager.isRaceFinished()) return;
 
@@ -29,24 +20,8 @@ public class RaceSingleplayerPresenter {
         gameStateManager.update(world.getPlayer(), world.getMap());
     }
 
-    public RaceWorld getWorld() {
-        return world;
-    }
-
-    public int getDistance() {
-        return (int) (10 * world.getPlayer().getCol());
-    }
-
     public int getCoins() {
         return world.getPlayer().getCoins();
-    }
-
-    public boolean isRaceFinished() {
-        return gameStateManager.isRaceFinished();
-    }
-
-    public boolean isPlayerDead() {
-        return gameStateManager.isPlayerDead();
     }
 
     public boolean isRaceCompleted() {

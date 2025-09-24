@@ -49,11 +49,9 @@ public class LobbyServiceImpl implements LobbyService {
                 isLobbyCreator = true;
                 return lobbyCode;
             } else {
-                Gdx.app.error("Lobby", "Failed to create lobby: " + response.body());
                 return null;
             }
         } catch (IOException | InterruptedException e) {
-            Gdx.app.error("Lobby", "Error creating lobby: " + e.getMessage());
             return null;
         }
     }
@@ -73,11 +71,9 @@ public class LobbyServiceImpl implements LobbyService {
             sessionSocket.connect();
 
             // Return true immediately - actual connection status handled via events
-            Gdx.app.log("Lobby", "Attempting to join lobby: " + room);
             return true; // FIXED: Was returning false always
 
         } catch (Exception e) {
-            Gdx.app.error("Lobby", "Error joining lobby: " + e.getMessage());
             currentLobby = null;
             return false;
         }
@@ -85,15 +81,9 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public boolean startLobby() {
-        if (currentLobby == null) {
-            Gdx.app.log("Lobby", "No lobby to start!");
-            return false;
-        }
+        if (currentLobby == null) return false;
 
-        if (!isLobbyCreator) {
-            Gdx.app.log("Lobby", "Only lobby creator can start the game!");
-            return false;
-        }
+        if (!isLobbyCreator) return false;
 
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
@@ -106,15 +96,8 @@ public class LobbyServiceImpl implements LobbyService {
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 200) {
-                Gdx.app.log("Lobby", "Lobby started successfully!");
-                return true;
-            } else {
-                Gdx.app.log("Lobby", "Failed to start lobby: " + response.body());
-                return false;
-            }
+            return response.statusCode() == 200;
         } catch (IOException | InterruptedException e) {
-            Gdx.app.log("Lobby", "Error starting lobby: " + e.getMessage());
             return false;
         }
     }
@@ -123,12 +106,10 @@ public class LobbyServiceImpl implements LobbyService {
         sessionSocket.on("player_joined", args -> {
             if (args.length > 1) {
                 String data = args[1].toString();
-                Gdx.app.log("Lobby", "Player joined: " + data);
                 lobbyTracker.updateFromServer(data);
             } else {
                 String data = args[0].toString();
                 lobbyTracker.updateFromServer(data);
-                Gdx.app.log("Lobby", "player_joined event with no payload");
             }
         });
 
@@ -140,17 +121,14 @@ public class LobbyServiceImpl implements LobbyService {
         sessionSocket.on("player_left", args -> {
             if (args.length > 1) {
                 String data = args[1].toString();
-                Gdx.app.log("Lobby", "player_left primary: " + data);
                 lobbyTracker.updateFromServer(data);
             } else {
                 String data = args[0].toString();
                 lobbyTracker.updateFromServer(data);
-                Gdx.app.log("Lobby", "player_left secondary: " + data );
             }
         });
 
         sessionSocket.on("lobby_started", args -> {
-            Gdx.app.log("Lobby", "Lobby has been started by creator!");
             LobbyManager.getInstance().onLobbyStarted();
         });
 
@@ -161,14 +139,12 @@ public class LobbyServiceImpl implements LobbyService {
         sessionSocket.on("connect", args -> {
             try {
                 currentUserUsername = new ProfileServiceImpl().getUserData().getUsername();
-                Gdx.app.log("Lobby", "Connected to lobby successfully!");
                 connected = true;
 
                 Gdx.app.postRunnable(() -> {
                     LobbyManager.getInstance().onLobbyJoined(true);
                 });
             } catch (Exception e) {
-                Gdx.app.error("Lobby", "Error getting user data: " + e.getMessage());
                 Gdx.app.postRunnable(() -> {
                     LobbyManager.getInstance().onLobbyJoined(false);
                 });
@@ -176,13 +152,11 @@ public class LobbyServiceImpl implements LobbyService {
         });
 
         sessionSocket.on("disconnect", args -> {
-            Gdx.app.log("Lobby", "Disconnected from lobby socket");
             connected = false;
             LobbyManager.getInstance().onLobbyClosed();
         });
 
         sessionSocket.on(Socket.EVENT_CONNECT_ERROR, args -> {
-            Gdx.app.error("Lobby", "Connection error: " + args[0]);
             connected = false;
 
             Gdx.app.postRunnable(() -> {

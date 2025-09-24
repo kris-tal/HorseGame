@@ -1,7 +1,6 @@
 package race.config;
 
 import data.horse.HorseData;
-import data.horse.HorseType;
 
 public class RaceConfig {
     private final int lanes;

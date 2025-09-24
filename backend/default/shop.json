@@ -1,0 +1,23 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "name": "Basic Horse",
+            "price": 100,
+            "type": "horse",
+            "description": "A basic horse for beginners"
+        },
+        {
+            "id": 2,
+            "name": "Speed Boost",
+            "price": 50,
+            "type": "powerup",
+            "description": "Temporarily increases horse speed"
+        }
+    ],
+    "user_money": 1000
+}
+
+
+
+
