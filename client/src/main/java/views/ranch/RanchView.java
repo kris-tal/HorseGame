@@ -8,4 +8,6 @@ public interface RanchView {
     void hideAllPanels();
 
     void navigateToRace();
+
+    void showExitConfirmation();
 }

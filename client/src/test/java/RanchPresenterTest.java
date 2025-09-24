@@ -40,14 +40,6 @@ class RanchPresenterTest {
     }
 
     @Test
-    void rankingButton_showsRankingPanel() {
-        presenter.onRankingButtonClicked(dummyPanel);
-        verify(view).hideAllPanels();
-        verify(view).showPanel(dummyPanel);
-        verifyNoMoreInteractions(view, menuContext);
-    }
-
-    @Test
     void singleplayer_setsModeAndShowsPanel() {
         presenter.onSingleplayerClicked();
         verify(menuContext).setRaceMode(MenuContext.RaceMode.SINGLEPLAYER);

@@ -1,16 +1,9 @@
 package views.ranch;
 
-import views.common.MenuContext;
 import views.common.Panel;
-import views.ranch.race.WaitingLobbyPanel;
+import views.common.MenuContext;
 import views.ranch.race.JoinLobbyPanel;
-
-/*
-    TODO:
-    * Change LobbyMode.CREATE to LobbyMode.WAITING
-    * Make the steering for lobby switching be outside of the WAITING section
-    * Make WAITING
- */
+import views.ranch.race.WaitingLobbyPanel;
 
 public class RanchPresenter {
     private final RanchView view;
@@ -27,11 +20,6 @@ public class RanchPresenter {
     }
 
     public void onShopButtonClicked(Panel panel) {
-        view.hideAllPanels();
-        view.showPanel(panel);
-    }
-
-    public void onRankingButtonClicked(Panel panel) {
         view.hideAllPanels();
         view.showPanel(panel);
     }
@@ -59,5 +47,9 @@ public class RanchPresenter {
         menuContext.setLobbyMode(MenuContext.LobbyMode.JOIN);
         view.hideAllPanels();
         view.showPanel(panel);
+    }
+
+    public void onExitPressed() {
+        view.showExitConfirmation();
     }
 }
