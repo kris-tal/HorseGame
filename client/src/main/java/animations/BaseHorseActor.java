@@ -20,11 +20,16 @@ public abstract class BaseHorseActor extends Actor {
     protected boolean moving = false;
     protected boolean facingRight = true;
 
-    protected final float scale = 3f;
+    protected final float scale;
 
-    public BaseHorseActor(HorseData horseData) {
+    public BaseHorseActor(HorseType horseType, float scale) {
+        this(horseType, null, scale);
+    }
+
+    public BaseHorseActor(HorseType horseType, HorseData horseData, float scale) {
         this.horseData = horseData;
-        this.horseType = horseData.getHorseType();
+        this.horseType = horseType;
+        this.scale = scale;
 
         TextureAtlas animationsAtlas = ResourceManager.horseAnimationsAtlas;
         Array<TextureAtlas.AtlasRegion> runFrames = findAnimationRegions(
@@ -35,7 +40,7 @@ public abstract class BaseHorseActor extends Actor {
         TextureAtlas idleFrameAtlas = ResourceManager.horsesAtlas;
         idleFrame = idleFrameAtlas.findRegion(horseType.getAtlasKey());
 
-        setSize(idleFrame.getRegionWidth() * scale, idleFrame.getRegionHeight() * scale);
+        setSize(idleFrame.getRegionWidth() * this.scale, idleFrame.getRegionHeight() * this.scale);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package views.ranch.shop;
 
+import animations.IdleHorseActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -80,10 +81,10 @@ public class ShopPanel extends ListPanel<ShopItem> {
         row.pad(5);
         row.setTouchable(Touchable.enabled);
 
-        if(item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
+        if (item.isOwned()) row.setBackground(UIFactory.createDarkerBackgroundDrawable());
         else row.setBackground(UIFactory.createDefaultBackgroundDrawable());
 
-        row.add(HorseFactory.createHorseImage(item.getHorseType())).expandX().left().padLeft(20);
+        row.add(new IdleHorseActor(item.getHorseType(), 1)).expandX().left().padLeft(20);
         row.add(UIFactory.createLabel(item.getName())).expandX().left().pad(10);
         row.add(UIFactory.createLabel(String.valueOf(item.getPrice()))).right().pad(10);
 
@@ -106,7 +107,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
                     allItems.add(new ShopItem(HorseType.fromId(h.id), h.price, false, false));
 
                 for (ShopResponse.Upgrade u : response.upgrades)
-                    allItems.add(new ShopItem(HorseType.fromId(u.id), u.price,true, true));
+                    allItems.add(new ShopItem(HorseType.fromId(u.id), u.price, true, true));
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception e) {

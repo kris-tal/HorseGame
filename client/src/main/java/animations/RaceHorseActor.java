@@ -6,8 +6,8 @@ import data.horse.HorseType;
 public class RaceHorseActor extends BaseHorseActor {
     private float speed = 200f;
 
-    public RaceHorseActor(HorseData horseData) {
-        super(horseData);
+    public RaceHorseActor(HorseData horseData, float scale) {
+        super(horseData.getHorseType(), horseData, scale);
         setMoving(true);
     }
 

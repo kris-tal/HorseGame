@@ -10,6 +10,7 @@ public class RaceStatsPanel extends Panel {
 
     public RaceStatsPanel(float width, float height) {
         super(width, height);
+        build();
     }
 
     @Override

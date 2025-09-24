@@ -42,11 +42,11 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
     private Stage stage;
 
     private RaceMenuPanel raceMenuPanel;
-    private HorseSelectionPanel horseSelectionPanel;
     private LobbyMenuPanel lobbyMenuPanel;
     private WaitingLobbyPanel createLobbyPanel;
     private JoinLobbyPanel joinLobbyPanel;
     private ShopPanel shopPanel;
+    private HorseInfoPanel horseInfoPanel;
 
     private Array<StrollingHorseActor> horses = new Array<StrollingHorseActor>();
     private Rectangle fence;
@@ -71,9 +71,9 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         List<HorseData> ownedHorses = horseService.getUserHorses();
 
         for (HorseData horse : ownedHorses) {
-
             StrollingHorseActor strollingHorseActor = new StrollingHorseActor(
                     horse,
+                    3,
                     fence.x,
                     fence.x + fence.width,
                     fence.y,
@@ -82,18 +82,17 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
             strollingHorseActor.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    showHorseInfo(strollingHorseActor.getHorseData());
+                    horseInfoPanel = new HorseInfoPanel(horse);
+                    showHorseInfo();
                 }
 
                 @Override
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    // Change cursor to hand
                     Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
                 }
 
                 @Override
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                    // Revert cursor back to arrow
                     Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                 }
             });
@@ -119,7 +118,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         float panelHeight = Gdx.graphics.getHeight() / 2f;
 
         raceMenuPanel = new RaceMenuPanel(panelWidth, panelHeight);
-        horseSelectionPanel = new HorseSelectionPanel(panelWidth, panelHeight);
         lobbyMenuPanel = new LobbyMenuPanel(panelWidth, panelHeight);
         lobbyMenuPanel.setListener(mode -> {
             menuContext.setLobbyMode(mode);
@@ -156,7 +154,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
 
         stage.addActor(raceMenuPanel);
-        stage.addActor(horseSelectionPanel);
         stage.addActor(lobbyMenuPanel);
         stage.addActor(createLobbyPanel);
         stage.addActor(joinLobbyPanel);
@@ -194,19 +191,18 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         }
     }
 
-    private void showHorseInfo(HorseData horseData) {
-        HorseInfoPanel infoPanel = new HorseInfoPanel(horseData);
-        stage.addActor(infoPanel);
-        showPanel(infoPanel);
+    private void showHorseInfo() {
+        stage.addActor(horseInfoPanel);
+        showPanel(horseInfoPanel);
     }
 
     public void hideAllPanels() {
         raceMenuPanel.hide();
-        horseSelectionPanel.hide();
         lobbyMenuPanel.hide();
         createLobbyPanel.hide();
         joinLobbyPanel.hide();
         shopPanel.hide();
+        if (horseInfoPanel != null) horseInfoPanel.hide();
     }
 
     @Override
@@ -258,19 +254,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
     public void hide() {
     }
 
-    private void onRaceMenuButtonClicked() {
-        showPanel(raceMenuPanel);
-    }
-
-    private void onSingleplayerChosen() {
-        showPanel(horseSelectionPanel);
-    }
-
-    private void onMultiplayerChosen() {
-        showPanel(horseSelectionPanel);
-        // after horse selection:
-        // showPanel(lobbyPanel);
-    }
 
     private void showExitConfirmation() {
         ConfirmationPanel confirmationPanel = ConfirmationPanel.getInstance(400, 200, "Exit?", () -> {

@@ -16,6 +16,7 @@ public class LobbyMenuPanel extends Panel {
 
     public LobbyMenuPanel(float width, float height) {
         super(width, height);
+        super.build();
     }
 
     @Override

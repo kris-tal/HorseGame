@@ -11,8 +11,8 @@ public class StrollingHorseActor extends BaseHorseActor {
     private float idleTimer = 0f;
     private float nextMoveDelay = 0f;
 
-    public StrollingHorseActor(HorseData horseData, float minX, float maxX, float minY, float maxY) {
-        super(horseData);
+    public StrollingHorseActor(HorseData horseData, float scale, float minX, float maxX, float minY, float maxY) {
+        super(horseData.getHorseType(), horseData, scale);
         this.minX = minX;
         this.maxX = maxX;
         this.minY = minY;

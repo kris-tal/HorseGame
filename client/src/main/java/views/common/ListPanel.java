@@ -21,6 +21,7 @@ public abstract class ListPanel<T> extends Panel {
 
     public ListPanel(float width, float height) {
         super(width, height);
+        super.build();
     }
 
     @Override
@@ -38,7 +39,8 @@ public abstract class ListPanel<T> extends Panel {
 
     protected abstract void populateRow(Table row, T item);
 
-    protected void onEscapePressed() {}
+    protected void onEscapePressed() {
+    }
 
     protected void onItemSelected(T item, Table row) {
         if (lastSelectedRow != null)

@@ -17,6 +17,7 @@ public class RaceMenuPanel extends Panel {
 
     public RaceMenuPanel(float width, float height) {
         super(width, height);
+        super.build();
     }
 
     @Override

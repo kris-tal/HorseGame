@@ -27,7 +27,7 @@ public class RaceFactory {
         Player player = new Player(config.getHorseData(), config.getLanes() / 2, config.getSpeed());
         player.makeSprintAvailable();
 
-        RaceHorseActor raceHorseActor = new RaceHorseActor(config.getHorseData());
+        RaceHorseActor raceHorseActor = new RaceHorseActor(config.getHorseData(), 3);
         HorseVisualComponent horseVisual = new HorseVisualComponent(raceHorseActor);
         CameraSystem cameraSystem = new CameraSystem(map, config.getVisibleCols());
         RendererSystem rendererSystem = new RendererSystem(cameraSystem);

@@ -15,23 +15,10 @@ public abstract class Panel extends Table {
     private final float width;
     private final float height;
 
-    private String title;
-
     public Panel(float width, float height) {
         super();
         this.width = width;
         this.height = height;
-        build();
-        setVisible(false);
-    }
-
-    public Panel(float width, float height, String title) {
-        super();
-
-        this.width = width;
-        this.height = height;
-        this.title = title;
-        build();
         setVisible(false);
     }
 
@@ -42,10 +29,10 @@ public abstract class Panel extends Table {
         setSize(width, height);
         pad(smallPadding);
 
-        if (this.title == null) this.title = getTitle();
-
-        Label title = UIFactory.createLargeLabel(this.title);
-        content.add(title).padBottom(defaultPadding).center().row();
+        if (getTitle() != null) {
+            Label titleLabel = UIFactory.createLargeLabel(getTitle());
+            content.add(titleLabel).padBottom(defaultPadding).center().row();
+        }
 
         addContent(width, height);
 

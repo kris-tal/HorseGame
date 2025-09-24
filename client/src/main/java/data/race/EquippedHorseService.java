@@ -30,4 +30,9 @@ public class EquippedHorseService {
     public void equipHorse(HorseData horse) {
         this.equippedHorse = horse;
     }
+
+    public boolean isEquipped(HorseData horseData) {
+        if (equippedHorse != horseData) return false;
+        return true;
+    }
 }

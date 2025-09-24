@@ -27,6 +27,7 @@ public class UIStyles {
     static {
         defaultFont.getData().setScale(0.5f);
         mediumFont.getData().setScale(0.8f);
+        mediumFont.getData().setLineHeight(mediumFont.getData().lineHeight * 2f);
         largeFont.getData().setScale(1.5f);
     }
 
