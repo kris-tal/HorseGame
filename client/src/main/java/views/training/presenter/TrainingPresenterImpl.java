@@ -40,10 +40,7 @@ public class TrainingPresenterImpl implements TrainingPresenter {
         gameController.updateGame(delta);
         checkDistanceForPoints();
         uiController.updateUI();
-        
-        if (gameController.isTrainingCompleted()) {
-            handleTrainingCompletion();
-        }
+
     }
 
     private void checkDistanceForPoints() {
@@ -82,7 +79,7 @@ public class TrainingPresenterImpl implements TrainingPresenter {
         int distance = (int) player.getCol() * 10;
         int sessionPoints = dataController.getSessionPointsEarned();
         
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, true);
+        TrainingData trainingData = createTrainingData(distance, sessionPoints, false);
         TrainingResponse response = dataController.saveTrainingData(trainingData);
         
         uiController.showTrainingFailure(distance);
@@ -96,13 +93,23 @@ public class TrainingPresenterImpl implements TrainingPresenter {
         int distance = (int) player.getCol() * 10;
         int sessionPoints = dataController.getSessionPointsEarned();
         
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, true);
+        TrainingData trainingData = createTrainingData(distance, sessionPoints, false);
         trainingData.horseId = horseId;
         TrainingResponse response = dataController.saveTrainingData(trainingData);
     }
 
     public void completeTraining(int horseId) {
-        handleTrainingCompletion();
+        RaceWorld world = gameController.getGameWorld();
+        if (world == null) return;
+
+        int distance = (int) world.getPlayer().getCol() * 10;
+        int sessionPoints = dataController.getSessionPointsEarned();
+
+        TrainingData trainingData = createTrainingData(distance, sessionPoints, true);
+        trainingData.horseId = horseId;
+        TrainingResponse response = dataController.saveTrainingData(trainingData);
+
+        uiController.showTrainingCompletion(true, sessionPoints, distance);
     }
 
     private TrainingData createTrainingData(int distance, int points, boolean success) {

@@ -10,7 +10,6 @@ public class HorseData {
     private final int training_points;
     private final int longest_run_distance;
 
-    // Default constructor for Gson
     public HorseData() {
         this.id = 0;
         this.name = 0;
@@ -35,7 +34,7 @@ public class HorseData {
     public int getTrainingPoints() { return training_points; }
     public int getLongestRunDistance() { return longest_run_distance; }
 
-    public HorseType getHorseType() { return HorseType.fromId(id); }
+    public HorseType getHorseType() { return HorseType.fromId(name); }
 
     @Override
     public String toString() {

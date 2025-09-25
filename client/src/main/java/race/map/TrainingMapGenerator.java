@@ -12,3 +12,5 @@ public class TrainingMapGenerator extends AbstractMapGenerator {
 
 
 
+
+

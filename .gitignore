@@ -25,3 +25,4 @@ backend/instance/
 hs_err_pid*.log
 *.log
 *.log.*
+.venv/

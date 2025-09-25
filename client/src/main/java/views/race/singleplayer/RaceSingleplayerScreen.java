@@ -7,6 +7,10 @@ import data.horse.HorseData;
 import race.RaceWorld;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import services.training.TrainingService;
+import services.training.TrainingServiceImpl;
+import data.training.TrainingData;
+import data.training.TrainingResponse;
 import views.common.base.BaseGameScreen;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
@@ -20,10 +24,12 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
     private RaceStatsPanel statsPanel;
     private SprintWidget sprintWidget;
     private final HorseService horseService;
+    private final TrainingService trainingService;
 
     public RaceSingleplayerScreen(HorseGame game) {
         super(game);
         this.horseService = new HorseServiceImpl();
+        this.trainingService = new TrainingServiceImpl();
 
         List<HorseData> horses = horseService.getUserHorses();
         float cooldownReduction = 0f;
@@ -82,6 +88,19 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         
         if (!onGameFinished) {
             if (presenter.isPlayerDead()) {
+                try {
+                    var horses = horseService.getUserHorses();
+                    if (horses != null && !horses.isEmpty()) {
+                        TrainingData td = new TrainingData();
+                        td.horseId = horses.getFirst().getId();
+                        td.distance = presenter.getDistance();
+                        td.success = false;
+                        td.pointsEarned = 0;
+                        td.longestRunDistance = 0;
+                        td.money = presenter.getCoins();
+                        TrainingResponse ignored = trainingService.sendTrainingData(td);
+                    }
+                } catch (Exception ignored) {}
                 onGameFinished = true;
                 new Thread(() -> {
                     try {
@@ -92,6 +111,19 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
                     }
                 }).start();
             } else {
+                try {
+                    var horses = horseService.getUserHorses();
+                    if (horses != null && !horses.isEmpty()) {
+                        TrainingData td = new TrainingData();
+                        td.horseId = horses.getFirst().getId();
+                        td.distance = presenter.getDistance();
+                        td.success = true;
+                        td.pointsEarned = 0;
+                        td.longestRunDistance = 0;
+                        td.money = presenter.getCoins();
+                        TrainingResponse ignored = trainingService.sendTrainingData(td);
+                    }
+                } catch (Exception ignored) {}
                 onGameFinished = true;
                 new Thread(() -> {
                     try {

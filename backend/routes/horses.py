@@ -74,7 +74,6 @@ def get_user_horse_by_name(horse_id):
             "longest_run_distance": horse.longest_run_distance
         }), 200
 
-# Helper functions (for shop functionalities)
 def add_horse(user_id, name_id):
     new_horse = Horse(owner_id=user_id, name_id=name_id)
     db.session.add(new_horse)
@@ -175,20 +174,19 @@ def finish_training():
     money = data.money
     
     
+    if points_earned > 0:
+        horse.training_points += points_earned
+        if horse.training_points > 10000:
+            horse.training_points = 10000
+
+    if longest_run_distance > horse.longest_run_distance:
+        horse.longest_run_distance = longest_run_distance
+        print(f"New longest run record: {longest_run_distance}m")
+
     if success:
-        if points_earned > 0:
-            horse.training_points += points_earned
-            
-            if horse.training_points > 10000:
-                horse.training_points = 10000
-        
-        if longest_run_distance > horse.longest_run_distance:
-            horse.longest_run_distance = longest_run_distance
-            print(f"New longest run record: {longest_run_distance}m")
-        
         print(f"Training completed: distance={distance}m, points_earned={points_earned}, total_points={horse.training_points}")
     else:
-        print(f"Training failed: {distance}m")
+        print(f"Training failed: distance={distance}m, points_earned={points_earned}, total_points={horse.training_points}")
     
     level = horse.level  
     training_points = horse.training_points

@@ -41,6 +41,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
     private PanelManager panelManager;
 
     private Array<StrollingHorseActor> horses = new Array<>();
+    private final java.util.Map<Integer, com.badlogic.gdx.math.Vector2> horseIdToPosition = new java.util.HashMap<>();
     private Rectangle fence;
 
     private RaceMenuPanel raceMenuPanel;
@@ -93,10 +94,45 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
                     fence.y, fence.y + fence.height
             );
             actor.addListener(new HorseClickListener(horse));
-            actor.setPosition(
-                    MathUtils.random(fence.x, fence.x + fence.width),
-                    MathUtils.random(fence.y, fence.y + fence.height)
+            com.badlogic.gdx.math.Vector2 saved = horseIdToPosition.get(horse.getId());
+            if (saved != null) {
+                actor.setPosition(saved.x, saved.y);
+            } else {
+                actor.setPosition(
+                        MathUtils.random(fence.x, fence.x + fence.width),
+                        MathUtils.random(fence.y, fence.y + fence.height)
+                );
+            }
+            horses.add(actor);
+            stage.addActor(actor);
+        }
+    }
+
+    private void refreshHorses() {
+        for (StrollingHorseActor actor : horses) {
+            horseIdToPosition.put(actor.getHorseData().getId(), new com.badlogic.gdx.math.Vector2(actor.getX(), actor.getY()));
+            actor.remove();
+        }
+        horses.clear();
+
+        HorseService horseService = new HorseServiceImpl();
+        List<HorseData> ownedHorses = horseService.getUserHorses();
+        java.util.Set<Integer> existingIds = horseIdToPosition.keySet();
+        for (HorseData horse : ownedHorses) {
+            StrollingHorseActor actor = new StrollingHorseActor(
+                    horse, 3,
+                    fence.x, fence.x + fence.width,
+                    fence.y, fence.y + fence.height
             );
+            actor.addListener(new HorseClickListener(horse));
+            com.badlogic.gdx.math.Vector2 saved = horseIdToPosition.get(horse.getId());
+            if (saved != null) {
+                actor.setPosition(saved.x, saved.y);
+            } else {
+                float cx = fence.x + fence.width / 2f;
+                float cy = fence.y + fence.height / 2f;
+                actor.setPosition(cx, cy);
+            }
             horses.add(actor);
             stage.addActor(actor);
         }
@@ -136,6 +172,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.money);
+            refreshHorses();
         });
     }
 
@@ -187,7 +224,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         }
         stage.act(delta);
         stage.draw();
-        /// For debug purposes
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             game.setScreen(new RaceSingleplayerScreen(game));
         }

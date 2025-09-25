@@ -9,7 +9,7 @@ import race.RaceWorld;
 import services.horse.HorseService;
 import services.training.TrainingService;
 import views.common.base.BaseGameScreen;
-import views.race.ui.RaceStatsPanel;
+import views.training.ui.TrainingStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
 import training.contract.TrainingPresenter;
@@ -22,12 +22,9 @@ public class TrainingScreen extends BaseGameScreen {
     private Label titleLabel;
     private Label distanceLabel;
     private Label trainingPointsLabel;
-    private Label horseLevelLabel;
-    private Label successfulRacesLabel;
-    private Label cooldownReductionLabel;
     private Label longestRunLabel;
     private SprintWidget sprintWidget;
-    private RaceStatsPanel statsPanel;
+    private TrainingStatsPanel statsPanel;
 
     public TrainingScreen(HorseGame game, TrainingPresenter presenter, TrainingService trainingService, HorseService horseService) {
         super(game);
@@ -45,17 +42,11 @@ public class TrainingScreen extends BaseGameScreen {
         titleLabel = new Label("TRAINING MODE", skin);
         distanceLabel = new Label("Distance: 0m", skin);
         trainingPointsLabel = new Label("Training Points: 0/10000", skin);
-        horseLevelLabel = new Label("Horse Level: 0", skin);
-        successfulRacesLabel = new Label("Successful Races: 0", skin);
-        cooldownReductionLabel = new Label("Cooldown Reduction: 0%", skin);
         longestRunLabel = new Label("Longest Run: 0m", skin);
         
         titleLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         distanceLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         trainingPointsLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        horseLevelLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        successfulRacesLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        cooldownReductionLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         longestRunLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         
         table.add(titleLabel).pad(10);
@@ -64,17 +55,11 @@ public class TrainingScreen extends BaseGameScreen {
         table.row();
         table.add(trainingPointsLabel).pad(5);
         table.row();
-        table.add(horseLevelLabel).pad(5);
-        table.row();
-        table.add(successfulRacesLabel).pad(5);
-        table.row();
-        table.add(cooldownReductionLabel).pad(5);
-        table.row();
         table.add(longestRunLabel).pad(5);
         
         uiStage.addActor(table);
         
-        statsPanel = new RaceStatsPanel(600, 400);
+        statsPanel = new TrainingStatsPanel(600, 400);
         statsPanel.setX((Gdx.graphics.getWidth() - statsPanel.getWidth()) / 2f);
         statsPanel.setY((Gdx.graphics.getHeight() - statsPanel.getHeight()) / 2f);
         statsPanel.setVisible(false);
@@ -100,9 +85,20 @@ public class TrainingScreen extends BaseGameScreen {
     @Override
     protected void handleGameCompletion() {
         statsPanel.setVisible(true);
+        try {
+            int distance = presenter.getDistance();
+            int currentLongest = Integer.parseInt(presenter.getDisplayLongestRun());
+            boolean isNewRecord = distance > currentLongest;
+            int longestToShow = Math.max(distance, currentLongest);
+            statsPanel.updateStats(distance, longestToShow, isNewRecord);
+        } catch (Exception ignored) {}
         
         if (!onGameFinished) {
             if (presenter.isPlayerDead()) {
+                HorseData horse = horseService.getUserHorses().getFirst();
+                if (horse != null) {
+                    presenter.saveTrainingDataBeforeExit(horse.getId());
+                }
                 onGameFinished = true;
                 new Thread(() -> {
                     try {
@@ -139,8 +135,6 @@ public class TrainingScreen extends BaseGameScreen {
         try {
             distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
             trainingPointsLabel.setText("Training Points: " + presenter.getTrainingPoints() + "/10000");
-            cooldownReductionLabel.setText("Cooldown Reduction: " + 
-                String.format("%.2f", presenter.getSprintCooldownReduction() * 100) + "%");
             longestRunLabel.setText("Longest Run: " + presenter.getDisplayLongestRun() + "m");
             
             if (presenter.isPlayerDead()) {
