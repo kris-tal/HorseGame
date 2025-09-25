@@ -14,6 +14,7 @@ public class Player {
     protected int coins = 0;
     protected float baseSpeed;
     protected boolean alive = true;
+    protected boolean raceCompleted = false;
 
     protected boolean sprinting = false;
     protected float sprintTimeLeft = 0f;
@@ -145,7 +146,15 @@ public class Player {
         alive = false;
     }
 
+    public void success() {
+        raceCompleted = true;
+    }
+
     public void addCoins(int amount) {
         coins += amount;
+    }
+    
+    public boolean isRaceCompleted() {
+        return raceCompleted;
     }
 }
