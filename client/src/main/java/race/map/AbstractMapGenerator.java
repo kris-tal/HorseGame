@@ -28,8 +28,7 @@ public abstract class AbstractMapGenerator implements MapGenerator {
                 if (col <= 2) {
                     mapData[lane][col] = new EmptyObject();
                 } else {
-                    Random positionRandom = new Random((long)col * 1000 + lane);
-                    mapData[lane][col] = strategy.generateObject(lane, col, positionRandom);
+                    mapData[lane][col] = strategy.generateObject(lane, col, random);
                 }
             }
         }
