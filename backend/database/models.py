@@ -14,7 +14,10 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=False, nullable=True)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
-    money = db.Column(db.Integer, default=os.getenv("STARTUP_MONEY"))
+    money = db.Column(
+        db.Integer,
+        default=int(os.getenv("STARTUP_MONEY", "1000"))
+    )
     prestige = db.Column(db.Integer, default=0)
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

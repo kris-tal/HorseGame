@@ -15,7 +15,10 @@ public class AuthServiceImpl implements AuthService {
     private final HttpClient client;
     private String authToken;
 
-    public static final String BASE_URL = "http://127.0.0.1:4000";// tutaj dajemy to na czym pracuje nasz flask
+    public static final String BASE_URL = System.getProperty(
+            "backend.baseUrl",
+            System.getenv().getOrDefault("BACKEND_BASE_URL", "http://127.0.0.1:4000")
+    );
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
 
 
