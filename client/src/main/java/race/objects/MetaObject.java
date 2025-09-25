@@ -6,7 +6,7 @@ import services.managers.ResourceManager;
 
 public class MetaObject extends MapObject {
     public MetaObject() {
-        super(ResourceManager.obstaclesAtlas.findRegion("death_stone"));
+        super(ResourceManager.obstaclesAtlas.findRegion("barrier"));
     }
 
     @Override
