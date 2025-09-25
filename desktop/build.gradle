@@ -15,31 +15,65 @@ run {
     if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
         jvmArgs += "-XstartOnFirstThread"
     }
-    
+
     jvmArgs += "-Xmx1g"
     jvmArgs += "-Xms256m"
-    
+
     jvmArgs += "-Djava.awt.headless=true"
     jvmArgs += "-Dsun.java2d.opengl=true"
     jvmArgs += "-Dprism.order=es2,sw"
     jvmArgs += "-Dprism.forceGPU=true"
     jvmArgs += "-Dsun.java2d.uiScale=1.0"
     jvmArgs += "-Dprism.allowhidpi=false"
-    
+
     jvmArgs += "-Dsun.java2d.xrender=true"
     jvmArgs += "-Dsun.java2d.pmoffscreen=false"
-    
+
     jvmArgs += "-Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true"
     jvmArgs += "-Dorg.lwjgl.opengl.Display.noerror=true"
     jvmArgs += "-Dorg.lwjgl.opengl.Display.undecorated=true"
-    
+
     jvmArgs += "-Dorg.lwjgl.opengl.Display.fullscreen=false"
     jvmArgs += "-Dorg.lwjgl.opengl.Display.vsync=false"
-    
+
     jvmArgs += "-Dmesa.lib.path=/usr/lib/x86_64-linux-gnu"
     jvmArgs += "-Djava.library.path=/usr/lib/x86_64-linux-gnu"
 }
 
 application {
     mainClass = 'DesktopLauncher'
+}
+
+tasks.register('runDummy', JavaExec) {
+    group = 'application'
+    description = 'Runs the DesktopDummy launcher'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('dummylaunchers.DesktopDummy')
+
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        jvmArgs += "-XstartOnFirstThread"
+    }
+
+    jvmArgs += "-Xmx1g"
+    jvmArgs += "-Xms256m"
+
+    jvmArgs += "-Djava.awt.headless=true"
+    jvmArgs += "-Dsun.java2d.opengl=true"
+    jvmArgs += "-Dprism.order=es2,sw"
+    jvmArgs += "-Dprism.forceGPU=true"
+    jvmArgs += "-Dsun.java2d.uiScale=1.0"
+    jvmArgs += "-Dprism.allowhidpi=false"
+
+    jvmArgs += "-Dsun.java2d.xrender=true"
+    jvmArgs += "-Dsun.java2d.pmoffscreen=false"
+
+    jvmArgs += "-Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true"
+    jvmArgs += "-Dorg.lwjgl.opengl.Display.noerror=true"
+    jvmArgs += "-Dorg.lwjgl.opengl.Display.undecorated=true"
+
+    jvmArgs += "-Dorg.lwjgl.opengl.Display.fullscreen=false"
+    jvmArgs += "-Dorg.lwjgl.opengl.Display.vsync=false"
+
+    jvmArgs += "-Dmesa.lib.path=/usr/lib/x86_64-linux-gnu"
+    jvmArgs += "-Djava.library.path=/usr/lib/x86_64-linux-gnu"
 }
