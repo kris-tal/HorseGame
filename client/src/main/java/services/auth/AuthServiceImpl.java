@@ -15,8 +15,7 @@ public class AuthServiceImpl implements AuthService {
     private final HttpClient client;
     private String authToken;
 
-    // Move these as static per-game connection parameters (Maybe perhaps select url during launch?)
-    public static final String BASE_URL = "http://127.0.0.1:5000";// tutaj dajemy to na czym pracuje nasz flask
+    public static final String BASE_URL = "http://127.0.0.1:4000";// tutaj dajemy to na czym pracuje nasz flask
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
 
 

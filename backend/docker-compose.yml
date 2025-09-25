@@ -5,7 +5,7 @@ services:
     build: .
     container_name: kontra_web
     ports:
-      - "5000:5000"
+      - "4000:4000"
     environment:
       - JWT_SECRET_KEY=devsecret
       - DATABASE_URL=sqlite:////data/dev.db
