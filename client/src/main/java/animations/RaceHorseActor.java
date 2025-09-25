@@ -11,17 +11,18 @@ public class RaceHorseActor extends BaseHorseActor {
         setMoving(true);
     }
 
-    public RaceHorseActor(HorseType horseType) {
-        super(horseType, 3f);
+    public RaceHorseActor(HorseType horseType, float scale) {
+        super(horseType, scale);
         setMoving(true);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-
-        float newX = getX() + speed * delta;
-        moveTo(newX, getY());
+        if (moving) {
+            float newX = getX() + speed * delta;
+            moveTo(newX, getY());
+        }
     }
 
     public void setSpeed(float speed) {

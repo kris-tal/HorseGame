@@ -2,7 +2,6 @@ package animations;
 
 import com.badlogic.gdx.math.MathUtils;
 import data.horse.HorseData;
-import data.horse.HorseType;
 
 public class StrollingHorseActor extends BaseHorseActor {
     private final float minX, maxX, minY, maxY;
@@ -17,7 +16,6 @@ public class StrollingHorseActor extends BaseHorseActor {
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
-
         scheduleNextMove();
     }
 
@@ -59,7 +57,6 @@ public class StrollingHorseActor extends BaseHorseActor {
             targetX = MathUtils.random(minX, maxX);
             targetY = MathUtils.random(minY, maxY);
         }
-
         speed = MathUtils.random(40f, 80f);
     }
 

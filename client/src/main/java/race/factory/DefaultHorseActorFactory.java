@@ -7,7 +7,7 @@ import race.Player;
 public class DefaultHorseActorFactory implements HorseActorFactory {
     @Override
     public BaseHorseActor create(Player player) {
-        return new RaceHorseActor(player.getHorseType());
+        return new RaceHorseActor(player.getHorseType(), 3f);
     }
 }
 
