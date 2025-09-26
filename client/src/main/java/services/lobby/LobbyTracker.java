@@ -30,10 +30,7 @@ public class LobbyTracker {
                 for (PlayerInfoClient p : players) {
                     map.put(p.getUsername(), p);
                 }
-                System.out.println("LobbyTracker: Updating players, count: " + map.size());
                 LobbyManager.getInstance().updatePlayers(map);
-            } else {
-                System.out.println("LobbyTracker: Players is null, jsonData: " + jsonData);
             }
         } catch (Exception e) {
             System.out.println("LobbyTracker: Error parsing jsonData: " + jsonData + ", error: " + e.getMessage());
