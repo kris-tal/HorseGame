@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import data.lobby.PlayerInfoClient;
 import services.lobby.LobbyService;
 import services.lobby.LobbyServiceImpl;
+import views.race.menu.WaitingLobbyPanel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,11 @@ public class LobbyManager {
     }
 
     public void createLobby() {
-        leaveLobby();
+        if (currentLobby != null) {
+            return;
+        }
+        service.closeConnection();
+        
         String code = service.createLobby();
         if (code != null) {
             currentLobby = new LobbyInfo(code);
@@ -56,7 +61,6 @@ public class LobbyManager {
         }
 
         // Create lobby info immediately (optimistic)
-        // This will be validated by the async connection result
         currentLobby = new LobbyInfo(lobbyCode);
 
         boolean success = service.joinLobby(lobbyCode);
@@ -105,7 +109,6 @@ public class LobbyManager {
     }
 
     public void onLobbyClosed() {
-        // FIXED: Clear lobby when it's closed
         currentLobby = null;
         if (stateListener != null) {
             stateListener.onLobbyClosed();
@@ -121,7 +124,9 @@ public class LobbyManager {
     }
 
     public boolean isCurrentUserCreator() {
-        if (currentLobby == null) return false;
+        if (currentLobby == null) {
+            return false;
+        }
 
         String username = ((LobbyServiceImpl) service).getCurrentUserUsername();
         if (username == null) return false;
@@ -129,7 +134,14 @@ public class LobbyManager {
         PlayerInfoClient player = currentLobby.getPlayer(username);
         if (player == null) return false;
 
-        return player.isCreator();
+        boolean isCreator = player.isCreator();
+        return isCreator;
+    }
+
+    public void updateStartButtonVisibility() {
+        if (stateListener != null && stateListener instanceof WaitingLobbyPanel) {
+            ((WaitingLobbyPanel) stateListener).updateStartButtonVisibility();
+        }
     }
 
     public void onLobbyJoined(boolean success) {

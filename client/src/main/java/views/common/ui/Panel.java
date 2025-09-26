@@ -14,6 +14,7 @@ public abstract class Panel extends Table {
     protected final float bigPadding = 70f;
 
     protected Table content = new Table();
+    protected Label titleLabel;
     private final float width;
     private final float height;
 
@@ -32,7 +33,7 @@ public abstract class Panel extends Table {
         pad(smallPadding);
 
         if (getTitle() != null) {
-            Label titleLabel = UIFactory.createLargeLabel(getTitle());
+            titleLabel = UIFactory.createLargeLabel(getTitle());
             content.add(titleLabel).padBottom(defaultPadding).center().row();
         }
 

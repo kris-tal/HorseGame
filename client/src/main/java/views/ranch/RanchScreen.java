@@ -169,6 +169,22 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         });
 
         joinLobbyPanel.setListener(this);
+        
+        createLobbyPanel.setListener(new WaitingLobbyPanel.WaitingLobbyListener() {
+            @Override
+            public void onLobbyStarted() {
+                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game));
+            }
+            
+            @Override
+            public void onLeaveLobby() {
+                hideAllPanels();
+            }
+        });
+        
+        createLobbyPanel.setOnShowCallback(() -> {
+            showPanel(createLobbyPanel);
+        });
 
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.money);

@@ -21,6 +21,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     private TextButton startButton;
     private Label playerCountLabel;
     private WaitingLobbyListener listener;
+    private Runnable onShowCallback;
 
     public interface WaitingLobbyListener {
         void onLobbyStarted();
@@ -36,8 +37,11 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     @Override
     protected String getTitle() {
         LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
-        if (lobby == null) return "[NULL]";
-        return "LOBBY: " + lobby.getLobbyCode();
+        if (lobby == null) {
+            return "[NULL]";
+        }
+        String title = "LOBBY: " + lobby.getLobbyCode();
+        return title;
     }
     @Override
     protected void addContent(float width, float height) {
@@ -48,23 +52,9 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(true, false);
 
-        content.add(scrollPane).width(width * 0.8f).height(height * 0.5f).center();
-
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
-        if (lobby != null) {
-            playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
-            content.add(playerCountLabel).padBottom(defaultPadding).row();
-        }
-
-        startButton = UIFactory.createLargeTextButton("START RACE!");
-        startButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                LobbyManager.getInstance().startLobby();
-            }
-        });
-
-        content.add(startButton).padTop(smallPadding).padBottom(defaultPadding).row();
+        float scrollWidth = width * 0.8f;
+        float scrollHeight = height * 0.5f;
+        content.add(scrollPane).width(scrollWidth).height(scrollHeight).center();
 
         TextButton leaveButton = UIFactory.createTextButton("Leave Lobby");
         leaveButton.addListener(new ClickListener() {
@@ -76,12 +66,30 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
                 }
             }
         });
-        content.add(leaveButton).padTop(smallPadding).row();
+        content.add(leaveButton).padBottom(defaultPadding).row();
+
+        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        if (lobby != null) {
+            playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
+            content.add(playerCountLabel).padTop(smallPadding).padBottom(defaultPadding).row();
+        }
+
+        startButton = UIFactory.createLargeTextButton("START RACE!");
+        startButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                LobbyManager.getInstance().startLobby();
+            }
+        });
+
+        content.add(startButton).padTop(smallPadding).row();
     }
 
     @Override
     protected void populateRow(Table row, PlayerInfoClient player) {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         Gdx.app.log("Lobby", "Populating " + player.toString());
         Label nameLabel = UIFactory.createLabel(player.getUsername());
         row.add(nameLabel).expandX().left().padRight(10f);
@@ -91,10 +99,9 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
             creatorLabel.setColor(1f, 0.8f, 0.2f, 1f); // Gold color
             row.add(creatorLabel).right().padRight(10f);
         }
-
     }
 
-    private void updateStartButtonVisibility() {
+    public void updateStartButtonVisibility() {
         if (startButton != null) {
             boolean isCreator = LobbyManager.getInstance().isCurrentUserCreator();
             startButton.setVisible(isCreator);
@@ -109,6 +116,10 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
 
     public void setListener(WaitingLobbyListener listener) {
         this.listener = listener;
+    }
+    
+    public void setOnShowCallback(Runnable callback) {
+        this.onShowCallback = callback;
     }
 
     @Override
@@ -127,8 +138,24 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
 
     @Override
     public void onLobbyInitialized() {
-        refresh(); // Update the display of room code
-        onPlayersUpdated(); // Handle initialization of playerlist
+        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        if (lobby != null) {
+            if (playerCountLabel == null) {
+                playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
+                content.add(playerCountLabel).padBottom(defaultPadding).row();
+            } else {
+                playerCountLabel.setText("Players: " + lobby.getPlayerCount());
+            }
+            if (titleLabel != null) {
+                titleLabel.setText("LOBBY: " + lobby.getLobbyCode());
+            }
+        }
+
+        updateStartButtonVisibility();
+
+        if (onShowCallback != null) {
+            onShowCallback.run();
+        }
     }
 
     /* It is invoked each time a player enters or exits */
@@ -137,7 +164,9 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby != null) {
             List<PlayerInfoClient> playerList = new ArrayList<>(lobby.getPlayers().values());
+            
             populateList(playerList);   // only update rows
+
             updateStartButtonVisibility();
 
             if (playerCountLabel != null) {
