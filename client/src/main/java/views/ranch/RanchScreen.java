@@ -108,33 +108,35 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         }
     }
 
-    private void refreshHorses() {
-        for (StrollingHorseActor actor : horses) {
-            horseIdToPosition.put(actor.getHorseData().getId(), new com.badlogic.gdx.math.Vector2(actor.getX(), actor.getY()));
-            actor.remove();
-        }
-        horses.clear();
+    private void addNewHorse(HorseData horse) {
+        StrollingHorseActor actor = new StrollingHorseActor(
+                horse, 3,
+                fence.x, fence.x + fence.width,
+                fence.y, fence.y + fence.height
+        );
+        actor.addListener(new HorseClickListener(horse));
+        
+        float x = fence.x + 50; 
+        float y = fence.y + 50; 
+        actor.setPosition(x, y);
+        
+        horses.add(actor);
+        stage.addActor(actor);
+    }
 
+    private void addNewHorseFromServer() {
         HorseService horseService = new HorseServiceImpl();
-        List<HorseData> ownedHorses = horseService.getUserHorses();
-        java.util.Set<Integer> existingIds = horseIdToPosition.keySet();
-        for (HorseData horse : ownedHorses) {
-            StrollingHorseActor actor = new StrollingHorseActor(
-                    horse, 3,
-                    fence.x, fence.x + fence.width,
-                    fence.y, fence.y + fence.height
-            );
-            actor.addListener(new HorseClickListener(horse));
-            com.badlogic.gdx.math.Vector2 saved = horseIdToPosition.get(horse.getId());
-            if (saved != null) {
-                actor.setPosition(saved.x, saved.y);
-            } else {
-                float cx = fence.x + fence.width / 2f;
-                float cy = fence.y + fence.height / 2f;
-                actor.setPosition(cx, cy);
+        List<HorseData> allHorses = horseService.getUserHorses();
+        
+        java.util.Set<Integer> existingHorseIds = new java.util.HashSet<>();
+        for (StrollingHorseActor actor : horses) {
+            existingHorseIds.add(actor.getHorseData().getId());
+        }
+        
+        for (HorseData horse : allHorses) {
+            if (!existingHorseIds.contains(horse.getId())) {
+                addNewHorse(horse);
             }
-            horses.add(actor);
-            stage.addActor(actor);
         }
     }
 
@@ -188,7 +190,9 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.money);
-            refreshHorses();
+            if (!result.isUpgrade) {
+                addNewHorseFromServer();
+            }
         });
     }
 
@@ -243,7 +247,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
         for (int i = 0; i < horses.size; i++) {
-            horses.get(i).setZIndex(i + 1);
+            horses.get(i).setZIndex(i + 1); // Keep horses at low z-index (1-10)
         }
     }
 

@@ -22,7 +22,8 @@ public class DefaultPlayerFactory implements PlayerFactory {
             new StandardPlayerMovementStrategy(),
             new StandardPlayerVisionStrategy(),
             new StandardSprintManager(),
-            new StandardStatusEffectManager()
+            new StandardStatusEffectManager(),
+            config.getHorseLevel()
         );
     }
 }

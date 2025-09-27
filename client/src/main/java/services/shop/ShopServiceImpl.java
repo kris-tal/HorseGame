@@ -44,12 +44,14 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public PurchaseResult postHorsePurchase(int horseId) {
-        return sendPurchaseRequest(horseId);
+        PurchaseResult result = sendPurchaseRequest(horseId);
+        return new PurchaseResult(result.money, result.success, result.message, false);
     }
 
     @Override
     public PurchaseResult postUpgradePurchase(int horseId) {
-        return sendPurchaseRequest(horseId);
+        PurchaseResult result = sendPurchaseRequest(horseId);
+        return new PurchaseResult(result.money, result.success, result.message, true);
     }
 
     private PurchaseResult sendPurchaseRequest(int horseId) {

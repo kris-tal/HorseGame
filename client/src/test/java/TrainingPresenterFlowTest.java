@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import race.RaceWorld;
+import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
 import animations.BaseHorseActor;
 import race.camera.CameraSystem;
@@ -34,7 +35,7 @@ class TrainingPresenterFlowTest {
 
     @Test
     void presenter_initializes_and_updates() {
-        BaseGameConfig config = BaseGameConfig.createTrainingConfigWithCooldownReduction(0f);
+        BaseGameConfig config = GameConfigFactory.createTrainingConfigWithCooldownReduction(0f);
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(data.race.GameMap map, int visibleCols) { return mock(CameraSystem.class); }
             @Override public race.rendering.RendererSystem createRendererSystem(CameraSystem cameraSystem) { return mock(race.rendering.RendererSystem.class); }

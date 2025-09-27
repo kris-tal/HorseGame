@@ -12,6 +12,7 @@ import race.factory.PlayerFactory;
 import race.factory.SystemsFactory;
 import race.input.InputHandler;
 import race.map.MapGenerator;
+import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
 import race.RaceWorld;
 import race.objects.EmptyObject;
@@ -36,7 +37,7 @@ class RaceWorldCreationTest {
         }
         when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));
 
-        BaseGameConfig config = BaseGameConfig.createRaceConfigWithCooldownReduction(0f);
+        BaseGameConfig config = GameConfigFactory.createRaceConfigWithCooldownReduction(0f);
 
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(GameMap map, int visibleCols) { return mock(CameraSystem.class); }
