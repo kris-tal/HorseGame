@@ -30,12 +30,7 @@ public class TrainingManager {
     }
 
     public TrainingScreen createTrainingScreen(HorseGame game) {
-        List<HorseData> horses = horseService.getUserHorses();
-        float cooldownReduction = 0f;
-        if (horses != null && !horses.isEmpty()) {
-        }
-        
-        BaseGameConfig config = BaseGameConfig.createTrainingConfigWithCooldownReduction(cooldownReduction);
+        BaseGameConfig config = BaseGameConfig.createTrainingConfigWithEquippedHorse();
         GameFactory gameFactory = new GameFactory(mapGenerator, inputHandler, config);
         currentPresenter = TrainingPresenterFactory.createTrainingPresenter(gameFactory, config, trainingService);
         return new TrainingScreen(game, currentPresenter, trainingService, horseService);

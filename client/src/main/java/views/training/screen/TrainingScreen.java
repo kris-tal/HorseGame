@@ -13,6 +13,7 @@ import views.training.ui.TrainingStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
 import training.contract.TrainingPresenter;
+import data.race.EquippedHorseService;
 
 public class TrainingScreen extends BaseGameScreen {
     private final TrainingPresenter presenter;
@@ -95,7 +96,10 @@ public class TrainingScreen extends BaseGameScreen {
         
         if (!onGameFinished) {
             if (presenter.isPlayerDead()) {
-                HorseData horse = horseService.getUserHorses().getFirst();
+                HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+                if (horse == null) {
+                    horse = horseService.getUserHorses().getFirst();
+                }
                 if (horse != null) {
                     presenter.saveTrainingDataBeforeExit(horse.getId());
                 }
@@ -109,7 +113,10 @@ public class TrainingScreen extends BaseGameScreen {
                     }
                 }).start();
             } else {
-                HorseData horse = horseService.getUserHorses().getFirst();
+                HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+                if (horse == null) {
+                    horse = horseService.getUserHorses().getFirst();
+                }
                 presenter.completeTraining(horse.getId());
                 onGameFinished = true;
                 
@@ -164,7 +171,10 @@ public class TrainingScreen extends BaseGameScreen {
 
     @Override
     protected void handleEscapeKey() {
-        HorseData horse = horseService.getUserHorses().getFirst();
+        HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+        if (horse == null) {
+            horse = horseService.getUserHorses().getFirst();
+        }
         if (horse != null) {
             presenter.saveTrainingDataBeforeExit(horse.getId());
         }

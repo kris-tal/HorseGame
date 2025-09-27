@@ -3,6 +3,7 @@ package training.presentation;
 import data.training.TrainingData;
 import data.training.TrainingResponse;
 import data.horse.HorseData;
+import data.race.EquippedHorseService;
 import services.training.TrainingService;
 import services.horse.HorseService;
 import race.strategy.training.TrainingPointsCalculator;
@@ -79,7 +80,11 @@ public class TrainingDataControllerImpl implements TrainingDataController {
     @Override
     public void loadHorseData() {
         try {
-            HorseData horse = horseService.getUserHorses().getFirst();
+            HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+            if (horse == null) {
+                horse = horseService.getUserHorses().getFirst();
+            }
+            
             if (horse != null) {
                 trainingPoints = horse.getTrainingPoints();
                 longestRunDistance = horse.getLongestRunDistance();

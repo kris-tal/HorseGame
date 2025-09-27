@@ -15,13 +15,13 @@ public class TrainingMapObjectGenerationStrategy implements MapObjectGenerationS
     public MapObject generateObject(int lane, int col, Random positionRandom) {
         double r = positionRandom.nextDouble();
 
-        if (r < 0.05) { // DeathStone
+        if (r < 0.01) { // DeathStone
             return new DeathStoneObject();
-        } else if (r < 0.1) { // Puddle
+        } else if (r < 0.05) { // Puddle
             return new PuddleObject();
-        } else if (r < 0.15) { // Bush
+        } else if (r < 0.09) { // Bush
             return new BushObject();
-        } else if (r < 0.2) { // ElectricBarrier
+        } else if (r < 0.11) { // ElectricBarrier
             return new ElectricBarrierObject();
         }
         

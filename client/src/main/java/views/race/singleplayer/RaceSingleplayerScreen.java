@@ -15,6 +15,7 @@ import views.common.base.BaseGameScreen;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
+import data.race.EquippedHorseService;
 import java.util.List;
 
 public class RaceSingleplayerScreen extends BaseGameScreen {
@@ -31,14 +32,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         this.horseService = new HorseServiceImpl();
         this.trainingService = new TrainingServiceImpl();
 
-        List<HorseData> horses = horseService.getUserHorses();
-        float cooldownReduction = 0f;
-        if (horses != null && !horses.isEmpty()) {
-            HorseData horse = horses.getFirst();
-            cooldownReduction = horse.getTrainingPoints() * 0.0001f;
-        }
-        
-        race.config.BaseGameConfig config = race.config.BaseGameConfig.createRaceConfigWithCooldownReduction(cooldownReduction);
+        race.config.BaseGameConfig config = race.config.BaseGameConfig.createRaceConfigWithEquippedHorse();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         
@@ -89,10 +83,17 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         if (!onGameFinished) {
             if (presenter.isPlayerDead()) {
                 try {
-                    var horses = horseService.getUserHorses();
-                    if (horses != null && !horses.isEmpty()) {
+                    HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+                    if (horse == null) {
+                        var horses = horseService.getUserHorses();
+                        if (horses != null && !horses.isEmpty()) {
+                            horse = horses.getFirst();
+                        }
+                    }
+                    
+                    if (horse != null) {
                         TrainingData td = new TrainingData();
-                        td.horseId = horses.getFirst().getId();
+                        td.horseId = horse.getId();
                         td.distance = presenter.getDistance();
                         td.success = false;
                         td.pointsEarned = 0;
@@ -112,10 +113,17 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
                 }).start();
             } else {
                 try {
-                    var horses = horseService.getUserHorses();
-                    if (horses != null && !horses.isEmpty()) {
+                    HorseData horse = EquippedHorseService.getInstance().getEquippedHorse();
+                    if (horse == null) {
+                        var horses = horseService.getUserHorses();
+                        if (horses != null && !horses.isEmpty()) {
+                            horse = horses.getFirst();
+                        }
+                    }
+                    
+                    if (horse != null) {
                         TrainingData td = new TrainingData();
-                        td.horseId = horses.getFirst().getId();
+                        td.horseId = horse.getId();
                         td.distance = presenter.getDistance();
                         td.success = true;
                         td.pointsEarned = 0;
