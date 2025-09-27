@@ -1,5 +1,6 @@
 package services.lobby;
 
+import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.lobby.LobbyCreationResponse;
 import services.managers.ConnectionManager;
@@ -66,9 +67,10 @@ public class LobbyServiceImpl implements LobbyService {
                     .getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
-            response.statusCode();
+            if(response.statusCode() == 200) Gdx.app.log("Lobby", "Started room " + room);
+            else Gdx.app.log("Lobby", "Failed to start room " + room);
         } catch (IOException | InterruptedException e) {
-            // Handle error
+            Gdx.app.log("Lobby", "Failed to start room " + room);
         }
     }
 

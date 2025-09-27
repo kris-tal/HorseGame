@@ -183,7 +183,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         createLobbyPanel.setListener(new WaitingLobbyListener() {
             @Override
             public void onLobbyStarted() {
-                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game));
+                /* Handle lobby started */
+                //game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game));
             }
             
             @Override
