@@ -1,3 +1,4 @@
+// java
 package views.common.base;
 
 import com.badlogic.gdx.Gdx;
@@ -10,9 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.race.EquippedHorseService;
 import race.RaceWorld;
 import race.input.InputManager;
 import services.managers.ResourceManager;
+import services.managers.SessionManagerPort;
 import views.ranch.RanchScreen;
 
 public abstract class BaseGameScreen implements Screen {
@@ -21,17 +24,21 @@ public abstract class BaseGameScreen implements Screen {
     protected final Stage bgStage;
     protected final Stage uiStage;
     protected final Skin skin;
-    
+    protected final SessionManagerPort sessionManager;
+    protected final EquippedHorseService equippedHorseservice;
+
     protected boolean statsPanelShown = false;
     protected boolean onGameFinished = false;
 
-    public BaseGameScreen(HorseGame game) {
+    public BaseGameScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
+        this.sessionManager = sessionManager;
+        this.equippedHorseservice = equippedHorseService;
         this.batch = new SpriteBatch();
         this.bgStage = new Stage(new ScreenViewport());
         this.uiStage = new Stage(new ScreenViewport());
         this.skin = ResourceManager.uiSkin;
-        
+
         initializeUI();
     }
 
@@ -46,7 +53,7 @@ public abstract class BaseGameScreen implements Screen {
     protected abstract void handleGameCompletion();
 
     protected void handleEscapeKey() {
-        game.setScreen(new RanchScreen(game));
+        game.setScreen(new RanchScreen(game, sessionManager, equippedHorseservice));
     }
 
     @Override
@@ -55,7 +62,7 @@ public abstract class BaseGameScreen implements Screen {
         background.setFillParent(true);
         bgStage.addActor(background);
         background.toBack();
-        
+
         Gdx.input.setInputProcessor(uiStage);
     }
 
@@ -80,7 +87,7 @@ public abstract class BaseGameScreen implements Screen {
             statsPanelShown = true;
             return;
         }
-        
+
         onGameFinished = false;
 
         try {
@@ -93,10 +100,9 @@ public abstract class BaseGameScreen implements Screen {
             }
             batch.end();
         } catch (Exception e) {
-            // Handle errors silently
+            // swallow
         }
 
-        // Update and draw UI
         updateUI(delta);
         uiStage.act(delta);
         uiStage.draw();
@@ -132,4 +138,3 @@ public abstract class BaseGameScreen implements Screen {
         if (skin != null) skin.dispose();
     }
 }
-

@@ -1,3 +1,4 @@
+// java
 package views.ranch;
 
 import com.badlogic.gdx.Gdx;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
 import data.ProfileData;
+import services.managers.SessionManagerPort;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
 import views.common.ui.UIFactory;
@@ -18,14 +20,16 @@ public class RanchStatusBar extends Table {
 
     private PlayerStatusItem playerStatusItem;
 
-    public enum Action { RANKING, SHOP, RACE }
+    public enum Action {RANKING, SHOP, RACE}
 
     public interface StatusBarListener {
         void onStatusBar(Action action);
     }
+
     private StatusBarListener listener;
 
     private final HorseGame game;
+    private final SessionManagerPort sessionManager;
 
     public static class PlayerStatusItem extends Table {
 
@@ -34,18 +38,16 @@ public class RanchStatusBar extends Table {
         private final Label moneyLabel;
         private final Label prestigeLabel;
 
-        public PlayerStatusItem(String username, int money, int prestige) {
+        public PlayerStatusItem(SessionManagerPort sessionManager) {
             super();
-            service = new ProfileServiceImpl();
+            this.service = new ProfileServiceImpl(sessionManager);
             setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
 
             usernameLabel = UIFactory.createLabel("");
-
             moneyLabel = UIFactory.createLabel("0");
             prestigeLabel = UIFactory.createLabel("");
 
-            //layout
-            pad(5).padLeft(10).padRight(10); //padding inside the background
+            pad(5).padLeft(10).padRight(10);
 
             add(usernameLabel).padRight(20).left();
             add(UIFactory.createCoinImage()).size(32, 32).padRight(5);
@@ -63,14 +65,19 @@ public class RanchStatusBar extends Table {
             new Thread(() -> {
                 try {
                     ProfileData response = service.getUserData();
-                    updateMoney(response.getMoney());
-                    updatePrestige(response.getPrestige());
-                    setUsername(response.getUsername());
-            } catch (Exception e) {
-            }
+                    Gdx.app.postRunnable(() -> {
+                        updateMoney(response.getMoney());
+                        updatePrestige(response.getPrestige());
+                        setUsername(response.getUsername());
+                    });
+                } catch (Exception ignored) {
+                }
             }).start();
         }
-        public void setUsername(String username) { usernameLabel.setText(username);}
+
+        public void setUsername(String username) {
+            usernameLabel.setText(username);
+        }
 
         public void updateMoney(int newBalance) {
             moneyLabel.setText(String.valueOf(newBalance));
@@ -85,9 +92,10 @@ public class RanchStatusBar extends Table {
     private final Table leftStack;
     private final Table rightStack;
 
-    public RanchStatusBar(HorseGame game, Skin skin) {
+    public RanchStatusBar(HorseGame game, Skin skin, SessionManagerPort sessionManager) {
         super(skin);
         this.game = game;
+        this.sessionManager = sessionManager;
 
         this.skin = skin;
 
@@ -114,10 +122,8 @@ public class RanchStatusBar extends Table {
     }
 
     private void addItems() {
-        playerStatusItem = new PlayerStatusItem("Majeczka04", 1, 99999);
-
+        playerStatusItem = new PlayerStatusItem(sessionManager);
         addToLeft(playerStatusItem);
-
 
         TextButton shopButton = UIFactory.createLargeTextButton("shop");
         shopButton.addListener(new ClickListener() {

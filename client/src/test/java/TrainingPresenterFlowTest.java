@@ -1,6 +1,7 @@
+// java
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import race.RaceWorld;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
 import animations.BaseHorseActor;
@@ -14,6 +15,9 @@ import services.horse.HorseService;
 import services.training.TrainingService;
 import training.contract.TrainingPresenter;
 import views.training.presenter.TrainingPresenterFactory;
+import services.managers.SessionManagerPort;
+import services.requests.ProtectedRequestsService;
+import data.race.EquippedHorseService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,6 +28,8 @@ class TrainingPresenterFlowTest {
     private InputHandler inputHandler;
     private TrainingService trainingService;
     private HorseService horseService;
+    private SessionManagerPort sessionManager;
+    private EquippedHorseService equippedHorseService;
 
     @BeforeEach
     void setup() {
@@ -31,17 +37,41 @@ class TrainingPresenterFlowTest {
         inputHandler = mock(InputHandler.class);
         trainingService = mock(TrainingService.class);
         horseService = mock(HorseService.class);
+        sessionManager = mock(SessionManagerPort.class);
+        equippedHorseService = mock(EquippedHorseService.class);
+
+        when(sessionManager.isLoggedIn()).thenReturn(true);
+        when(sessionManager.getProtectedRequestsService()).thenReturn(mock(ProtectedRequestsService.class));
     }
 
     @Test
     void presenter_initializes_and_updates() {
         BaseGameConfig config = GameConfigFactory.createTrainingConfigWithCooldownReduction(0f);
         SystemsFactory testSystems = new SystemsFactory() {
-            @Override public CameraSystem createCameraSystem(data.race.GameMap map, int visibleCols) { return mock(CameraSystem.class); }
-            @Override public race.rendering.RendererSystem createRendererSystem(CameraSystem cameraSystem) { return mock(race.rendering.RendererSystem.class); }
-            @Override public CollisionSystem createCollisionSystem() { return mock(CollisionSystem.class); }
-            @Override public GameLoop createGameLoop(race.input.InputHandler ih, CameraSystem cs, CollisionSystem c, race.rendering.RendererSystem r) { return mock(GameLoop.class); }
-            @Override public race.state.GameStateManager createGameStateManager() { return mock(race.state.GameStateManager.class); }
+            @Override
+            public CameraSystem createCameraSystem(data.race.GameMap map, int visibleCols) {
+                return mock(CameraSystem.class);
+            }
+
+            @Override
+            public race.rendering.RendererSystem createRendererSystem(CameraSystem cameraSystem) {
+                return mock(race.rendering.RendererSystem.class);
+            }
+
+            @Override
+            public CollisionSystem createCollisionSystem() {
+                return mock(CollisionSystem.class);
+            }
+
+            @Override
+            public GameLoop createGameLoop(race.input.InputHandler ih, CameraSystem cs, CollisionSystem c, race.rendering.RendererSystem r) {
+                return mock(GameLoop.class);
+            }
+
+            @Override
+            public race.state.GameStateManager createGameStateManager() {
+                return mock(race.state.GameStateManager.class);
+            }
         };
         HorseActorFactory testHorse = player -> mock(BaseHorseActor.class);
 
@@ -50,7 +80,9 @@ class TrainingPresenterFlowTest {
         TrainingPresenter presenter = TrainingPresenterFactory.createTrainingPresenter(
                 gf,
                 config,
-                trainingService
+                trainingService,
+                sessionManager,
+                equippedHorseService
         );
 
         presenter.init();
@@ -59,5 +91,3 @@ class TrainingPresenterFlowTest {
         assertNotNull(presenter);
     }
 }
-
-

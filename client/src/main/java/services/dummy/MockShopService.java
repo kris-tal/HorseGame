@@ -2,24 +2,22 @@ package services.dummy;
 
 import data.shop.PurchaseResult;
 import data.shop.ShopResponse;
+import services.managers.SessionManagerPort;
 import services.shop.ShopServiceImpl;
 
 import java.util.List;
 
 public class MockShopService extends ShopServiceImpl {
 
-    public MockShopService() {
-        super();
+    public MockShopService(SessionManagerPort sessionManager) {
+        super(sessionManager);
     }
 
     @Override
     public ShopResponse getShopData() {
         ShopResponse response = new ShopResponse();
-        response.horses = List.of(
-                );
-        response.upgrades = List.of(
-
-        );
+        response.horses = List.of();
+        response.upgrades = List.of();
         return response;
     }
 

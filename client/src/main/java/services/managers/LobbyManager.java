@@ -1,6 +1,6 @@
+// java
 package services.managers;
 
-import com.badlogic.gdx.Gdx;
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import data.race.PlayerProgressResponse;
@@ -8,12 +8,11 @@ import services.listeners.LobbyListener;
 import services.lobby.LobbyService;
 import services.lobby.LobbyServiceImpl;
 import services.profile.ProfileServiceImpl;
-import views.race.menu.WaitingLobbyPanel;
+
 import java.util.HashMap;
 
-public class LobbyManager implements LobbyListener/*, GameManager.MockGameListener*/ {
-    //private GameManager gameManager;
-    private final SessionManager sessionManager;
+public class LobbyManager implements LobbyListener {
+    private final SessionManagerPort sessionManager;
     private final ConnectionManager connectionManager;
     private final LobbyService service;
     private LobbyInfo currentLobby;
@@ -24,8 +23,11 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
     Callback is designed to communicate with WaitingLobbyPanel*/
     public interface LobbyStateListener {
         void onLobbyInitialized();
+
         void onPlayersUpdated();
+
         void onLobbyStarted();
+
         void onLobbyClosed();
     }
 
@@ -35,9 +37,9 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
         void onLobbyJoined(boolean success);
     }
 
-    public LobbyManager(SessionManager sessionManager, ConnectionManager connectionManager) {
-        this.service = new LobbyServiceImpl(sessionManager);
+    public LobbyManager(SessionManagerPort sessionManager, ConnectionManager connectionManager) {
         this.sessionManager = sessionManager;
+        this.service = new LobbyServiceImpl(sessionManager);
         this.connectionManager = connectionManager;
         this.connectionManager.setLobbyListener(this);
     }
@@ -71,6 +73,7 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
         }
         // If success, wait for async callback to confirm
     }
+
     public void startLobby() {
         if (currentLobby == null) {
             return;
@@ -90,8 +93,15 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
     }
 
     public void updateProgress(PlayerProgressResponse progress) {
+        if (currentLobby == null || progress == null || progress.getDistances() == null) return;
         for (PlayerProgressResponse.PlayerProgress data : progress.getDistances()) {
-            currentLobby.getPlayer(data.getUsername()).setProgress(data.getProgress());
+            PlayerInfoClient player = currentLobby.getPlayer(data.getUsername());
+            if (player != null) {
+                player.setProgress(data.getProgress());
+            }
+        }
+        if (stateListener != null) {
+            stateListener.onPlayersUpdated();
         }
     }
 
@@ -108,7 +118,7 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
             return false;
         }
 
-        String username = new ProfileServiceImpl().getUsername();
+        String username = new ProfileServiceImpl(sessionManager).getUsername();
         if (username == null) return false;
 
         PlayerInfoClient player = currentLobby.getPlayer(username);
@@ -116,7 +126,6 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
 
         return player.isCreator();
     }
-
 
     // Implementation of LobbyListener interface
     @Override
@@ -134,9 +143,6 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
         if (stateListener != null) {
             stateListener.onLobbyStarted();
         }
-        /*gameManager = new GameManager(sessionManager, connectionManager);
-        gameManager.setCurrentPlayers(currentLobby.getPlayers());
-        gameManager.setMockListener(this);*/
     }
 
     @Override
@@ -173,36 +179,4 @@ public class LobbyManager implements LobbyListener/*, GameManager.MockGameListen
             stateListener.onLobbyInitialized();
         }
     }
-
-/*
-    // Mock methods, just for testing
-    @Override
-    public void onProgressUpdate() {
-        Gdx.app.log("Game", "Progress update!");
-        currentLobby.setPlayers(gameManager.getCurrentPlayers());
-        if (stateListener != null) {
-            stateListener.onPlayersUpdated();
-        }
-    }
-
-    @Override
-    public void onGameWon() {
-        Gdx.app.log("Game", "Game won!");
-    }
-
-    @Override
-    public void onLobbyClose() {
-        Gdx.app.log("Game", "Game closed!");
-        onLobbyClosed();
-    }
-
-
-    int count = 0;
-    public void move() {
-        if (gameManager != null) {
-            gameManager.updatePosition(count + 10);
-            count += 10;
-        }
-    }
-    */
 }

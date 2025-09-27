@@ -1,3 +1,4 @@
+// java
 package views.ranch.shop;
 
 import animations.IdleHorseActor;
@@ -10,6 +11,7 @@ import data.horse.HorseType;
 import data.shop.PurchaseResult;
 import data.shop.ShopItem;
 import data.shop.ShopResponse;
+import services.managers.SessionManagerPort;
 import services.shop.ShopServiceImpl;
 import views.common.ui.HorseFactory;
 import views.common.ui.ListPanel;
@@ -26,9 +28,9 @@ public class ShopPanel extends ListPanel<ShopItem> {
     private TextButton buyButton;
     private TextButton upgradeButton;
 
-    public ShopPanel(float width, float height) {
+    public ShopPanel(float width, float height, SessionManagerPort sessionManager) {
         super(width, height);
-        this.shopService = new ShopServiceImpl();
+        this.shopService = new ShopServiceImpl(sessionManager);
         refreshShop();
     }
 
@@ -63,7 +65,6 @@ public class ShopPanel extends ListPanel<ShopItem> {
 
         content.add(buttonStack).padTop(defaultPadding).center().row();
     }
-
 
     @Override
     protected String getTitle() {
@@ -110,7 +111,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
                     allItems.add(new ShopItem(HorseType.fromId(u.id), u.price, true, true));
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }).start();
     }

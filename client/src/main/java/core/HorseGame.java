@@ -1,25 +1,24 @@
+// java
 package core;
 
 import com.badlogic.gdx.Game;
+import data.race.EquippedHorseService;
 import views.login.LoginScreen;
-import views.register.RegisterScreen;
 import views.training.screen.TrainingScreen;
 import views.training.manager.TrainingManager;
 import race.map.RandomMapGenerator;
 import race.input.KeyboardInputHandler;
 import services.managers.ResourceManager;
+import services.managers.SessionManagerPort;
 
 public class HorseGame extends Game {
     private ResourceManager resourceManager;
     private LoginScreen loginScreen;
-    private RegisterScreen registerScreen;
-    //private RaceScreen raceScreen;
 
     @Override
     public void create() {
         resourceManager = new ResourceManager();
         loginScreen = new LoginScreen(this);
-        registerScreen = new RegisterScreen(this);
         setScreen(loginScreen);
     }
 
@@ -27,21 +26,16 @@ public class HorseGame extends Game {
         setScreen(loginScreen);
     }
 
-    public void showRegisterScreen() {
-        setScreen(registerScreen);
-    }
-
-    public void showTrainingScreen() {
+    public void showTrainingScreen(SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
         RandomMapGenerator mapGenerator = new RandomMapGenerator();
         KeyboardInputHandler inputHandler = new KeyboardInputHandler();
-        TrainingManager trainingManager = new TrainingManager(mapGenerator, inputHandler);
+        TrainingManager trainingManager = new TrainingManager(mapGenerator, inputHandler, sessionManager, equippedHorseService);
         TrainingScreen trainingScreen = trainingManager.createTrainingScreen(this);
         setScreen(trainingScreen);
     }
 
     @Override
     public void dispose() {
-        if(loginScreen != null) loginScreen.dispose();
-        if(registerScreen != null) registerScreen.dispose();
+        if (loginScreen != null) loginScreen.dispose();
     }
 }

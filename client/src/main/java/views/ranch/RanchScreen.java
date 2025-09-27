@@ -20,15 +20,24 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
 import data.lobby.LobbyInfo;
+import data.race.EquippedHorseService;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import services.listeners.JoinLobbyListener;
 import services.listeners.WaitingLobbyListener;
+import services.managers.ConnectionManager;
+import services.managers.LobbyManager;
+import services.managers.ResourceManager;
+import services.managers.SessionManagerPort;
 import services.managers.*;
 import views.common.ui.ConfirmationPanel;
 import views.common.context.MenuContext;
+import views.common.ui.ConfirmationPanel;
 import views.common.ui.Panel;
+import views.race.menu.*;
 import views.race.multiplayer.RaceMultiplayerScreen;
+import views.race.singleplayer.RaceSingleplayerScreen;
+import views.ranch.info.HorseInfoPanel;
 import views.race.menu.*;
 import views.ranch.shop.ShopPanel;
 import views.ranch.info.HorseInfoPanel;
@@ -36,11 +45,13 @@ import views.ranch.info.HorseInfoPanel;
 import java.util.List;
 
 public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
-    /* Lobby instance*/
     private final LobbyManager lobbyManager;
     private final HorseGame game;
     private final RanchPresenter presenter;
     private final MenuContext menuContext;
+    private final SessionManagerPort sessionManager;
+    private final EquippedHorseService equippedHorseService;
+
     private Stage stage;
     private PanelManager panelManager;
 
@@ -58,12 +69,13 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
     private RanchStatusBar statusBar;
 
-    public RanchScreen(HorseGame game) {
+    public RanchScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
+        this.sessionManager = sessionManager;
         this.menuContext = new MenuContext();
         this.presenter = new RanchPresenter(this, menuContext);
-        this.lobbyManager =
-                new LobbyManager(SessionManager.getInstance(), ConnectionManager.getInstance());
+        this.lobbyManager = new LobbyManager(sessionManager, ConnectionManager.getInstance());
+        this.equippedHorseService = equippedHorseService;
     }
 
     @Override
@@ -90,7 +102,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private void setupHorses() {
         fence = new Rectangle(100, 100, 1550, 600);
 
-        HorseService horseService = new HorseServiceImpl();
+        HorseService horseService = new HorseServiceImpl(sessionManager);
         List<HorseData> ownedHorses = horseService.getUserHorses();
 
         for (HorseData horse : ownedHorses) {
@@ -121,24 +133,24 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
                 fence.y, fence.y + fence.height
         );
         actor.addListener(new HorseClickListener(horse));
-        
-        float x = fence.x + 50; 
-        float y = fence.y + 50; 
+
+        float x = fence.x + 50;
+        float y = fence.y + 50;
         actor.setPosition(x, y);
-        
+
         horses.add(actor);
         stage.addActor(actor);
     }
 
     private void addNewHorseFromServer() {
-        HorseService horseService = new HorseServiceImpl();
+        HorseService horseService = new HorseServiceImpl(sessionManager);
         List<HorseData> allHorses = horseService.getUserHorses();
-        
+
         java.util.Set<Integer> existingHorseIds = new java.util.HashSet<>();
         for (StrollingHorseActor actor : horses) {
             existingHorseIds.add(actor.getHorseData().getId());
         }
-        
+
         for (HorseData horse : allHorses) {
             if (!existingHorseIds.contains(horse.getId())) {
                 addNewHorse(horse);
@@ -154,7 +166,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         lobbyMenuPanel = new LobbyMenuPanel(panelWidth, panelHeight);
         createLobbyPanel = new WaitingLobbyPanel(panelWidth, panelHeight, lobbyManager);
         joinLobbyPanel = new JoinLobbyPanel(panelWidth, panelHeight, lobbyManager);
-        shopPanel = new ShopPanel(panelWidth, panelHeight);
+        shopPanel = new ShopPanel(panelWidth, panelHeight, sessionManager);
 
         panelManager.registerPanel(raceMenuPanel);
         panelManager.registerPanel(lobbyMenuPanel);
@@ -177,23 +189,20 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         });
 
         joinLobbyPanel.setListener(this);
-        
+
         createLobbyPanel.setListener(new WaitingLobbyListener() {
             @Override
             public void onLobbyStarted() {
-                /* Handle lobby started */
                 navigateToRace();
             }
-            
+
             @Override
             public void onLeaveLobby() {
                 hideAllPanels();
             }
         });
-        
-        createLobbyPanel.setOnShowCallback(() -> {
-            showPanel(createLobbyPanel);
-        });
+
+        createLobbyPanel.setOnShowCallback(() -> showPanel(createLobbyPanel));
 
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.money);
@@ -205,7 +214,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
     private void setupStatusBar() {
         Skin skin = ResourceManager.uiSkin;
-        statusBar = new RanchStatusBar(game, skin);
+        statusBar = new RanchStatusBar(game, skin, sessionManager);
         stage.addActor(statusBar);
 
         statusBar.setListener(action -> {
@@ -225,7 +234,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            horseInfoPanel = new HorseInfoPanel(horse);
+            horseInfoPanel = new HorseInfoPanel(horse, equippedHorseService);
             panelManager.registerPanel(horseInfoPanel);
             showPanel(horseInfoPanel);
         }
@@ -247,14 +256,14 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
             showExitConfirmation();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            game.showTrainingScreen();
+            game.showTrainingScreen(sessionManager, equippedHorseService);
         }
         stage.act(delta);
         stage.draw();
 
         horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
         for (int i = 0; i < horses.size; i++) {
-            horses.get(i).setZIndex(i + 1); // Keep horses at low z-index (1-10)
+            horses.get(i).setZIndex(i + 1);
         }
     }
 
@@ -296,10 +305,10 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     @Override
     public void navigateToRace() {
         switch (menuContext.getRaceMode()) {
-            case SINGLEPLAYER -> game.showTrainingScreen();
+            case SINGLEPLAYER -> game.showTrainingScreen(sessionManager, equippedHorseService);
             case MULTIPLAYER -> {
-                GameManager gameManager = new GameManager(SessionManager.getInstance(), ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
-                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, gameManager));
+                GameManager gameManager = new GameManager(sessionManager, ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
+                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, equippedHorseService, gameManager));
             }
         }
     }

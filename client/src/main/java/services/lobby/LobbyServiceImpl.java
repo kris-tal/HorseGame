@@ -1,36 +1,34 @@
+// java
 package services.lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.lobby.LobbyCreationResponse;
 import services.managers.ConnectionManager;
-import services.managers.SessionManager;
+import services.managers.SessionManagerPort;
+
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class LobbyServiceImpl implements LobbyService {
-    private final SessionManager sessionManager;
+    private final SessionManagerPort sessionManager;
+    private final Gson gson = new Gson();
 
     private String currentLobby;
-    private Gson gson;
     private boolean isLobbyCreator = false;
 
-    public LobbyServiceImpl(SessionManager sessionManager) {
-        gson = new Gson();
-        this
-                .sessionManager = sessionManager;
+    public LobbyServiceImpl(SessionManagerPort sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     @Override
     public String createLobby() {
-        HttpRequest request = SessionManager.getInstance()
-                .getProtectedRequestsService()
+        HttpRequest request = sessionManager.getProtectedRequestsService()
                 .ProtectedPost("/lobby", HttpRequest.BodyPublishers.noBody())
                 .build();
         try {
-            HttpResponse<String> response = SessionManager.getInstance()
-                    .getProtectedRequestsService()
+            HttpResponse<String> response = sessionManager.getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -49,7 +47,7 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public boolean joinLobby(String room) {
         currentLobby = room;
-        return ConnectionManager.getInstance().connectToRoom(room, SessionManager.getInstance().getToken());
+        return ConnectionManager.getInstance().connectToRoom(room, sessionManager.getToken());
     }
 
     @Override
@@ -57,18 +55,19 @@ public class LobbyServiceImpl implements LobbyService {
         if (currentLobby == null) return;
         if (!isLobbyCreator) return;
 
-        HttpRequest request = SessionManager.getInstance()
-                .getProtectedRequestsService()
+        HttpRequest request = sessionManager.getProtectedRequestsService()
                 .ProtectedPost("/lobby/" + room + "/start", HttpRequest.BodyPublishers.noBody())
                 .build();
 
         try {
-            HttpResponse<String> response = SessionManager.getInstance()
-                    .getProtectedRequestsService()
+            HttpResponse<String> response = sessionManager.getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
-            if(response.statusCode() == 200) Gdx.app.log("Lobby", "Started room " + room);
-            else Gdx.app.log("Lobby", "Failed to start room " + room);
+            if (response.statusCode() == 200) {
+                Gdx.app.log("Lobby", "Started room " + room);
+            } else {
+                Gdx.app.log("Lobby", "Failed to start room " + room);
+            }
         } catch (IOException | InterruptedException e) {
             Gdx.app.log("Lobby", "Failed to start room " + room);
         }
@@ -77,7 +76,7 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public void updatePosition(int progress) {
         ConnectionManager.getInstance().emitProgressUpdate(
-                SessionManager.getInstance().getToken(),
+                sessionManager.getToken(),
                 progress
         );
     }

@@ -1,10 +1,9 @@
 package services.shop;
 
-import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.shop.PurchaseResult;
 import data.shop.ShopResponse;
-import services.managers.SessionManager;
+import services.managers.SessionManagerPort;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;
@@ -15,21 +14,21 @@ import java.util.Map;
 public class ShopServiceImpl implements ShopService {
 
     private final Gson gson;
+    private final SessionManagerPort sessionManager;
 
-    public ShopServiceImpl() {
+    public ShopServiceImpl(SessionManagerPort sessionManager) {
         this.gson = new Gson();
+        this.sessionManager = sessionManager;
     }
 
     @Override
     public ShopResponse getShopData() {
-        HttpRequest request = SessionManager.getInstance()
-                .getProtectedRequestsService()
+        HttpRequest request = sessionManager.getProtectedRequestsService()
                 .ProtectedGet("/shop")
                 .build();
 
         try {
-            HttpResponse<String> response = SessionManager.getInstance()
-                    .getProtectedRequestsService()
+            HttpResponse<String> response = sessionManager.getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -57,20 +56,18 @@ public class ShopServiceImpl implements ShopService {
     private PurchaseResult sendPurchaseRequest(int horseId) {
         String requestBody = gson.toJson(Map.of("id", horseId));
 
-        HttpRequest request = SessionManager.getInstance()
-                .getProtectedRequestsService()
+        HttpRequest request = sessionManager.getProtectedRequestsService()
                 .ProtectedPost("/shop",
                         HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                 .build();
 
         try {
-            HttpResponse<String> response = SessionManager.getInstance()
-                    .getProtectedRequestsService()
+            HttpResponse<String> response = sessionManager.getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 200 || response.statusCode() == 400
-                    || response.statusCode() == 401 || response.statusCode() == 404) {
+            int status = response.statusCode();
+            if (status == 200 || status == 400 || status == 401 || status == 404) {
                 return gson.fromJson(response.body(), PurchaseResult.class);
             }
         } catch (IOException | InterruptedException e) {

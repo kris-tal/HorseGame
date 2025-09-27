@@ -1,26 +1,27 @@
 package data.race;
 
 import data.horse.HorseData;
+import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import services.managers.SessionManagerPort;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EquippedHorseService {
-    private static EquippedHorseService instance;
+    private final HorseService horseService;
     private HorseData equippedHorse;
 
-    private EquippedHorseService() {
-        List<HorseData> horses = new HorseServiceImpl().getUserHorses();
-        if (horses != null && !horses.isEmpty()) {
-            this.equippedHorse = horses.get(0); // auto-equip first horse
-        }
+    public EquippedHorseService(SessionManagerPort sessionManager) {
+        this(new HorseServiceImpl(Objects.requireNonNull(sessionManager, "sessionManager")));
     }
 
-    public static EquippedHorseService getInstance() {
-        if (instance == null) {
-            instance = new EquippedHorseService();
+    public EquippedHorseService(HorseService horseService) {
+        this.horseService = Objects.requireNonNull(horseService, "horseService");
+        List<HorseData> horses = this.horseService.getUserHorses();
+        if (horses != null && !horses.isEmpty()) {
+            this.equippedHorse = horses.get(0);
         }
-        return instance;
     }
 
     public HorseData getEquippedHorse() {
@@ -32,7 +33,6 @@ public class EquippedHorseService {
     }
 
     public boolean isEquipped(HorseData horseData) {
-        if (equippedHorse != horseData) return false;
-        return true;
+        return equippedHorse == horseData;
     }
 }

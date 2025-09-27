@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
 import data.lobby.PlayerInfoClient;
+import data.race.EquippedHorseService;
 import race.RaceWorld;
 import services.managers.GameManager;
+import services.managers.SessionManagerPort;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
 import views.common.base.BaseGameScreen;
@@ -38,8 +40,8 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
     // misc
     private final String localUsername;
 
-    public RaceMultiplayerScreen(HorseGame game, GameManager gameManager) {
-        super(game);
+    public RaceMultiplayerScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService, GameManager gameManager) {
+        super(game, sessionManager, equippedHorseService);
         this.gameManager = gameManager;
 
         race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse();
@@ -52,7 +54,7 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
         presenter.init();
         FINISH_DISTANCE = presenter.getWorld().getMap().getLength();
 
-        ProfileService profileService = new ProfileServiceImpl();
+        ProfileService profileService = new ProfileServiceImpl(sessionManager);
         localUsername = profileService.getUserData().getUsername();
 
         // DEBUG: Start the race
