@@ -240,9 +240,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         }
         stage.act(delta);
         stage.draw();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            game.setScreen(new RaceSingleplayerScreen(game));
-        }
 
         horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
         for (int i = 0; i < horses.size; i++) {
