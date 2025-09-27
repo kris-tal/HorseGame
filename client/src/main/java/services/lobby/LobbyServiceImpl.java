@@ -33,6 +33,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public String createLobby() {
+        
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
                 .ProtectedPost("/lobby", HttpRequest.BodyPublishers.noBody())
@@ -59,6 +60,10 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public boolean joinLobby(String room) {
         try {
+            if (sessionSocket != null) {
+                sessionSocket.close();
+            }
+            
             IO.Options options = new IO.Options();
             options.auth = new HashMap<>();
             options.auth.put("token", SessionManager.getInstance().getToken());
@@ -70,8 +75,7 @@ public class LobbyServiceImpl implements LobbyService {
             sessionSocket.open();
             sessionSocket.connect();
 
-            // Return true immediately - actual connection status handled via events
-            return true; // FIXED: Was returning false always
+            return true;
 
         } catch (Exception e) {
             currentLobby = null;
@@ -103,6 +107,7 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     private void setupSocketEvents() {
+
         sessionSocket.on("player_joined", args -> {
             if (args.length > 1) {
                 String data = args[1].toString();
@@ -128,7 +133,7 @@ public class LobbyServiceImpl implements LobbyService {
             }
         });
 
-        sessionSocket.on("lobby_started", args -> {
+        sessionSocket.on("room_started", args -> {
             LobbyManager.getInstance().onLobbyStarted();
         });
 
@@ -143,6 +148,7 @@ public class LobbyServiceImpl implements LobbyService {
 
                 Gdx.app.postRunnable(() -> {
                     LobbyManager.getInstance().onLobbyJoined(true);
+                    LobbyManager.getInstance().updateStartButtonVisibility();
                 });
             } catch (Exception e) {
                 Gdx.app.postRunnable(() -> {
@@ -180,6 +186,7 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public void closeConnection() {
         if (sessionSocket != null) {
+            sessionSocket.off();
             sessionSocket.close();
         }
         sessionSocket = null;

@@ -15,6 +15,7 @@ import views.race.menu.JoinLobbyPanel;
 public class RanchPresenter {
     private final RanchView view;
     private final MenuContext menuContext;
+    private boolean isCreatingLobby = false;
 
     public RanchPresenter(RanchView view, MenuContext menuContext) {
         this.view = view;
@@ -44,10 +45,21 @@ public class RanchPresenter {
     }
 
     public void onCreateLobbyClicked(WaitingLobbyPanel panel) {
-        panel.refresh();
+        if (isCreatingLobby) {
+            return;
+        }
+        
+        isCreatingLobby = true;
+
+        new Thread(() -> {
+            services.managers.LobbyManager.getInstance().createLobby();
+            com.badlogic.gdx.Gdx.app.postRunnable(() -> {
+                isCreatingLobby = false;
+            });
+        }).start();
+        
         menuContext.setLobbyMode(MenuContext.LobbyMode.CREATE);
         view.hideAllPanels();
-        view.showPanel(panel);
     }
 
     public void onJoinLobbyClicked(JoinLobbyPanel panel) {

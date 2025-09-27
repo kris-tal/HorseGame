@@ -6,7 +6,7 @@ import race.Player;
 public class CollisionSystem {
 
     public void checkCollisions(Player player, GameMap map) {
-        int col = Math.round(player.getCol());
+        int col = (int) Math.round(Math.ceil(player.getCol()));
 
         if (col < map.getLength()) {
             int lane = player.getLane();

@@ -27,19 +27,19 @@ public class BaseGameConfig {
     public float getSprintCooldownReduction() { return sprintCooldownReduction; }
 
     public static BaseGameConfig createRaceConfig() {
-        return new BaseGameConfig(3, 300, 4f, HorseType.BORING_HORSE, 10, 0f); // 3 km
+        return new BaseGameConfig(3, 400, 4f, HorseType.BORING_HORSE, 10, 0f);
     }
 
     public static BaseGameConfig createTrainingConfig() {
-        return new BaseGameConfig(3, 300000, 4f, HorseType.BORING_HORSE, 10, 0f); // 100x większa niż wyścig
+        return new BaseGameConfig(3, 300000, 4f, HorseType.BORING_HORSE, 10, 0f);
     }
 
     public static BaseGameConfig createRaceConfigWithCooldownReduction(float sprintCooldownReduction) {
-        return new BaseGameConfig(3, 300, 4f, HorseType.BORING_HORSE, 10, sprintCooldownReduction); // 3 km
+        return new BaseGameConfig(3, 400, 4f, HorseType.BORING_HORSE, 10, sprintCooldownReduction);
     }
 
     public static BaseGameConfig createTrainingConfigWithCooldownReduction(float sprintCooldownReduction) {
-        return new BaseGameConfig(3, 300000, 4f, HorseType.BORING_HORSE, 10, sprintCooldownReduction); // 100x większa niż wyścig
+        return new BaseGameConfig(3, 300000, 4f, HorseType.BORING_HORSE, 10, sprintCooldownReduction);
     }
 }
 

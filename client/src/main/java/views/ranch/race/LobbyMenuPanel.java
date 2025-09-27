@@ -13,6 +13,7 @@ public class LobbyMenuPanel extends Panel {
     }
 
     private LobbyMenuPanel.LobbyMenuListener listener;
+    private boolean isCreatingLobby = false;
 
     public LobbyMenuPanel(float width, float height) {
         super(width, height);
@@ -30,7 +31,19 @@ public class LobbyMenuPanel extends Panel {
         createLobbyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (isCreatingLobby) {
+                    return;
+                }
+                isCreatingLobby = true;
                 if (listener != null) listener.onModeSelected(MenuContext.LobbyMode.CREATE);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000);
+                        isCreatingLobby = false;
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }).start();
             }
         });
         content.add(createLobbyButton).padTop(smallPadding).padBottom(defaultPadding).row();

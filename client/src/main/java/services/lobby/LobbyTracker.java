@@ -2,6 +2,7 @@ package services.lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import data.lobby.PlayerInfoClient;
 import data.lobby.PlayerListResponse;
@@ -12,7 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LobbyTracker {
-    private final Gson gson = new Gson();
+    private final Gson gson;
+
+    public LobbyTracker() {
+        gson = new GsonBuilder()
+                .registerTypeAdapter(data.lobby.PlayerStatus.class, new PlayerInfoClient.PlayerStatusDeserializer())
+                .create();
+    }
 
     public void updateFromServer(String jsonData) {
         try {
@@ -26,6 +33,7 @@ public class LobbyTracker {
                 LobbyManager.getInstance().updatePlayers(map);
             }
         } catch (Exception e) {
+            System.out.println("LobbyTracker: Error parsing jsonData: " + jsonData + ", error: " + e.getMessage());
         }
     }
 }

@@ -11,6 +11,12 @@ public class GameStateManager {
     public void update(Player player, GameMap map) {
         if (raceFinished) return;
 
+        if (player.isRaceCompleted() && !raceCompleted) {
+            raceCompleted = true;
+            raceFinished = true;
+            return;
+        }
+
         if (!player.isAlive() && !playerDead) {
             playerDead = true;
             raceFinished = true;
