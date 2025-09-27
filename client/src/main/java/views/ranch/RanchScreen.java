@@ -1,6 +1,7 @@
 package views.ranch;
 
 import animations.StrollingHorseActor;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,14 +19,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
+import data.lobby.LobbyInfo;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import services.listeners.JoinLobbyListener;
 import services.listeners.WaitingLobbyListener;
-import services.managers.ConnectionManager;
-import services.managers.LobbyManager;
-import services.managers.ResourceManager;
-import services.managers.SessionManager;
+import services.managers.*;
 import views.common.ui.ConfirmationPanel;
 import views.common.context.MenuContext;
 import views.common.ui.Panel;
@@ -184,7 +183,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
             @Override
             public void onLobbyStarted() {
                 /* Handle lobby started */
-                //game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game));
+                navigateToRace();
             }
             
             @Override
@@ -299,7 +298,10 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     public void navigateToRace() {
         switch (menuContext.getRaceMode()) {
             case SINGLEPLAYER -> game.setScreen(new RaceSingleplayerScreen(game));
-            case MULTIPLAYER -> game.setScreen(new RaceMultiplayerScreen(game));
+            case MULTIPLAYER -> {
+                GameManager gameManager = new GameManager(SessionManager.getInstance(), ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
+                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, gameManager));
+            }
         }
     }
 

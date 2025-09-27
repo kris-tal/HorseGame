@@ -1,5 +1,6 @@
 package services.managers;
 
+import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import data.race.PlayerProgressResponse;
 import race.Player;
@@ -28,10 +29,11 @@ public class GameManager implements GameListener {
     private boolean gameInProgress = false;
     private String winner;
 
-    public GameManager(SessionManager sessionManager, ConnectionManager connectionManager) {
+    public GameManager(SessionManager sessionManager, ConnectionManager connectionManager, LobbyInfo lobbyInfo) {
         this.sessionManager = sessionManager;
         this.connectionManager = connectionManager;
         this.connectionManager.setGameListener(this);
+        this.currentPlayers = lobbyInfo.getPlayers();
     }
 
     public void setCurrentPlayers(HashMap<String, PlayerInfoClient> players) {
