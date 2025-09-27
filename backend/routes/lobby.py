@@ -165,7 +165,7 @@ def progress_update(data):
                 log_and_emit("game_won", {"winner": player.serialize()}, to=room_code)
                 return
 
-    log_and_emit("progress_update", {"players": [p.serialize() for p in room["players"]]}, to=room_code)
+    log_and_emit("progress_update", {"distances": [{"username": p.username, "progress": progress} for p in room["players"]]}, to=room_code)
 
 @socketio.on("disconnect")
 def disconnect_handler():

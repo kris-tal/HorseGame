@@ -22,7 +22,6 @@ public class LobbyServiceImpl implements LobbyService {
     Socket sessionSocket;
     Gson gson;
     private final LobbyTracker lobbyTracker;
-    private String currentUserUsername;
     private boolean isLobbyCreator = false;
     private boolean connected = false;
 
@@ -62,6 +61,7 @@ public class LobbyServiceImpl implements LobbyService {
         try {
             if (sessionSocket != null) {
                 sessionSocket.close();
+                sessionSocket = null;
             }
             
             IO.Options options = new IO.Options();
@@ -74,7 +74,6 @@ public class LobbyServiceImpl implements LobbyService {
             setupSocketEvents();
             sessionSocket.open();
             sessionSocket.connect();
-
             return true;
 
         } catch (Exception e) {
@@ -84,10 +83,10 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
-    public boolean startLobby() {
-        if (currentLobby == null) return false;
+    public void startLobby() {
+        if (currentLobby == null) return;
 
-        if (!isLobbyCreator) return false;
+        if (!isLobbyCreator) return;
 
         HttpRequest request = SessionManager.getInstance()
                 .getProtectedRequestsService()
@@ -100,9 +99,8 @@ public class LobbyServiceImpl implements LobbyService {
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.statusCode() == 200;
+            response.statusCode();
         } catch (IOException | InterruptedException e) {
-            return false;
         }
     }
 
@@ -143,7 +141,6 @@ public class LobbyServiceImpl implements LobbyService {
 
         sessionSocket.on("connect", args -> {
             try {
-                currentUserUsername = new ProfileServiceImpl().getUserData().getUsername();
                 connected = true;
 
                 Gdx.app.postRunnable(() -> {
@@ -191,20 +188,9 @@ public class LobbyServiceImpl implements LobbyService {
         }
         sessionSocket = null;
         currentLobby = null;
-        currentUserUsername = null;
         isLobbyCreator = false;
         connected = false;
     }
 
-    public boolean isLobbyCreator() {
-        return isLobbyCreator;
-    }
 
-    public boolean isConnected() {
-        return connected;
-    }
-
-    public String getCurrentUserUsername() {
-        return currentUserUsername;
-    }
 }

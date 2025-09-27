@@ -7,10 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import services.managers.LobbyManager;
 import views.common.ui.ListPanel;
-import views.common.context.MenuContext;
 import views.common.ui.UIFactory;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     /* Highlight lobby code */
     @Override
     protected String getTitle() {
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby == null) {
             return "[NULL]";
         }
@@ -68,7 +68,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         });
         content.add(leaveButton).padBottom(defaultPadding).row();
 
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby != null) {
             playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
             content.add(playerCountLabel).padTop(smallPadding).padBottom(defaultPadding).row();
@@ -138,7 +138,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
 
     @Override
     public void onLobbyInitialized() {
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby != null) {
             if (playerCountLabel == null) {
                 playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
@@ -161,7 +161,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     /* It is invoked each time a player enters or exits */
     @Override
     public void onPlayersUpdated() {
-        LobbyManager.LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
+        LobbyInfo lobby = LobbyManager.getInstance().getCurrentLobby();
         if (lobby != null) {
             List<PlayerInfoClient> playerList = new ArrayList<>(lobby.getPlayers().values());
             

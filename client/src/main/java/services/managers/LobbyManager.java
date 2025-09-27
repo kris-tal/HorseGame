@@ -1,13 +1,14 @@
 package services.managers;
 
-import com.badlogic.gdx.Gdx;
+import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
+import data.race.PlayerProgressResponse;
 import services.lobby.LobbyService;
 import services.lobby.LobbyServiceImpl;
+import services.profile.ProfileServiceImpl;
 import views.race.menu.WaitingLobbyPanel;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class LobbyManager {
     private static LobbyManager instance;
@@ -74,12 +75,12 @@ public class LobbyManager {
         // If success, wait for async callback to confirm
     }
 
-    public boolean startLobby() {
+    public void startLobby() {
         if (currentLobby == null) {
-            return false;
+            return;
         }
 
-        return service.startLobby();
+        service.startLobby();
     }
 
     public LobbyInfo getCurrentLobby() {
@@ -93,12 +94,17 @@ public class LobbyManager {
         service.closeConnection();
     }
 
-    public void updatePlayers(HashMap<String, PlayerInfoClient> newPlayers) {
+    public void updatePlayerList(HashMap<String, PlayerInfoClient> newPlayers) {
         if (currentLobby != null) {
             currentLobby.setPlayers(newPlayers);
             if (stateListener != null) {
                 stateListener.onPlayersUpdated();
             }
+        }
+    }
+    public void updateProgress(PlayerProgressResponse progress) {
+        for (PlayerProgressResponse.PlayerProgress data : progress.getDistances()) {
+            currentLobby.getPlayer(data.getUsername()).setProgress(data.getProgress());
         }
     }
 
@@ -128,14 +134,13 @@ public class LobbyManager {
             return false;
         }
 
-        String username = ((LobbyServiceImpl) service).getCurrentUserUsername();
+        String username = new ProfileServiceImpl().getUsername();
         if (username == null) return false;
 
         PlayerInfoClient player = currentLobby.getPlayer(username);
         if (player == null) return false;
 
-        boolean isCreator = player.isCreator();
-        return isCreator;
+        return player.isCreator();
     }
 
     public void updateStartButtonVisibility() {
@@ -158,32 +163,4 @@ public class LobbyManager {
         }
     }
 
-    public static class LobbyInfo {
-        private final String lobbyCode;
-        private HashMap<String, PlayerInfoClient> players = new HashMap<>();
-
-        public LobbyInfo(String lobbyCode) {
-            this.lobbyCode = lobbyCode;
-        }
-
-        public String getLobbyCode() {
-            return lobbyCode;
-        }
-
-        public HashMap<String, PlayerInfoClient> getPlayers() {
-            return players;
-        }
-
-        public void setPlayers(HashMap<String, PlayerInfoClient> players) {
-            this.players = players;
-        }
-
-        public int getPlayerCount() {
-            return players.size();
-        }
-
-        public PlayerInfoClient getPlayer(String username) {
-            return players.get(username);
-        }
-    }
 }

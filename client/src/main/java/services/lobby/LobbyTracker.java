@@ -1,14 +1,11 @@
 package services.lobby;
 
-import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import data.lobby.PlayerInfoClient;
 import data.lobby.PlayerListResponse;
 import services.managers.LobbyManager;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class LobbyTracker {
                 for (PlayerInfoClient p : players) {
                     map.put(p.getUsername(), p);
                 }
-                LobbyManager.getInstance().updatePlayers(map);
+                LobbyManager.getInstance().updatePlayerList(map);
             }
         } catch (Exception e) {
             System.out.println("LobbyTracker: Error parsing jsonData: " + jsonData + ", error: " + e.getMessage());
