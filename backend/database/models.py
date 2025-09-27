@@ -16,7 +16,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     money = db.Column(
         db.Integer,
-        default=int(os.getenv("STARTUP_MONEY", "1000"))
+        default=int(os.getenv("STARTUP_MONEY", "10000"))
     )
     prestige = db.Column(db.Integer, default=0)
     def set_password(self, password):

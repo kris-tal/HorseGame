@@ -41,6 +41,13 @@ public class Player {
                         SprintStrategy sprintStrategy, PlayerMovementStrategy movementStrategy, 
                         PlayerVisionStrategy visionStrategy, SprintManager sprintManager, 
                         StatusEffectManager statusEffectManager) {
+        this(horseType, startingLane, speed, sprintStrategy, movementStrategy, visionStrategy, sprintManager, statusEffectManager, 0);
+    }
+
+    public Player(HorseType horseType, int startingLane, float speed, 
+                        SprintStrategy sprintStrategy, PlayerMovementStrategy movementStrategy, 
+                        PlayerVisionStrategy visionStrategy, SprintManager sprintManager, 
+                        StatusEffectManager statusEffectManager, int horseLevel) {
         this.horseType = horseType;
         this.lane = startingLane;
         this.baseSpeed = speed;
@@ -49,6 +56,9 @@ public class Player {
         this.visionStrategy = visionStrategy;
         this.sprintManager = sprintManager;
         this.statusEffectManager = statusEffectManager;
+        
+        float levelBonus = horseLevel * 0.1f; 
+        this.sprintDuration = 2f * (1f + levelBonus); 
     }
 
     public void moveUp() {

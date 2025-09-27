@@ -18,11 +18,11 @@ public class RaceMapObjectGenerationStrategy implements MapObjectGenerationStrat
         }
         
         double r = random.nextDouble();
-        if(r < 0.04) return new DeathStoneObject();
-        if (r < 0.08) return new CoinObject();
-        if (r < 0.12) return new PuddleObject();
-        if (r < 0.16) return new BushObject();
-        if (r < 0.20) return new ElectricBarrierObject();
+        if(r < 0.01) return new DeathStoneObject();
+        if (r < 0.05) return new CoinObject();
+        if (r < 0.09) return new PuddleObject();
+        if (r < 0.13) return new BushObject();
+        if (r < 0.15) return new ElectricBarrierObject();
         return new EmptyObject();
     }
 }

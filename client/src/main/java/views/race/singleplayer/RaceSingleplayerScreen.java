@@ -32,7 +32,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         this.horseService = new HorseServiceImpl();
         this.trainingService = new TrainingServiceImpl();
 
-        race.config.BaseGameConfig config = race.config.BaseGameConfig.createRaceConfigWithEquippedHorse();
+        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         

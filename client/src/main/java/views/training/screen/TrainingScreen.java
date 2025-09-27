@@ -73,6 +73,10 @@ public class TrainingScreen extends BaseGameScreen {
         return presenter.getWorld();
     }
 
+    public TrainingPresenter getPresenter() {
+        return presenter;
+    }
+
     @Override
     protected boolean isGameFinished() {
         return presenter.isRaceFinished();
@@ -143,11 +147,6 @@ public class TrainingScreen extends BaseGameScreen {
             distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
             trainingPointsLabel.setText("Training Points: " + presenter.getTrainingPoints() + "/10000");
             longestRunLabel.setText("Longest Run: " + presenter.getDisplayLongestRun() + "m");
-            
-            if (presenter.isPlayerDead()) {
-                distanceLabel.setText("Training Failed - Horse Hit Obstacle!");
-                trainingPointsLabel.setText("Returning to ranch...");
-            }
             
             if (sprintWidget != null && presenter.getWorld() != null && presenter.getWorld().getPlayer() != null) {
                 sprintWidget.act(delta);

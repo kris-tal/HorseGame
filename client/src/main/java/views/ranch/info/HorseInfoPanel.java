@@ -39,10 +39,10 @@ public class HorseInfoPanel extends Panel {
         IdleHorseActor idleHorseActor = new IdleHorseActor(horseData.getHorseType(), 3);
         content.add(idleHorseActor).padTop(defaultPadding).row();
 
-        Label levelLabel = UIFactory.createMediumLabel("level: " + horseData.getLevel());
+        Label levelLabel = UIFactory.createMediumLabel("sprint level: " + horseData.getLevel());
         content.add(levelLabel).padTop(defaultPadding).row();
 
-        Label trainingPointsLabel = UIFactory.createMediumLabel("training Points: " + horseData.getTrainingPoints());
+        Label trainingPointsLabel = UIFactory.createMediumLabel("training level: " + horseData.getTrainingPoints());
         content.add(trainingPointsLabel).padTop(defaultPadding).row();
 
         final TextButton equipButton = UIFactory.createLargeTextButton("equip");

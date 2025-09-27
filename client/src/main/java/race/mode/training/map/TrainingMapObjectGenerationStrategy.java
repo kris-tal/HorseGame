@@ -17,11 +17,11 @@ public class TrainingMapObjectGenerationStrategy implements MapObjectGenerationS
 
         if (r < 0.01) { // DeathStone
             return new DeathStoneObject();
-        } else if (r < 0.05) { // Puddle
+        } else if (r < 0.02) { // Puddle
             return new PuddleObject();
-        } else if (r < 0.09) { // Bush
+        } else if (r < 0.03) { // Bush
             return new BushObject();
-        } else if (r < 0.11) { // ElectricBarrier
+        } else if (r < 0.04) { // ElectricBarrier
             return new ElectricBarrierObject();
         }
         
