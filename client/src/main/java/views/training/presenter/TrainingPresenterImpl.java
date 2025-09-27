@@ -113,11 +113,15 @@ public class TrainingPresenterImpl implements TrainingPresenter {
     }
 
     private TrainingData createTrainingData(int distance, int points, boolean success) {
+        RaceWorld world = gameController.getGameWorld();
+        int coins = world != null ? world.getPlayer().getCoins() : 0;
+        
         TrainingData data = new TrainingData();
         data.distance = distance;
         data.success = success;
         data.longestRunDistance = Math.max(distance, dataController.getLongestRunDistance());
         data.pointsEarned = points;
+        data.money = coins;
         return data;
     }
 
@@ -157,5 +161,10 @@ public class TrainingPresenterImpl implements TrainingPresenter {
 
     public String getDisplayLongestRun() {
         return String.valueOf(dataController.getLongestRunDistance());
+    }
+
+    public int getCoins() {
+        RaceWorld world = gameController.getGameWorld();
+        return world != null ? world.getPlayer().getCoins() : 0;
     }
 }

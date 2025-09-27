@@ -5,7 +5,7 @@ import views.login.LoginScreen;
 import views.register.RegisterScreen;
 import views.training.screen.TrainingScreen;
 import views.training.manager.TrainingManager;
-import race.map.TrainingMapGenerator;
+import race.map.RandomMapGenerator;
 import race.input.KeyboardInputHandler;
 import services.managers.ResourceManager;
 
@@ -32,7 +32,7 @@ public class HorseGame extends Game {
     }
 
     public void showTrainingScreen() {
-        TrainingMapGenerator mapGenerator = new TrainingMapGenerator();
+        RandomMapGenerator mapGenerator = new RandomMapGenerator();
         KeyboardInputHandler inputHandler = new KeyboardInputHandler();
         TrainingManager trainingManager = new TrainingManager(mapGenerator, inputHandler);
         TrainingScreen trainingScreen = trainingManager.createTrainingScreen(this);

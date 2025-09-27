@@ -21,4 +21,5 @@ public interface TrainingPresenter {
     
     String getLongestRunDisplayText();
     String getTrainingPointsDisplayText();
+    int getCoins();
 }

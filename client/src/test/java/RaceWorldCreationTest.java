@@ -35,7 +35,7 @@ class RaceWorldCreationTest {
                 data[i][j] = new EmptyObject();
             }
         }
-        when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));
+        when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));//kiedy zrobi sie mapowanie to zwroci mape z danymi
 
         BaseGameConfig config = GameConfigFactory.createRaceConfigWithCooldownReduction(0f);
 

@@ -29,7 +29,6 @@ import views.common.ui.ConfirmationPanel;
 import views.common.context.MenuContext;
 import views.common.ui.Panel;
 import views.race.multiplayer.RaceMultiplayerScreen;
-import views.race.singleplayer.RaceSingleplayerScreen;
 import views.race.menu.*;
 import views.ranch.shop.ShopPanel;
 import views.ranch.info.HorseInfoPanel;
@@ -297,7 +296,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     @Override
     public void navigateToRace() {
         switch (menuContext.getRaceMode()) {
-            case SINGLEPLAYER -> game.setScreen(new RaceSingleplayerScreen(game));
+            case SINGLEPLAYER -> game.showTrainingScreen();
             case MULTIPLAYER -> {
                 GameManager gameManager = new GameManager(SessionManager.getInstance(), ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
                 game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, gameManager));

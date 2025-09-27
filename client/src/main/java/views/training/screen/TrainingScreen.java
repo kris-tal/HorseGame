@@ -24,6 +24,7 @@ public class TrainingScreen extends BaseGameScreen {
     private Label distanceLabel;
     private Label trainingPointsLabel;
     private Label longestRunLabel;
+    private Label coinsLabel;
     private SprintWidget sprintWidget;
     private TrainingStatsPanel statsPanel;
 
@@ -44,11 +45,13 @@ public class TrainingScreen extends BaseGameScreen {
         distanceLabel = new Label("Distance: 0m", skin);
         trainingPointsLabel = new Label("Training Points: 0/10000", skin);
         longestRunLabel = new Label("Longest Run: 0m", skin);
+        coinsLabel = new Label("Coins: 0", skin);
         
         titleLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         distanceLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         trainingPointsLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         longestRunLabel.setStyle(skin.get("default", Label.LabelStyle.class));
+        coinsLabel.setStyle(skin.get("default", Label.LabelStyle.class));
         
         table.add(titleLabel).pad(10);
         table.row();
@@ -57,6 +60,8 @@ public class TrainingScreen extends BaseGameScreen {
         table.add(trainingPointsLabel).pad(5);
         table.row();
         table.add(longestRunLabel).pad(5);
+        table.row();
+        table.add(coinsLabel).pad(5);
         
         uiStage.addActor(table);
         
@@ -95,7 +100,8 @@ public class TrainingScreen extends BaseGameScreen {
             int currentLongest = Integer.parseInt(presenter.getDisplayLongestRun());
             boolean isNewRecord = distance > currentLongest;
             int longestToShow = Math.max(distance, currentLongest);
-            statsPanel.updateStats(distance, longestToShow, isNewRecord);
+            int coins = presenter.getCoins();
+            statsPanel.updateStats(distance, longestToShow, coins, isNewRecord);
         } catch (Exception ignored) {}
         
         if (!onGameFinished) {
@@ -147,6 +153,7 @@ public class TrainingScreen extends BaseGameScreen {
             distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
             trainingPointsLabel.setText("Training Points: " + presenter.getTrainingPoints() + "/10000");
             longestRunLabel.setText("Longest Run: " + presenter.getDisplayLongestRun() + "m");
+            coinsLabel.setText("Coins: " + presenter.getCoins());
             
             if (sprintWidget != null && presenter.getWorld() != null && presenter.getWorld().getPlayer() != null) {
                 sprintWidget.act(delta);
