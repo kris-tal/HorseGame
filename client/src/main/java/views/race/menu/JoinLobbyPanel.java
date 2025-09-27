@@ -6,24 +6,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import services.listeners.JoinLobbyListener;
 import services.managers.LobbyManager;
 import views.common.ui.ListPanel;
 import views.common.ui.UIFactory;
 
 public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConnectionListener {
-
+    private LobbyManager lobbyManager;
     private JoinLobbyListener listener;
     private TextField roomCodeField;
     private TextButton joinButton;
     private Label statusLabel;
 
-    public interface JoinLobbyListener {
-        void onLobbyJoined();
-    }
-
-    public JoinLobbyPanel(float width, float height) {
+    public JoinLobbyPanel(float width, float height, LobbyManager manager) {
         super(width, height);
-        LobbyManager.getInstance().setConnectionListener(this);
+        this.lobbyManager = manager;
+        this.lobbyManager.setConnectionListener(this);
     }
 
 
@@ -45,7 +43,7 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         statusLabel.setText("Connecting to lobby...");
         statusLabel.setColor(1f, 1f, 0.3f, 1f); // Yellow for loading
 
-        LobbyManager.getInstance().joinLobby(lobbyCode);
+        lobbyManager.joinLobby(lobbyCode);
     }
 
     private void showError(String message) {

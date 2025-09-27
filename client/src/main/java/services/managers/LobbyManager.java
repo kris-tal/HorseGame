@@ -3,22 +3,22 @@ package services.managers;
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import data.race.PlayerProgressResponse;
+import services.listeners.LobbyListener;
 import services.lobby.LobbyService;
 import services.lobby.LobbyServiceImpl;
 import services.profile.ProfileServiceImpl;
 import views.race.menu.WaitingLobbyPanel;
-
 import java.util.HashMap;
 
-public class LobbyManager {
-    private static LobbyManager instance;
+public class LobbyManager implements LobbyListener {
+    private final ConnectionManager connectionManager;
     private final LobbyService service;
     private LobbyInfo currentLobby;
     private LobbyStateListener stateListener;
     private LobbyConnectionListener connectionListener;
 
     /* Interface responsible for callback from server responses,
-     Callback is designed to communicate with WaitingLobbyPanel*/
+    Callback is designed to communicate with WaitingLobbyPanel*/
     public interface LobbyStateListener {
         void onLobbyInitialized();
         void onPlayersUpdated();
@@ -27,28 +27,22 @@ public class LobbyManager {
     }
 
     /* Interface responsible for callback from server responses,
-     Callback is designed to communicate with JoinLobbyPanel*/
+    Callback is designed to communicate with JoinLobbyPanel*/
     public interface LobbyConnectionListener {
         void onLobbyJoined(boolean success);
     }
 
-    private LobbyManager() {
-        service = new LobbyServiceImpl();
-    }
-
-    public static synchronized LobbyManager getInstance() {
-        if (instance == null) {
-            instance = new LobbyManager();
-        }
-        return instance;
+    public LobbyManager(SessionManager sessionManager, ConnectionManager connectionManager) {
+        this.service = new LobbyServiceImpl(sessionManager);
+        this.connectionManager = connectionManager;
+        this.connectionManager.setLobbyListener(this);
     }
 
     public void createLobby() {
         if (currentLobby != null) {
             return;
         }
-        service.closeConnection();
-        
+        connectionManager.closeConnection();
         String code = service.createLobby();
         if (code != null) {
             currentLobby = new LobbyInfo(code);
@@ -58,12 +52,11 @@ public class LobbyManager {
 
     public void joinLobby(String lobbyCode) {
         if (currentLobby != null) {
-            service.closeConnection();
+            connectionManager.closeConnection();
         }
 
         // Create lobby info immediately (optimistic)
         currentLobby = new LobbyInfo(lobbyCode);
-
         boolean success = service.joinLobby(lobbyCode);
         if (!success) {
             // If immediate failure, clear the lobby
@@ -79,8 +72,7 @@ public class LobbyManager {
         if (currentLobby == null) {
             return;
         }
-
-        service.startLobby();
+        service.startLobby(currentLobby.getLobbyCode());
     }
 
     public LobbyInfo getCurrentLobby() {
@@ -91,33 +83,12 @@ public class LobbyManager {
         if (currentLobby != null) {
             currentLobby = null;
         }
-        service.closeConnection();
+        connectionManager.closeConnection();
     }
 
-    public void updatePlayerList(HashMap<String, PlayerInfoClient> newPlayers) {
-        if (currentLobby != null) {
-            currentLobby.setPlayers(newPlayers);
-            if (stateListener != null) {
-                stateListener.onPlayersUpdated();
-            }
-        }
-    }
     public void updateProgress(PlayerProgressResponse progress) {
         for (PlayerProgressResponse.PlayerProgress data : progress.getDistances()) {
             currentLobby.getPlayer(data.getUsername()).setProgress(data.getProgress());
-        }
-    }
-
-    public void onLobbyStarted() {
-        if (stateListener != null) {
-            stateListener.onLobbyStarted();
-        }
-    }
-
-    public void onLobbyClosed() {
-        currentLobby = null;
-        if (stateListener != null) {
-            stateListener.onLobbyClosed();
         }
     }
 
@@ -143,12 +114,34 @@ public class LobbyManager {
         return player.isCreator();
     }
 
-    public void updateStartButtonVisibility() {
-        if (stateListener != null && stateListener instanceof WaitingLobbyPanel) {
-            ((WaitingLobbyPanel) stateListener).updateStartButtonVisibility();
+
+    // Implementation of LobbyListener interface
+    @Override
+    public void onPlayerListChanged(HashMap<String, PlayerInfoClient> newPlayers) {
+        if (currentLobby != null) {
+            currentLobby.setPlayers(newPlayers);
+            if (stateListener != null) {
+                stateListener.onPlayersUpdated();
+            }
         }
     }
 
+    @Override
+    public void onLobbyStarted() {
+        if (stateListener != null) {
+            stateListener.onLobbyStarted();
+        }
+    }
+
+    @Override
+    public void onLobbyClosed() {
+        currentLobby = null;
+        if (stateListener != null) {
+            stateListener.onLobbyClosed();
+        }
+    }
+
+    @Override
     public void onLobbyJoined(boolean success) {
         if (connectionListener != null) {
             connectionListener.onLobbyJoined(success);
@@ -163,4 +156,15 @@ public class LobbyManager {
         }
     }
 
+    @Override
+    public void onLobbyCreated(String lobbyCode) {
+        // Handle lobby creation confirmation if needed
+    }
+
+    @Override
+    public void onLobbyInitialized() {
+        if (stateListener != null) {
+            stateListener.onLobbyInitialized();
+        }
+    }
 }

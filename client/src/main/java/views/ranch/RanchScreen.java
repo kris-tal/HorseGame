@@ -20,7 +20,12 @@ import core.HorseGame;
 import data.horse.HorseData;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import services.listeners.JoinLobbyListener;
+import services.listeners.WaitingLobbyListener;
+import services.managers.ConnectionManager;
+import services.managers.LobbyManager;
 import services.managers.ResourceManager;
+import services.managers.SessionManager;
 import views.common.ui.ConfirmationPanel;
 import views.common.context.MenuContext;
 import views.common.ui.Panel;
@@ -32,8 +37,9 @@ import views.ranch.info.HorseInfoPanel;
 
 import java.util.List;
 
-public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyListener {
-
+public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
+    /* Lobby instance*/
+    private final LobbyManager lobbyManager;
     private final HorseGame game;
     private final RanchPresenter presenter;
     private final MenuContext menuContext;
@@ -58,6 +64,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
         this.game = game;
         this.menuContext = new MenuContext();
         this.presenter = new RanchPresenter(this, menuContext);
+        this.lobbyManager =
+                new LobbyManager(SessionManager.getInstance(), ConnectionManager.getInstance());
     }
 
     @Override
@@ -146,8 +154,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         raceMenuPanel = new RaceMenuPanel(panelWidth, panelHeight);
         lobbyMenuPanel = new LobbyMenuPanel(panelWidth, panelHeight);
-        createLobbyPanel = new WaitingLobbyPanel(panelWidth, panelHeight);
-        joinLobbyPanel = new JoinLobbyPanel(panelWidth, panelHeight);
+        createLobbyPanel = new WaitingLobbyPanel(panelWidth, panelHeight, lobbyManager);
+        joinLobbyPanel = new JoinLobbyPanel(panelWidth, panelHeight, lobbyManager);
         shopPanel = new ShopPanel(panelWidth, panelHeight);
 
         panelManager.registerPanel(raceMenuPanel);
@@ -172,7 +180,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyPanel.JoinLobbyL
 
         joinLobbyPanel.setListener(this);
         
-        createLobbyPanel.setListener(new WaitingLobbyPanel.WaitingLobbyListener() {
+        createLobbyPanel.setListener(new WaitingLobbyListener() {
             @Override
             public void onLobbyStarted() {
                 game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game));

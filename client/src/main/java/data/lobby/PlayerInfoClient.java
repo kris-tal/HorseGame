@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 public class PlayerInfoClient {
     private String username;
     private int progress;
-    private PlayerStatus role;  // <-- changed from boolean isCreator
+    private PlayerStatus role;
     private boolean connected;
 
     public PlayerInfoClient() {

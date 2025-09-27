@@ -6,7 +6,7 @@ import services.lobby.LobbyServiceImpl;
 import views.common.context.MenuContext;
 
 public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {
-    public LobbyService lobbyService = new LobbyServiceImpl();
+    public LobbyService lobbyService = null; //new LobbyServiceImpl();
     public String code;
 
     @Override

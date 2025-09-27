@@ -1,21 +1,15 @@
 package views.ranch;
 
+import services.managers.LobbyManager;
 import views.common.ui.Panel;
 import views.common.context.MenuContext;
 import views.race.menu.WaitingLobbyPanel;
 import views.race.menu.JoinLobbyPanel;
 
-/*
-    TODO:
-    * Change LobbyMode.CREATE to LobbyMode.WAITING
-    * Make the steering for lobby switching be outside of the WAITING section
-    * Make WAITING
- */
 
 public class RanchPresenter {
     private final RanchView view;
     private final MenuContext menuContext;
-    private boolean isCreatingLobby = false;
 
     public RanchPresenter(RanchView view, MenuContext menuContext) {
         this.view = view;
@@ -45,21 +39,10 @@ public class RanchPresenter {
     }
 
     public void onCreateLobbyClicked(WaitingLobbyPanel panel) {
-        if (isCreatingLobby) {
-            return;
-        }
-        
-        isCreatingLobby = true;
-
-        new Thread(() -> {
-            services.managers.LobbyManager.getInstance().createLobby();
-            com.badlogic.gdx.Gdx.app.postRunnable(() -> {
-                isCreatingLobby = false;
-            });
-        }).start();
-        
         menuContext.setLobbyMode(MenuContext.LobbyMode.CREATE);
         view.hideAllPanels();
+        panel.createLobby();
+        view.showPanel(panel);
     }
 
     public void onJoinLobbyClicked(JoinLobbyPanel panel) {
