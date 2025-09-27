@@ -153,9 +153,10 @@ def progress_update(data):
         return
 
     for player in room["players"]:
-        if player.id == user.id:
+        if player.username == user.username:
             player.progress = min(max(progress, 0), 100)
-            break
+
+    log_and_emit("progress_update", {"distances": [{"username": p.username, "progress": p.progress} for p in room["players"]]}, to=room_code)
 
     if room["winner"] is None:
         for player in room["players"]:
@@ -165,7 +166,6 @@ def progress_update(data):
                 log_and_emit("game_won", {"winner": player.serialize()}, to=room_code)
                 return
 
-    log_and_emit("progress_update", {"distances": [{"username": p.username, "progress": progress} for p in room["players"]]}, to=room_code)
 
 @socketio.on("disconnect")
 def disconnect_handler():

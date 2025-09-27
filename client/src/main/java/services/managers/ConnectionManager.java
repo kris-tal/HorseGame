@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import data.lobby.PlayerInfoClient;
 import data.lobby.PlayerListResponse;
+import data.race.PlayerProgressResponse;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import services.listeners.LobbyListener;
@@ -81,7 +82,7 @@ public class ConnectionManager {
             data.put("token", token);
             data.put("room", currentRoom);
             data.put("progress", progress);
-            sessionSocket.emit("progress_update", gson.toJson(data));
+            sessionSocket.emit("progress_update", data);
         }
     }
 
@@ -147,7 +148,7 @@ public class ConnectionManager {
 
         sessionSocket.on("game_won", args -> {
             if (gameListener != null) {
-                String winnerData = args[0].toString();
+                String winnerData = args.length > 1 ? args[1].toString() : args[0].toString();
                 gameListener.onGameWon(winnerData);
             }
         });
@@ -181,10 +182,11 @@ public class ConnectionManager {
 
     private void handleProgressUpdate(String jsonData) {
         try {
-            /*
-                Handle data for progress update and send it to game.
-
-             */
+            List<PlayerProgressResponse.PlayerProgress> progress =
+                    gson.fromJson(jsonData, PlayerProgressResponse.class).getDistances();
+            if(gameListener != null) {
+                gameListener.onProgressUpdate(progress);
+            }
         } catch (Exception e) {
             System.out.println("ConnectionManager: Error parsing progress update: " + jsonData + ", error: " + e.getMessage());
         }

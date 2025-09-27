@@ -11,7 +11,7 @@ public class DesktopLauncher {
         
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
         
-        config.setFullscreenMode(displayMode);
+        /*config.setWindowedMode(1470, 956);*/config.setFullscreenMode(displayMode);
         config.setResizable(false);
         
         new Lwjgl3Application(new HorseGame(), config);

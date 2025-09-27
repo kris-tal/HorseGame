@@ -2,10 +2,7 @@ package views.race.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
@@ -17,10 +14,12 @@ import views.common.ui.UIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements LobbyManager.LobbyStateListener {
     private LobbyManager lobbyManager;
     private TextButton startButton;
+    private Label lobbyCodeLabel;
     private Label playerCountLabel;
     private WaitingLobbyListener listener;
     private Runnable onShowCallback;
@@ -51,13 +50,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     /* Highlight lobby code */
     @Override
     protected String getTitle() {
-        if(lobbyManager == null) return "[NULL]";
-        LobbyInfo lobby = this.lobbyManager.getCurrentLobby();
-        if (lobby == null) {
-            return "[NULL]";
-        }
-        String title = "LOBBY: " + lobby.getLobbyCode();
-        return title;
+        return "";
     }
     @Override
     protected void addContent(float width, float height) {
@@ -70,9 +63,19 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
 
         float scrollWidth = width * 0.8f;
         float scrollHeight = height * 0.5f;
-        content.add(scrollPane).width(scrollWidth).height(scrollHeight).center();
 
-        TextButton leaveButton = UIFactory.createTextButton("Leave Lobby");
+        lobbyCodeLabel = UIFactory.createMediumLabel("");
+        playerCountLabel = UIFactory.createMediumLabel("");
+        Table infoContainer = new Table();
+
+        infoContainer.add(lobbyCodeLabel).padTop(defaultPadding).padBottom(smallPadding).row();
+        infoContainer.add(playerCountLabel).padBottom(defaultPadding);
+
+        content.add(infoContainer).row();
+
+
+        // Create buttons
+        TextButton leaveButton = UIFactory.createLargeTextButton("Leave Lobby");
         leaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -82,14 +85,6 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
                 }
             }
         });
-        content.add(leaveButton).padBottom(defaultPadding).row();
-        if(lobbyManager != null) {
-            LobbyInfo lobby = lobbyManager.getCurrentLobby();
-            if (lobby != null) {
-                playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
-                content.add(playerCountLabel).padTop(smallPadding).padBottom(defaultPadding).row();
-            }
-        }
 
         startButton = UIFactory.createLargeTextButton("START RACE!");
         startButton.addListener(new ClickListener() {
@@ -99,7 +94,11 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
             }
         });
 
-        content.add(startButton).padTop(smallPadding).row();
+
+        content.add(scrollPane).width(scrollWidth).height(scrollHeight).center().row();
+        content.add(startButton).left().padBottom(bigPadding).expandX();
+        content.add(leaveButton).padBottom(bigPadding).row();
+
     }
 
     @Override
@@ -109,8 +108,10 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
         }
         Gdx.app.log("Lobby", "Populating " + player.toString());
         Label nameLabel = UIFactory.createLabel(player.getUsername());
+        //Label progressLabel = UIFactory.createLabel(String.valueOf(player.getProgress()));
         row.add(nameLabel).expandX().left().padRight(10f);
 
+        //row.add(progressLabel).right().padRight(10f);
         if (player.isCreator()) {
             Label creatorLabel = UIFactory.createLabel("HOST");
             creatorLabel.setColor(1f, 0.8f, 0.2f, 1f); // Gold color
@@ -121,7 +122,6 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     public void updateStartButtonVisibility() {
         if (startButton != null) {
             boolean isCreator = lobbyManager.isCurrentUserCreator();
-            startButton.setVisible(isCreator);
             startButton.setColor(isCreator ? 1f : 0.5f, isCreator ? 1f : 0.5f, isCreator ? 1f : 0.5f, 1f);
         }
     }
@@ -157,15 +157,8 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     public void onLobbyInitialized() {
         LobbyInfo lobby = lobbyManager.getCurrentLobby();
         if (lobby != null) {
-            if (playerCountLabel == null) {
-                playerCountLabel = UIFactory.createLabel("Players: " + lobby.getPlayerCount());
-                content.add(playerCountLabel).padBottom(defaultPadding).row();
-            } else {
-                playerCountLabel.setText("Players: " + lobby.getPlayerCount());
-            }
-            if (titleLabel != null) {
-                titleLabel.setText("LOBBY: " + lobby.getLobbyCode());
-            }
+            playerCountLabel.setText("Players: " + lobby.getPlayerCount());
+            lobbyCodeLabel.setText("LOBBY: " + lobby.getLobbyCode());
         }
 
         if (onShowCallback != null) {

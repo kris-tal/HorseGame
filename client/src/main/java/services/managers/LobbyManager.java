@@ -1,5 +1,6 @@
 package services.managers;
 
+import com.badlogic.gdx.Gdx;
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import data.race.PlayerProgressResponse;
@@ -10,7 +11,9 @@ import services.profile.ProfileServiceImpl;
 import views.race.menu.WaitingLobbyPanel;
 import java.util.HashMap;
 
-public class LobbyManager implements LobbyListener {
+public class LobbyManager implements LobbyListener/*, GameManager.MockGameListener*/ {
+    //private GameManager gameManager;
+    private final SessionManager sessionManager;
     private final ConnectionManager connectionManager;
     private final LobbyService service;
     private LobbyInfo currentLobby;
@@ -34,6 +37,7 @@ public class LobbyManager implements LobbyListener {
 
     public LobbyManager(SessionManager sessionManager, ConnectionManager connectionManager) {
         this.service = new LobbyServiceImpl(sessionManager);
+        this.sessionManager = sessionManager;
         this.connectionManager = connectionManager;
         this.connectionManager.setLobbyListener(this);
     }
@@ -67,7 +71,6 @@ public class LobbyManager implements LobbyListener {
         }
         // If success, wait for async callback to confirm
     }
-
     public void startLobby() {
         if (currentLobby == null) {
             return;
@@ -131,6 +134,9 @@ public class LobbyManager implements LobbyListener {
         if (stateListener != null) {
             stateListener.onLobbyStarted();
         }
+        /*gameManager = new GameManager(sessionManager, connectionManager);
+        gameManager.setCurrentPlayers(currentLobby.getPlayers());
+        gameManager.setMockListener(this);*/
     }
 
     @Override
@@ -167,4 +173,36 @@ public class LobbyManager implements LobbyListener {
             stateListener.onLobbyInitialized();
         }
     }
+
+/*
+    // Mock methods, just for testing
+    @Override
+    public void onProgressUpdate() {
+        Gdx.app.log("Game", "Progress update!");
+        currentLobby.setPlayers(gameManager.getCurrentPlayers());
+        if (stateListener != null) {
+            stateListener.onPlayersUpdated();
+        }
+    }
+
+    @Override
+    public void onGameWon() {
+        Gdx.app.log("Game", "Game won!");
+    }
+
+    @Override
+    public void onLobbyClose() {
+        Gdx.app.log("Game", "Game closed!");
+        onLobbyClosed();
+    }
+
+
+    int count = 0;
+    public void move() {
+        if (gameManager != null) {
+            gameManager.updatePosition(count + 10);
+            count += 10;
+        }
+    }
+    */
 }

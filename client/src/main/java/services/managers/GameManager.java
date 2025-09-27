@@ -1,10 +1,13 @@
 package services.managers;
 
 import data.lobby.PlayerInfoClient;
+import data.race.PlayerProgressResponse;
+import race.Player;
 import services.listeners.GameListener;
 
 import java.security.KeyPair;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -12,6 +15,13 @@ import java.util.Map;
 *  You need two arguments, sessionManager and connectionManager
 */
 public class GameManager implements GameListener {
+    interface MockGameListener {
+        void onProgressUpdate();
+        void onGameWon();
+        void onLobbyClose();
+    }
+
+    private MockGameListener mockListener;
     private final SessionManager sessionManager;
     private final ConnectionManager connectionManager;
     private HashMap<String, PlayerInfoClient> currentPlayers;
@@ -53,11 +63,15 @@ public class GameManager implements GameListener {
         connectionManager.emitProgressUpdate(sessionManager.getToken(), newPosition);
     }
     @Override
-    public void onProgressUpdate(HashMap<String, Integer> playersProgress) {
-        for (Map.Entry<String, Integer> p : playersProgress.entrySet()) {
-            if(currentPlayers.containsKey(p.getKey())) {
-                currentPlayers.get(p.getKey()).setProgress(p.getValue());
+    public void onProgressUpdate(List<PlayerProgressResponse.PlayerProgress> playersProgress) {
+        for (PlayerProgressResponse.PlayerProgress p : playersProgress) {
+            if(currentPlayers.containsKey(p.getUsername())) {
+                currentPlayers.get(p.getUsername()).setProgress(p.getProgress());
             }
+        }
+
+        if(mockListener != null) {
+            mockListener.onProgressUpdate();
         }
     }
 
@@ -65,6 +79,10 @@ public class GameManager implements GameListener {
     public void onGameWon(String winnerUsername) {
         this.winner = winnerUsername;
         gameInProgress = false;
+
+        if(mockListener != null) {
+            mockListener.onGameWon();
+        }
         System.out.println("Game won by: " + winnerUsername);
     }
 
@@ -73,6 +91,13 @@ public class GameManager implements GameListener {
         gameInProgress = false;
         currentPlayers = null;
         winner = null;
+        if(mockListener != null) {
+            mockListener.onLobbyClose();
+        }
         System.out.println("Game was closed/disconnected");
     }
+
+    /*public void setMockListener(MockGameListener listener) {
+        this.mockListener = listener;
+    }*/
 }
