@@ -24,6 +24,10 @@ public class TrainingScreen extends BaseGameScreen {
     private final SessionManagerPort sessionManager;
     private final EquippedHorseService equippedHorseService;
 
+    private float elapsedSeconds = 0f;
+    private static final float SPEEDUP_RATE_PER_SECOND = 0.01f;
+    private static final float MAX_SPEED_MULTIPLIER = 2.5f;
+
     private SprintWidget sprintWidget;
     private TrainingStatsPanel statsPanel;
     private TrainingStatusBar statusBar;
@@ -129,7 +133,15 @@ public class TrainingScreen extends BaseGameScreen {
 
     @Override
     protected void updateGame(float delta) {
-        presenter.update(delta);
+        elapsedSeconds += delta;
+
+        float multiplier = 1f + elapsedSeconds * SPEEDUP_RATE_PER_SECOND;
+        if (multiplier > MAX_SPEED_MULTIPLIER) {
+            multiplier = MAX_SPEED_MULTIPLIER;
+        }
+
+        float effectiveDelta = delta * multiplier;
+        presenter.update(effectiveDelta);
     }
 
     @Override
@@ -156,6 +168,8 @@ public class TrainingScreen extends BaseGameScreen {
     public void show() {
         super.show();
         presenter.init();
+
+        elapsedSeconds = 0f;
 
         float bw = 500f, bh = 30f;
         if (presenter.getWorld() != null && presenter.getWorld().getPlayer() != null) {
