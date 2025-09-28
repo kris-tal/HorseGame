@@ -8,18 +8,18 @@ import views.common.ui.ListPanel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanelManager {
+public class RanchPanelsManager {
     private final Stage stage;
     private final List<Panel> panels = new ArrayList<>();
 
-    public PanelManager(Stage stage) {
+    public RanchPanelsManager(Stage stage) {
         this.stage = stage;
     }
 
     public void registerPanel(Panel panel) {
         panels.add(panel);
         stage.addActor(panel);
-        panel.hide(); // start hidden
+        panel.hide();
     }
 
     public void showPanel(Panel panel) {
