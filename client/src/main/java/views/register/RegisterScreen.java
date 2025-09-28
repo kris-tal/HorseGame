@@ -18,6 +18,7 @@ import data.race.EquippedHorseService;
 import services.auth.AuthServiceImpl;
 import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
+import services.media.AudioService;
 import views.common.ui.UIFactory;
 import services.managers.ResourceManager;
 import views.login.LoginScreen;
@@ -27,12 +28,14 @@ public class RegisterScreen implements Screen, RegisterView {
     private final HorseGame game;
     private final RegisterPresenter presenter;
     private final SessionManagerPort sessionManager;
+    private final AudioService audio;
     private Stage stage;
 
-    public RegisterScreen(HorseGame game) {
+    public RegisterScreen(HorseGame game, AudioService audio) {
         this.game = game;
         this.sessionManager = new SessionManager();
         this.presenter = new RegisterPresenter(this, new AuthServiceImpl(), sessionManager);
+        this.audio = audio;
     }
 
     @Override
@@ -132,18 +135,18 @@ public class RegisterScreen implements Screen, RegisterView {
     }
 
     @Override
-    public void showRegisterFailure() {
-        ResourceManager.snortSound.play();
+    public void showRegisterSuccess() {
+        audio.playSuccessSound();
     }
 
     @Override
-    public void showRegisterSuccess() {
-        ResourceManager.horseSound1.play();
+    public void showRegisterFailure() {
+        audio.playFailureSound();
     }
 
     @Override
     public void navigateToLogin() {
-        game.setScreen(new LoginScreen(game));
+        game.setScreen(new LoginScreen(game, audio));
     }
 
     @Override

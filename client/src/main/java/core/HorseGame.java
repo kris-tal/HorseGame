@@ -3,6 +3,8 @@ package core;
 
 import com.badlogic.gdx.Game;
 import data.race.EquippedHorseService;
+import services.media.AudioService;
+import services.media.ResourceManagerAudioService;
 import views.login.LoginScreen;
 import views.training.screen.TrainingScreen;
 import views.training.manager.TrainingManager;
@@ -12,13 +14,13 @@ import services.managers.ResourceManager;
 import services.managers.SessionManagerPort;
 
 public class HorseGame extends Game {
-    private ResourceManager resourceManager;
+    private AudioService audio;
     private LoginScreen loginScreen;
 
     @Override
     public void create() {
-        resourceManager = new ResourceManager();
-        loginScreen = new LoginScreen(this);
+        audio = new ResourceManagerAudioService();
+        loginScreen = new LoginScreen(this, audio);
         setScreen(loginScreen);
     }
 

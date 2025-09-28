@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.race.EquippedHorseService;
+import services.media.AudioService;
 import views.ranch.RanchScreen;
 import views.register.RegisterScreen;
 import services.auth.AuthServiceImpl;
@@ -28,12 +29,14 @@ public class LoginScreen implements Screen, LoginView {
     private final HorseGame game;
     private final LoginPresenter presenter;
     private final SessionManagerPort sessionManager;
+    private final AudioService audio;
     private Stage stage;
 
-    public LoginScreen(HorseGame game) {
+    public LoginScreen(HorseGame game, AudioService audio) {
         this.game = game;
         this.sessionManager = new SessionManager();
         this.presenter = new LoginPresenter(this, new AuthServiceImpl(), sessionManager);
+        this.audio = audio;
     }
 
     @Override
@@ -132,17 +135,17 @@ public class LoginScreen implements Screen, LoginView {
 
     @Override
     public void showLoginSuccess() {
-        ResourceManager.horseSound1.play();
+        audio.playSuccessSound();
     }
 
     @Override
     public void showLoginFailure() {
-        ResourceManager.snortSound.play();
+        audio.playFailureSound();
     }
 
     @Override
     public void navigateToRegister() {
-        game.setScreen(new RegisterScreen(game));
+        game.setScreen(new RegisterScreen(game, audio));
     }
 
     @Override
