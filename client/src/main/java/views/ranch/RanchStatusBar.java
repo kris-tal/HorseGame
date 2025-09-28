@@ -36,7 +36,6 @@ public class RanchStatusBar extends Table {
         private final ProfileService service;
         private final Label usernameLabel;
         private final Label moneyLabel;
-        private final Label prestigeLabel;
 
         public PlayerStatusItem(SessionManagerPort sessionManager) {
             super();
@@ -45,15 +44,12 @@ public class RanchStatusBar extends Table {
 
             usernameLabel = UIFactory.createLabel("");
             moneyLabel = UIFactory.createLabel("0");
-            prestigeLabel = UIFactory.createLabel("");
 
             pad(5).padLeft(10).padRight(10);
 
             add(usernameLabel).padRight(20).left();
             add(UIFactory.createCoinImage()).size(32, 32).padRight(5);
             add(moneyLabel).padRight(20);
-            add(UIFactory.createPrestigeImage()).size(32, 32).padRight(5);
-            add(prestigeLabel);
 
             setTransform(true);
             setOrigin(Align.center);
@@ -67,7 +63,6 @@ public class RanchStatusBar extends Table {
                     ProfileData response = service.getUserData();
                     Gdx.app.postRunnable(() -> {
                         updateMoney(response.getMoney());
-                        updatePrestige(response.getPrestige());
                         setUsername(response.getUsername());
                     });
                 } catch (Exception ignored) {
@@ -82,25 +77,18 @@ public class RanchStatusBar extends Table {
         public void updateMoney(int newBalance) {
             moneyLabel.setText(String.valueOf(newBalance));
         }
-
-        public void updatePrestige(int prestige) {
-            prestigeLabel.setText(String.valueOf(prestige));
-        }
     }
 
-    private final Skin skin;
     private final Table leftStack;
     private final Table rightStack;
 
-    public RanchStatusBar(HorseGame game, Skin skin, SessionManagerPort sessionManager) {
-        super(skin);
+    public RanchStatusBar(HorseGame game, SessionManagerPort sessionManager) {
+        super();
         this.game = game;
         this.sessionManager = sessionManager;
 
-        this.skin = skin;
-
-        this.leftStack = new Table(skin);
-        this.rightStack = new Table(skin);
+        this.leftStack = new Table();
+        this.rightStack = new Table();
 
         setup();
     }
