@@ -14,13 +14,18 @@ import services.managers.ResourceManager;
 import services.managers.SessionManagerPort;
 
 public class HorseGame extends Game {
+    private SessionManagerPort sessionManager;
     private AudioService audio;
     private LoginScreen loginScreen;
 
+    public HorseGame(SessionManagerPort sessionManager, AudioService audio) {
+        this.sessionManager = sessionManager;
+        this.audio = audio;
+        loginScreen = new LoginScreen(this, audio);
+    }
+
     @Override
     public void create() {
-        audio = new ResourceManagerAudioService();
-        loginScreen = new LoginScreen(this, audio);
         setScreen(loginScreen);
     }
 
