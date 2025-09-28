@@ -1,40 +1,28 @@
 package views.ranch;
 
-import animations.StrollingHorseActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
-import services.horse.HorseService;
-import services.horse.HorseServiceImpl;
 import services.listeners.JoinLobbyListener;
 import services.listeners.WaitingLobbyListener;
-import services.managers.LobbyManager;
-import services.managers.ResourceManager;
-import services.managers.SessionManagerPort;
 import services.managers.*;
-import services.ranch.RanchHorseUpdateService;
-import views.common.ui.ConfirmationPanel;
+import services.ranch.RanchHorsesRefresher;
 import views.common.context.MenuContext;
+import views.common.ui.ConfirmationPanel;
 import views.common.ui.Panel;
 import views.race.menu.*;
+import views.ranch.horses.HorseActorFactory;
+import views.ranch.horses.HorseActors;
 import views.ranch.info.HorseInfoPanel;
 import views.ranch.shop.ShopPanel;
-
-import java.util.List;
 
 public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private ConnectionManagerPort connectionManager;
@@ -44,14 +32,13 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private final MenuContext menuContext;
     private final SessionManagerPort sessionManager;
     private final EquippedHorseService equippedHorseService;
-    private final RanchHorseUpdateService ranchHorseRefreshService;
 
     private Stage stage;
     private PanelManager panelManager;
 
-    private Array<StrollingHorseActor> horses = new Array<>();
-    private final java.util.Map<Integer, com.badlogic.gdx.math.Vector2> horseIdToPosition = new java.util.HashMap<>();
     private Rectangle fence;
+    private HorseActors horseActors;
+    private RanchHorsesRefresher refresher;
 
     private RaceMenuPanel raceMenuPanel;
     private LobbyMenuPanel lobbyMenuPanel;
@@ -62,6 +49,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private ConfirmationPanel exitPanel;
 
     private RanchStatusBar statusBar;
+    private final java.util.Map<Integer, com.badlogic.gdx.math.Vector2> horseIdToPosition = new java.util.HashMap<>();
 
     public RanchScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
@@ -72,14 +60,12 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         this.lobbyManager = new LobbyManager(sessionManager, connectionManager);
         this.equippedHorseService = equippedHorseService;
         equippedHorseService.ensureEquippedHorse();
-        this.ranchHorseRefreshService = new RanchHorseUpdateService(sessionManager, equippedHorseService);
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-
         panelManager = new PanelManager(stage);
 
         setupBackground();
@@ -98,62 +84,16 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
     private void setupHorses() {
         fence = new Rectangle(100, 100, 1550, 600);
-
-        HorseService horseService = new HorseServiceImpl(sessionManager);
-        List<HorseData> ownedHorses = horseService.getUserHorses();
-
-        for (HorseData horse : ownedHorses) {
-            StrollingHorseActor actor = new StrollingHorseActor(
-                    horse, 3,
-                    fence.x, fence.x + fence.width,
-                    fence.y, fence.y + fence.height
-            );
-            actor.addListener(new HorseClickListener(actor));
-            com.badlogic.gdx.math.Vector2 saved = horseIdToPosition.get(horse.getId());
-            if (saved != null) {
-                actor.setPosition(saved.x, saved.y);
-            } else {
-                actor.setPosition(
-                        MathUtils.random(fence.x, fence.x + fence.width),
-                        MathUtils.random(fence.y, fence.y + fence.height)
-                );
-            }
-            horses.add(actor);
-            stage.addActor(actor);
-        }
+        HorseActorFactory factory = new HorseActorFactory(fence, this::openHorseInfoPanel);
+        horseActors = new HorseActors(stage, fence, horseIdToPosition, factory);
+        refresher = new RanchHorsesRefresher(sessionManager, equippedHorseService);
+        refresher.initialLoad(horseActors);
     }
 
-    private void addNewHorse(HorseData horse) {
-        StrollingHorseActor actor = new StrollingHorseActor(
-                horse, 3,
-                fence.x, fence.x + fence.width,
-                fence.y, fence.y + fence.height
-        );
-        // Only actor-based listener
-        actor.addListener(new HorseClickListener(actor));
-
-        float x = fence.x + 50;
-        float y = fence.y + 50;
-        actor.setPosition(x, y);
-
-        horses.add(actor);
-        stage.addActor(actor);
-    }
-
-    private void addNewHorseFromServer() {
-        HorseService horseService = new HorseServiceImpl(sessionManager);
-        List<HorseData> allHorses = horseService.getUserHorses();
-
-        java.util.Set<Integer> existingHorseIds = new java.util.HashSet<>();
-        for (StrollingHorseActor actor : horses) {
-            existingHorseIds.add(actor.getHorseData().getId());
-        }
-
-        for (HorseData horse : allHorses) {
-            if (!existingHorseIds.contains(horse.getId())) {
-                addNewHorse(horse);
-            }
-        }
+    private void openHorseInfoPanel(HorseData current) {
+        horseInfoPanel = new views.ranch.info.HorseInfoPanel(current, equippedHorseService);
+        panelManager.registerPanel(horseInfoPanel);
+        showPanel(horseInfoPanel);
     }
 
     private void setupPanels() {
@@ -188,7 +128,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
         joinLobbyPanel.setListener(this);
 
-        createLobbyPanel.setListener(new WaitingLobbyListener() {
+        createLobbyPanel.setListener(new services.listeners.WaitingLobbyListener() {
             @Override
             public void onLobbyStarted() {
                 navigateToRace();
@@ -204,10 +144,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
         shopPanel.setOnPurchaseComplete(result -> {
             statusBar.updateMoney(result.getMoney());
-            if (!result.isUpgrade()) {
-                addNewHorseFromServer();
-            }
-            refreshRanchHorses();
+            refresher.refreshAsync(horseActors);
         });
     }
 
@@ -224,32 +161,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         });
     }
 
-    private class HorseClickListener extends ClickListener {
-        private final StrollingHorseActor actor;
-
-        public HorseClickListener(StrollingHorseActor actor) {
-            this.actor = actor;
-        }
-
-        @Override
-        public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            data.horse.HorseData current = actor.getHorseData();
-            horseInfoPanel = new views.ranch.info.HorseInfoPanel(current, equippedHorseService);
-            panelManager.registerPanel(horseInfoPanel);
-            showPanel(horseInfoPanel);
-        }
-
-        @Override
-        public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
-        }
-
-        @Override
-        public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        }
-    }
-
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -257,11 +168,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         }
         stage.act(delta);
         stage.draw();
-
-        horses.sort((a, b) -> Float.compare(b.getY(), a.getY()));
-        for (int i = 0; i < horses.size; i++) {
-            horses.get(i).setZIndex(i + 1);
-        }
+        horseActors.updateZOrder();
     }
 
     @Override
@@ -271,17 +178,14 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -290,7 +194,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     }
 
     @Override
-    public void showPanel(Panel panel) {
+    public void showPanel(views.common.ui.Panel panel) {
         panelManager.showPanel(panel);
     }
 
@@ -329,9 +233,4 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         }
         panelManager.showPanel(exitPanel);
     }
-
-    private void refreshRanchHorses() {
-        ranchHorseRefreshService.updateAsync(horses);
-    }
-
 }
