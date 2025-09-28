@@ -71,6 +71,9 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         setupHorses();
         setupPanels();
         setupStatusBar();
+        if (refresher != null) {
+            refresher.refreshAsync(horseActors);
+        }
     }
 
     private void setupBackground() {
