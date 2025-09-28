@@ -1,3 +1,4 @@
+// java
 package data.race;
 
 import data.horse.HorseData;
@@ -18,10 +19,6 @@ public class EquippedHorseService {
 
     public EquippedHorseService(HorseService horseService) {
         this.horseService = Objects.requireNonNull(horseService, "horseService");
-        List<HorseData> horses = this.horseService.getUserHorses();
-        if (horses != null && !horses.isEmpty()) {
-            this.equippedHorse = horses.get(0);
-        }
     }
 
     public HorseData getEquippedHorse() {
@@ -33,6 +30,21 @@ public class EquippedHorseService {
     }
 
     public boolean isEquipped(HorseData horseData) {
-        return equippedHorse == horseData;
+        return equippedHorse != null
+                && horseData != null
+                && equippedHorse.getId() == horseData.getId();
+    }
+
+    public HorseData ensureEquippedHorse() {
+        List<HorseData> horses = horseService.getUserHorses();
+        if (horses == null || horses.isEmpty()) {
+            equippedHorse = null;
+            throw new IllegalStateException("No horses available to equip.");
+        }
+        if (equippedHorse == null ||
+                horses.stream().noneMatch(h -> h.getId() == equippedHorse.getId())) {
+            equippedHorse = horses.get(0);
+        }
+        return equippedHorse;
     }
 }

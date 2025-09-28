@@ -63,7 +63,7 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
 
     @Override
     public void initializeUI() {
-        // Same as RaceSinglePlayer
+
         distanceLabel = new Label("Distance: 0m", skin);
         coinLabel = new Label("Coins: 0", skin);
 

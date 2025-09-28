@@ -76,6 +76,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         this.presenter = new RanchPresenter(this, menuContext);
         this.lobbyManager = new LobbyManager(sessionManager, ConnectionManager.getInstance());
         this.equippedHorseService = equippedHorseService;
+        equippedHorseService.ensureEquippedHorse();
     }
 
     @Override
