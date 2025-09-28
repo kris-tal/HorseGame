@@ -1,7 +1,6 @@
 package views.ranch;
 
 import animations.StrollingHorseActor;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -13,34 +12,27 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
-import data.lobby.LobbyInfo;
 import data.race.EquippedHorseService;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import services.listeners.JoinLobbyListener;
 import services.listeners.WaitingLobbyListener;
-import services.managers.ConnectionManager;
 import services.managers.LobbyManager;
 import services.managers.ResourceManager;
 import services.managers.SessionManagerPort;
 import services.managers.*;
+import services.ranch.RanchHorseUpdateService;
 import views.common.ui.ConfirmationPanel;
 import views.common.context.MenuContext;
-import views.common.ui.ConfirmationPanel;
 import views.common.ui.Panel;
 import views.race.menu.*;
-import views.race.multiplayer.RaceMultiplayerScreen;
-import views.race.singleplayer.RaceSingleplayerScreen;
 import views.ranch.info.HorseInfoPanel;
-import views.race.menu.*;
 import views.ranch.shop.ShopPanel;
-import views.ranch.info.HorseInfoPanel;
 
 import java.util.List;
 
@@ -52,6 +44,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private final MenuContext menuContext;
     private final SessionManagerPort sessionManager;
     private final EquippedHorseService equippedHorseService;
+    private final RanchHorseUpdateService ranchHorseRefreshService;
 
     private Stage stage;
     private PanelManager panelManager;
@@ -79,6 +72,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         this.lobbyManager = new LobbyManager(sessionManager, connectionManager);
         this.equippedHorseService = equippedHorseService;
         equippedHorseService.ensureEquippedHorse();
+        this.ranchHorseRefreshService = new RanchHorseUpdateService(sessionManager, equippedHorseService);
     }
 
     @Override
@@ -114,7 +108,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
                     fence.x, fence.x + fence.width,
                     fence.y, fence.y + fence.height
             );
-            actor.addListener(new HorseClickListener(horse));
+            actor.addListener(new HorseClickListener(actor));
             com.badlogic.gdx.math.Vector2 saved = horseIdToPosition.get(horse.getId());
             if (saved != null) {
                 actor.setPosition(saved.x, saved.y);
@@ -135,7 +129,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
                 fence.x, fence.x + fence.width,
                 fence.y, fence.y + fence.height
         );
-        actor.addListener(new HorseClickListener(horse));
+        // Only actor-based listener
+        actor.addListener(new HorseClickListener(actor));
 
         float x = fence.x + 50;
         float y = fence.y + 50;
@@ -212,6 +207,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
             if (!result.isUpgrade()) {
                 addNewHorseFromServer();
             }
+            refreshRanchHorses();
         });
     }
 
@@ -229,15 +225,16 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     }
 
     private class HorseClickListener extends ClickListener {
-        private final HorseData horse;
+        private final StrollingHorseActor actor;
 
-        public HorseClickListener(HorseData horse) {
-            this.horse = horse;
+        public HorseClickListener(StrollingHorseActor actor) {
+            this.actor = actor;
         }
 
         @Override
-        public void clicked(InputEvent event, float x, float y) {
-            horseInfoPanel = new HorseInfoPanel(horse, equippedHorseService);
+        public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+            data.horse.HorseData current = actor.getHorseData();
+            horseInfoPanel = new views.ranch.info.HorseInfoPanel(current, equippedHorseService);
             panelManager.registerPanel(horseInfoPanel);
             showPanel(horseInfoPanel);
         }
@@ -331,6 +328,10 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
             panelManager.registerPanel(exitPanel);
         }
         panelManager.showPanel(exitPanel);
+    }
+
+    private void refreshRanchHorses() {
+        ranchHorseRefreshService.updateAsync(horses);
     }
 
 }

@@ -1,9 +1,10 @@
+// java
 package animations;
 
 import com.badlogic.gdx.math.MathUtils;
 import data.horse.HorseData;
 
-public class StrollingHorseActor extends BaseHorseActor {
+public class StrollingHorseActor extends BaseHorseActor implements HorseDataHolder {
     private final float minX, maxX, minY, maxY;
     private float targetX, targetY;
     private float speed;
@@ -64,7 +65,13 @@ public class StrollingHorseActor extends BaseHorseActor {
         nextMoveDelay = MathUtils.random(0f, 5f);
     }
 
+    @Override
     public HorseData getHorseData() {
         return horseData;
+    }
+
+    @Override
+    public void setHorseData(HorseData data) {
+        this.horseData = data;
     }
 }

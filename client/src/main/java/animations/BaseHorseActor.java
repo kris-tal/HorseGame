@@ -9,7 +9,7 @@ import data.horse.HorsePalette;
 import data.horse.HorseType;
 
 public abstract class BaseHorseActor extends Actor {
-    protected final HorseData horseData;
+    protected HorseData horseData;
     protected final HorseType horseType;
     protected final HorseAnimationSet animationSet;
     protected final HorsePalette palette;
