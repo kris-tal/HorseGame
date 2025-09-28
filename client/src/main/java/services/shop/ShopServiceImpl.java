@@ -2,6 +2,7 @@ package services.shop;
 
 import com.google.gson.Gson;
 import data.shop.PurchaseResult;
+import data.shop.PurchaseType;
 import data.shop.ShopResponse;
 import services.managers.SessionManagerPort;
 
@@ -43,17 +44,16 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public PurchaseResult postHorsePurchase(int horseId) {
-        PurchaseResult result = sendPurchaseRequest(horseId);
-        return new PurchaseResult(result.money, result.success, result.message, false);
+        return sendPurchaseRequest(horseId, PurchaseType.HORSE);
     }
 
     @Override
     public PurchaseResult postUpgradePurchase(int horseId) {
-        PurchaseResult result = sendPurchaseRequest(horseId);
-        return new PurchaseResult(result.money, result.success, result.message, true);
+        return sendPurchaseRequest(horseId, PurchaseType.UPGRADE);
     }
 
-    private PurchaseResult sendPurchaseRequest(int horseId) {
+
+    private PurchaseResult sendPurchaseRequest(int horseId, PurchaseType type) {
         String requestBody = gson.toJson(Map.of("id", horseId));
 
         HttpRequest request = sessionManager.getProtectedRequestsService()
@@ -68,11 +68,13 @@ public class ShopServiceImpl implements ShopService {
 
             int status = response.statusCode();
             if (status == 200 || status == 400 || status == 401 || status == 404) {
-                return gson.fromJson(response.body(), PurchaseResult.class);
+                PurchaseResult result = gson.fromJson(response.body(), PurchaseResult.class);
+                return new PurchaseResult(result.money, result.success, result.message, type == PurchaseType.UPGRADE);
             }
         } catch (IOException | InterruptedException e) {
-            return new PurchaseResult(0, false, "Request failed: " + e.getMessage());
+            return new PurchaseResult(0, false, "Request failed: " + e.getMessage(), type == PurchaseType.UPGRADE);
         }
-        return new PurchaseResult(0, false, "Unknown error");
+        return new PurchaseResult(0, false, "Unknown error", type == PurchaseType.UPGRADE);
     }
+
 }
