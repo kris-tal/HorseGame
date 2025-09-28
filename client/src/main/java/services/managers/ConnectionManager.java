@@ -2,7 +2,6 @@ package services.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import data.lobby.PlayerInfoClient;
 import data.lobby.PlayerListResponse;
 import data.race.PlayerProgressResponse;
@@ -160,6 +159,7 @@ public class ConnectionManager implements ConnectionManagerPort {
 
     private void handlePlayerListUpdate(String jsonData) {
         try {
+            Gdx.app.postRunnable(()-> {
             List<PlayerInfoClient> players = gson.fromJson(jsonData, PlayerListResponse.class).getPlayers();
             if (players != null && lobbyListener != null) {
                 HashMap<String, PlayerInfoClient> playerMap = new HashMap<>();
@@ -167,7 +167,7 @@ public class ConnectionManager implements ConnectionManagerPort {
                     playerMap.put(p.getUsername(), p);
                 }
                 lobbyListener.onPlayerListChanged(playerMap);
-            }
+            }});
         } catch (Exception e) {
             System.out.println("ConnectionManager: Error parsing player list: "
                     + jsonData + ", error: " + e.getMessage());
@@ -176,14 +176,17 @@ public class ConnectionManager implements ConnectionManagerPort {
 
     private void handleProgressUpdate(String jsonData) {
         try {
-            List<PlayerProgressResponse.PlayerProgress> progress =
-                    gson.fromJson(jsonData, PlayerProgressResponse.class).getDistances();
-            if(gameListener != null) {
-                gameListener.onProgressUpdate(progress);
-            }
+            Gdx.app.postRunnable(() -> {
+                List<PlayerProgressResponse.PlayerProgress> progress =
+                        gson.fromJson(jsonData, PlayerProgressResponse.class).getDistances();
+                if (gameListener != null) {
+                    gameListener.onProgressUpdate(progress);
+                }
+            });
         } catch (Exception e) {
             System.out.println("ConnectionManager: Error parsing progress update: " + jsonData + ", error: " + e.getMessage());
         }
+
     }
     @Override
     public void closeConnection() {
