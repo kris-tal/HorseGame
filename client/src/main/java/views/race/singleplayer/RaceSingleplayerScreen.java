@@ -2,6 +2,8 @@ package views.race.singleplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import race.config.GameConfigFactory;
+import race.config.BaseGameConfig;
 import core.HorseGame;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
@@ -40,7 +42,8 @@ public class RaceSingleplayerScreen extends RaceScreenTemplate {
         this.trainingService = new TrainingServiceImpl(sessionManager);
         this.equippedHorseService = equippedHorseService;
 
-        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        race.config.BaseGameConfig config = configFactory.createRaceConfig();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config);

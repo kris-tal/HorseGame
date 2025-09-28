@@ -31,7 +31,8 @@ public class TrainingScreenFactory {
     }
 
     public TrainingScreen createDefaultTrainingScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
-        BaseGameConfig config = GameConfigFactory.createTrainingConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        BaseGameConfig config = configFactory.createTrainingConfig();
         return createTrainingScreen(game, config, sessionManager, connectionManager, equippedHorseService);
     }
 

@@ -54,7 +54,8 @@ class TrainingPresenterFlowTest {
         when(testHorseData.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorseData);
         
-        BaseGameConfig config = GameConfigFactory.createTrainingConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        BaseGameConfig config = configFactory.createTrainingConfig();
         SystemsFactory testSystems = new SystemsFactory() {
             @Override
             public CameraSystem createCameraSystem(data.race.GameMap map, int visibleCols) {
