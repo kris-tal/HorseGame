@@ -17,7 +17,7 @@ public class HorseData {
         this.training_points = 0;
         this.longest_run_distance = 0;
     }
-    
+
     public HorseData(String json) {
         HorseData temp = new Gson().fromJson(json, HorseData.class);
         this.id = temp.id;
@@ -27,18 +27,32 @@ public class HorseData {
         this.longest_run_distance = temp.longest_run_distance;
     }
 
-    // getters & setters
-    public int getId() { return id; }
-    public int getName() { return name; }
-    public int getLevel() { return level; }
-    public int getTrainingPoints() { return training_points; }
-    public int getLongestRunDistance() { return longest_run_distance; }
+    public int getId() {
+        return id;
+    }
 
-    public HorseType getHorseType() { return HorseType.fromId(name); }
+    public int getName() {
+        return name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getTrainingPoints() {
+        return training_points;
+    }
+
+    public int getLongestRunDistance() {
+        return longest_run_distance;
+    }
+
+    public HorseType getHorseType() {
+        return HorseTypeRegistry.getById(name);
+    }
 
     @Override
     public String toString() {
         return String.format("<Horse %s lvl=%d>", name, level);
     }
 }
-

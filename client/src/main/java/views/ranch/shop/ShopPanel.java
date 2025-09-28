@@ -1,19 +1,22 @@
 // java
 package views.ranch.shop;
 
+
 import animations.IdleHorseActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import data.horse.HorseType;
+import data.horse.HorseTypeRegistry;
 import data.shop.PurchaseResult;
 import data.shop.ShopItem;
 import data.shop.ShopResponse;
 import services.managers.SessionManagerPort;
 import services.shop.ShopServiceImpl;
-import views.common.ui.HorseFactory;
 import views.common.ui.ListPanel;
 import views.common.ui.UIFactory;
 
@@ -104,11 +107,20 @@ public class ShopPanel extends ListPanel<ShopItem> {
             try {
                 ShopResponse response = shopService.getShopData();
                 List<ShopItem> allItems = new ArrayList<>();
-                for (ShopResponse.HorseToBuy h : response.horses)
-                    allItems.add(new ShopItem(HorseType.fromId(h.id), h.price, false, false));
 
-                for (ShopResponse.Upgrade u : response.upgrades)
-                    allItems.add(new ShopItem(HorseType.fromId(u.id), u.price, true, true));
+                for (ShopResponse.HorseToBuy h : response.horses) {
+                    HorseType type = HorseTypeRegistry.getById(h.id);
+                    if (type != null) {
+                        allItems.add(new ShopItem(type, h.price, false, false));
+                    }
+                }
+
+                for (ShopResponse.Upgrade u : response.upgrades) {
+                    HorseType type = HorseTypeRegistry.getById(u.id);
+                    if (type != null) {
+                        allItems.add(new ShopItem(type, u.price, true, true));
+                    }
+                }
 
                 Gdx.app.postRunnable(() -> populateList(allItems));
             } catch (Exception ignored) {

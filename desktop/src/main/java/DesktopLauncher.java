@@ -2,6 +2,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.HorseGame;
+import data.horse.HorseTypeRegistry;
 import data.race.EquippedHorseService;
 import race.input.KeyboardInputHandler;
 import race.map.RandomMapGenerator;
@@ -26,6 +27,7 @@ public class DesktopLauncher {
         //composition root
         AudioService audio = new ResourceManagerAudioService();
         SessionManagerPort sessionManager = new SessionManager();
+        HorseTypeRegistry.loadDefault();
 
         HorseGame game = new HorseGame(sessionManager, audio);
         new Lwjgl3Application(game, config);

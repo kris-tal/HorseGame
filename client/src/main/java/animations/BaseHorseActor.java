@@ -26,7 +26,7 @@ public abstract class BaseHorseActor extends Actor {
     public BaseHorseActor(HorseType horseType, HorseData horseData, float scale) {
         this.horseType = horseType;
         this.horseData = horseData;
-        this.animationSet = horseType.getAnimationSet(); // now uses 3-part animations
+        this.animationSet = HorseAnimationCache.get(horseType);
         this.palette = horseType.getPalette();
         this.scale = scale;
 

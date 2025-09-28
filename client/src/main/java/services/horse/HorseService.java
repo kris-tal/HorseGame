@@ -11,5 +11,4 @@ public interface HorseService {
     HorseData getHorseDataById(int horseId);
 
     HorseData getHorseData(HorseType type);
-
 }

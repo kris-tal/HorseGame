@@ -1,9 +1,8 @@
+// java
 package dummylaunchers;
 
-// DummyLauncher.java
-
+import animations.BaseHorseActor;
 import animations.RaceHorseActor;
-import animations.StrollingHorseActor;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,10 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import animations.BaseHorseActor;
-import animations.IdleHorseActor;
-import data.horse.HorseData;
 import data.horse.HorseType;
+import data.horse.HorseTypeRegistry;
 
 public class DummyLauncher extends ApplicationAdapter {
     private Stage stage;
@@ -26,12 +23,18 @@ public class DummyLauncher extends ApplicationAdapter {
         batch = new SpriteBatch();
         stage = new Stage(new FitViewport(800, 600), batch);
 
-        HorseData horseData = new HorseData();
+        HorseTypeRegistry.loadDefault();
 
-        // pick any HorseType you defined
-        horse = new RaceHorseActor(HorseType.NORMAL_HORSE, 2f);
-        horse.setPosition(400 - horse.getWidth() / 2, 300 - horse.getHeight() / 2);
+        HorseType type = HorseTypeRegistry.getByKey("normal_horse");
+        if (type == null) {
+            type = HorseTypeRegistry.getByKey("boring_horse"); // fallback
+        }
+        if (type == null) {
+            throw new IllegalStateException("Horse types not loaded.");
+        }
 
+        horse = new RaceHorseActor(type, 2f);
+        horse.setPosition(400 - horse.getWidth() / 2f, 300 - horse.getHeight() / 2f);
         stage.addActor(horse);
 
         Gdx.input.setInputProcessor(stage);
@@ -39,10 +42,9 @@ public class DummyLauncher extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // toggle movement with space bar
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             horse.setMoving(!horse.isMoving());
         }
@@ -57,4 +59,3 @@ public class DummyLauncher extends ApplicationAdapter {
         batch.dispose();
     }
 }
-

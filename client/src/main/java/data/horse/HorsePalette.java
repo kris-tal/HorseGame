@@ -3,25 +3,25 @@ package data.horse;
 import com.badlogic.gdx.graphics.Color;
 
 public final class HorsePalette {
-    private final Color bodyColor;
-    private final Color maneColor;
-    private final Color tailColor;
+    private final Color body;
+    private final Color mane;
+    private final Color tail;
 
-    public HorsePalette(Color bodyColor, Color maneColor, Color tailColor) {
-        this.bodyColor = bodyColor;
-        this.maneColor = maneColor;
-        this.tailColor = tailColor;
+    public HorsePalette(Color body, Color mane, Color tail) {
+        this.body = body;
+        this.mane = mane;
+        this.tail = tail;
     }
 
     public Color getBodyColor() {
-        return bodyColor;
+        return body;
     }
 
     public Color getManeColor() {
-        return maneColor;
+        return mane;
     }
 
     public Color getTailColor() {
-        return tailColor;
+        return tail;
     }
 }
