@@ -13,7 +13,7 @@ public class GameFactory extends BaseGameFactory {
     }
 
     public GameFactory(MapGenerator mapGenerator, InputHandler inputHandler, BaseGameConfig config) {
-        super(mapGenerator, inputHandler, config, new DefaultPlayerFactory(), new DefaultHorseActorFactory(), new DefaultSystemsFactory());
+        super(mapGenerator, inputHandler, config, new StandardPlayerFactory(), new RaceHorseActorFactory(), new GameSystemsFactory());
     }
 
     @Override

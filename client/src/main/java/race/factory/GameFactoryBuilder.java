@@ -57,9 +57,9 @@ public class GameFactoryBuilder implements GameWorldFactoryBuilder {
             mapGenerator,
             inputHandler,
             config,
-            playerFactory != null ? playerFactory : new DefaultPlayerFactory(),
-            horseActorFactory != null ? horseActorFactory : new DefaultHorseActorFactory(),
-            systemsFactory != null ? systemsFactory : new DefaultSystemsFactory()
+            playerFactory != null ? playerFactory : new StandardPlayerFactory(),
+            horseActorFactory != null ? horseActorFactory : new RaceHorseActorFactory(),
+            systemsFactory != null ? systemsFactory : new GameSystemsFactory()
         );
     }
 }

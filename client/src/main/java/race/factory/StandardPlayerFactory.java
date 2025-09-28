@@ -9,7 +9,7 @@ import race.strategy.sprint.StandardSprintManager;
 import race.strategy.sprint.StandardSprintStrategy;
 import race.strategy.training.TrainingSprintStrategy;
 
-public class DefaultPlayerFactory implements PlayerFactory {
+public class StandardPlayerFactory implements PlayerFactory {
     @Override
     public Player create(BaseGameConfig config) {
         return new Player(
@@ -27,5 +27,3 @@ public class DefaultPlayerFactory implements PlayerFactory {
         );
     }
 }
-
-

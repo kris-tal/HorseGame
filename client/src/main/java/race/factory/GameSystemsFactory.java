@@ -10,7 +10,7 @@ import race.input.InputHandler;
 import race.rendering.RendererSystem;
 import race.state.GameStateManager;
 
-public class DefaultSystemsFactory implements SystemsFactory {
+public class GameSystemsFactory implements SystemsFactory {
     @Override
     public CameraSystem createCameraSystem(GameMap map, int visibleCols) {
         return new CameraSystem(map, visibleCols);
@@ -36,5 +36,3 @@ public class DefaultSystemsFactory implements SystemsFactory {
         return new GameStateManager();
     }
 }
-
-

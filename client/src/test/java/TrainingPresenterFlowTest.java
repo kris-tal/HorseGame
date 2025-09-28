@@ -84,7 +84,7 @@ class TrainingPresenterFlowTest {
         };
         HorseActorFactory testHorseActor = player -> mock(BaseHorseActor.class);
 
-        GameFactory gf = new GameFactory(mapGenerator, inputHandler, config, new DefaultPlayerFactory(), testHorseActor, testSystems);
+        GameFactory gf = new GameFactory(mapGenerator, inputHandler, config, new StandardPlayerFactory(), testHorseActor, testSystems);
 
         TrainingPresenter presenter = TrainingPresenterFactory.createTrainingPresenter(
                 gf,

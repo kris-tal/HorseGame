@@ -12,7 +12,6 @@ import race.rendering.RendererSystem;
 import race.state.GameStateManager;
 import data.race.GameMap;
 import race.config.BaseGameConfig;
-import race.strategy.training.TrainingSprintStrategy;
 
 public abstract class BaseGameFactory implements GameWorldFactory {
     protected final MapGenerator mapGenerator;
@@ -68,6 +67,4 @@ public abstract class BaseGameFactory implements GameWorldFactory {
 
     protected GameStateManager createGameStateManager() { return systemsFactory.createGameStateManager(); }
 
-    // legacy hook preserved (not used when providers injected)
-    protected BaseHorseActor createHorseActorComponent(Player player) { return horseActorFactory.create(player); }
 }
