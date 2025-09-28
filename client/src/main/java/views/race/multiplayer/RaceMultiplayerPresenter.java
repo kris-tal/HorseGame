@@ -25,6 +25,10 @@ public class RaceMultiplayerPresenter extends RacePresenterTemplate {
 
     @Override
     public void update(float delta) {
+        // Check the gameManager for updates
+        if (! gameManager.isGameInProgress())
+            gameStateManager.completeRace();
+
         if (gameStateManager.isRaceFinished()) return;
 
         world.update(delta);

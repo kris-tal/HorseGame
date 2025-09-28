@@ -52,4 +52,8 @@ public class GameStateManager {
     public void reset() {
         currentState = GameState.RUNNING;
     }
+
+    public void completeRace() {
+        currentState = GameState.COMPLETED;
+    }
 }

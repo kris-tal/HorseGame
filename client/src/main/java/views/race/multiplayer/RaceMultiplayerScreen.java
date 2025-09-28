@@ -19,8 +19,10 @@ import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
 import views.common.base.RaceScreenTemplate;
 import views.common.ui.UIFactory;
+import views.race.ui.RaceMultiplayerStatsPanel;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
+import views.ranch.RanchScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
     private final RaceMultiplayerPresenter presenter;
     private Label distanceLabel;
     private Label coinLabel;
-    private RaceStatsPanel statsPanel;
+    private RaceMultiplayerStatsPanel statsPanel;
     private SprintWidget sprintWidget;
     private final GameManager gameManager;
     private Table scoreboardTable;
@@ -76,7 +78,7 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
         uiStage.addActor(distanceLabel);
         uiStage.addActor(coinLabel);
 
-        statsPanel = new RaceStatsPanel(600, 400);
+        statsPanel = new RaceMultiplayerStatsPanel(600, 400);
         statsPanel.setX((Gdx.graphics.getWidth() - statsPanel.getWidth()) / 2f);
         statsPanel.setY((Gdx.graphics.getHeight() - statsPanel.getHeight()) / 2f);
         statsPanel.setVisible(false);
@@ -107,7 +109,21 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
 
     @Override
     protected void handleGameCompletion() {
-        // TODO !!!
+        statsPanel.updateStats(gameManager.getWinner(), presenter.getCoins());
+        statsPanel.setVisible(true);
+
+        if (!onGameFinished) {
+            onGameFinished = true;
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                    Gdx.app.postRunnable(() -> game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseService)));
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+        }
     }
 
     @Override

@@ -35,11 +35,6 @@ public abstract class RacePresenterTemplate {
         return gameStateManager.isRaceFinished();
     }
 
-
-    public boolean isRaceFinished() {
-        return isGameFinished();
-    }
-
     public boolean isPlayerDead() {
         return world != null && !world.getPlayer().isAlive();
     }

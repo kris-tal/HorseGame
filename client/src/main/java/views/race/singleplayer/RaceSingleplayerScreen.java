@@ -32,7 +32,6 @@ public class RaceSingleplayerScreen extends RaceScreenTemplate {
     private final ConnectionManagerPort connectionManager;
     private final HorseService horseService;
     private final TrainingService trainingService;
-    private final EquippedHorseService equippedHorseService;
 
     public RaceSingleplayerScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         super(game, sessionManager, connectionManager, equippedHorseService);
@@ -40,7 +39,6 @@ public class RaceSingleplayerScreen extends RaceScreenTemplate {
         this.connectionManager = connectionManager;
         this.horseService = new HorseServiceImpl(sessionManager);
         this.trainingService = new TrainingServiceImpl(sessionManager);
-        this.equippedHorseService = equippedHorseService;
 
         GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
         race.config.BaseGameConfig config = configFactory.createSingleplayerRaceConfig();
@@ -140,10 +138,6 @@ public class RaceSingleplayerScreen extends RaceScreenTemplate {
                 }).start();
             }
         }
-    }
-
-    private HorseData resolveHorse() {
-        return equippedHorseService.getEquippedHorse();
     }
 
     @Override

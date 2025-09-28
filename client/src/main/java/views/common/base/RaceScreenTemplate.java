@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
+import data.horse.HorseData;
 import data.race.EquippedHorseService;
 import race.RaceWorld;
 import race.input.InputManager;
@@ -26,7 +27,7 @@ public abstract class RaceScreenTemplate implements Screen {
     protected final Skin skin;
     protected final SessionManagerPort sessionManager;
     protected final ConnectionManagerPort connectionManager;
-    protected final EquippedHorseService equippedHorseservice;
+    protected final EquippedHorseService equippedHorseService;
 
     protected boolean statsPanelShown = false;
     protected boolean onGameFinished = false;
@@ -35,7 +36,7 @@ public abstract class RaceScreenTemplate implements Screen {
         this.game = game;
         this.sessionManager = sessionManager;
         this.connectionManager = connectionManager;
-        this.equippedHorseservice = equippedHorseService;
+        this.equippedHorseService = equippedHorseService;
         this.batch = new SpriteBatch();
         this.bgStage = new Stage(new ScreenViewport());
         this.uiStage = new Stage(new ScreenViewport());
@@ -55,7 +56,11 @@ public abstract class RaceScreenTemplate implements Screen {
     protected abstract void handleGameCompletion();
 
     protected void handleEscapeKey() {
-        game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseservice));
+        game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseService));
+    }
+
+    protected HorseData resolveHorse() {
+        return equippedHorseService.getEquippedHorse();
     }
 
     @Override
