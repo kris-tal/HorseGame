@@ -108,17 +108,17 @@ public class ShopPanel extends ListPanel<ShopItem> {
                 ShopResponse response = shopService.getShopData();
                 List<ShopItem> allItems = new ArrayList<>();
 
-                for (ShopResponse.HorseToBuy h : response.horses) {
-                    HorseType type = HorseTypeRegistry.getById(h.id);
+                for (ShopResponse.HorseToBuy h : response.getHorses()) {
+                    HorseType type = HorseTypeRegistry.getById(h.getId());
                     if (type != null) {
-                        allItems.add(new ShopItem(type, h.price, false, false));
+                        allItems.add(new ShopItem(type, h.getPrice(), false, false));
                     }
                 }
 
-                for (ShopResponse.Upgrade u : response.upgrades) {
-                    HorseType type = HorseTypeRegistry.getById(u.id);
+                for (ShopResponse.Upgrade u : response.getUpgrades()) {
+                    HorseType type = HorseTypeRegistry.getById(u.getId());
                     if (type != null) {
-                        allItems.add(new ShopItem(type, u.price, true, true));
+                        allItems.add(new ShopItem(type, u.getPrice(), true, true));
                     }
                 }
 
