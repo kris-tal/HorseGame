@@ -11,6 +11,7 @@ import data.training.TrainingResponse;
 import race.RaceWorld;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
+import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 import services.training.TrainingService;
 import services.training.TrainingServiceImpl;
@@ -27,13 +28,15 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
     private SprintWidget sprintWidget;
 
     private final SessionManagerPort sessionManager;
+    private final ConnectionManagerPort connectionManager;
     private final HorseService horseService;
     private final TrainingService trainingService;
     private final EquippedHorseService equippedHorseService;
 
-    public RaceSingleplayerScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
-        super(game, sessionManager, equippedHorseService);
+    public RaceSingleplayerScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
+        super(game, sessionManager, connectionManager, equippedHorseService);
         this.sessionManager = sessionManager;
+        this.connectionManager = connectionManager;
         this.horseService = new HorseServiceImpl(sessionManager);
         this.trainingService = new TrainingServiceImpl(sessionManager);
         this.equippedHorseService = equippedHorseService;
@@ -104,7 +107,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
                 new Thread(() -> {
                     try {
                         Thread.sleep(2000);
-                        Gdx.app.postRunnable(() -> game.setScreen(new RanchScreen(game, sessionManager, equippedHorseService)));
+                        Gdx.app.postRunnable(() -> game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseService)));
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -128,7 +131,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
                 new Thread(() -> {
                     try {
                         Thread.sleep(3000);
-                        Gdx.app.postRunnable(() -> game.setScreen(new RanchScreen(game, sessionManager, equippedHorseService)));
+                        Gdx.app.postRunnable(() -> game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseService)));
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }

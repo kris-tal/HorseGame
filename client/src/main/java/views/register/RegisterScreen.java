@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.race.EquippedHorseService;
 import services.auth.AuthServiceImpl;
+import services.managers.ConnectionManagerPort;
 import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
 import services.media.AudioService;
@@ -28,12 +29,14 @@ public class RegisterScreen implements Screen, RegisterView {
     private final HorseGame game;
     private final RegisterPresenter presenter;
     private final SessionManagerPort sessionManager;
+    private final ConnectionManagerPort connectionManager;
     private final AudioService audio;
     private Stage stage;
 
-    public RegisterScreen(HorseGame game, AudioService audio) {
+    public RegisterScreen(HorseGame game, ConnectionManagerPort connectionManager, AudioService audio) {
         this.game = game;
         this.sessionManager = new SessionManager();
+        this.connectionManager = connectionManager;
         this.presenter = new RegisterPresenter(this, new AuthServiceImpl(), sessionManager);
         this.audio = audio;
     }
@@ -146,12 +149,12 @@ public class RegisterScreen implements Screen, RegisterView {
 
     @Override
     public void navigateToLogin() {
-        game.setScreen(new LoginScreen(game, audio));
+        game.setScreen(new LoginScreen(game, connectionManager, audio));
     }
 
     @Override
     public void navigateToRanch() {
-        game.setScreen(new RanchScreen(game, sessionManager, new EquippedHorseService(sessionManager)));
+        game.setScreen(new RanchScreen(game, sessionManager, connectionManager, new EquippedHorseService(sessionManager)));
     }
 
     @Override

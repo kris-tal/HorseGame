@@ -26,12 +26,12 @@ public class GameManager implements GameListener {
 
     private MockGameListener mockListener;
     private final SessionManagerPort sessionManager;
-    private final ConnectionManager connectionManager;
+    private final ConnectionManagerPort connectionManager;
     private HashMap<String, PlayerInfoClient> currentPlayers;
     private boolean gameInProgress = false;
     private String winner;
 
-    public GameManager(SessionManagerPort sessionManager, ConnectionManager connectionManager, LobbyInfo lobbyInfo) {
+    public GameManager(SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, LobbyInfo lobbyInfo) {
         this.sessionManager = sessionManager;
         this.connectionManager = connectionManager;
         this.connectionManager.setGameListener(this);

@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class LobbyManager implements LobbyListener {
     private final SessionManagerPort sessionManager;
-    private final ConnectionManager connectionManager;
+    private final ConnectionManagerPort connectionManager;
     private final LobbyService service;
     private LobbyInfo currentLobby;
     private LobbyStateListener stateListener;
@@ -37,9 +37,9 @@ public class LobbyManager implements LobbyListener {
         void onLobbyJoined(boolean success);
     }
 
-    public LobbyManager(SessionManagerPort sessionManager, ConnectionManager connectionManager) {
+    public LobbyManager(SessionManagerPort sessionManager, ConnectionManagerPort connectionManager) {
         this.sessionManager = sessionManager;
-        this.service = new LobbyServiceImpl(sessionManager);
+        this.service = new LobbyServiceImpl(sessionManager, connectionManager);
         this.connectionManager = connectionManager;
         this.connectionManager.setLobbyListener(this);
     }

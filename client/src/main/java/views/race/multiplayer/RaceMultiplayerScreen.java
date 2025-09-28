@@ -5,17 +5,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import core.HorseGame;
 import data.lobby.PlayerInfoClient;
 import data.race.EquippedHorseService;
 import race.RaceWorld;
+import services.managers.ConnectionManagerPort;
 import services.managers.GameManager;
 import services.managers.SessionManagerPort;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
 import views.common.base.BaseGameScreen;
+import views.common.ui.UIFactory;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
 import views.race.ui.ProgressBarWidget;
@@ -40,8 +43,8 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
     // misc
     private final String localUsername;
 
-    public RaceMultiplayerScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService, GameManager gameManager) {
-        super(game, sessionManager, equippedHorseService);
+    public RaceMultiplayerScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService, GameManager gameManager) {
+        super(game, sessionManager, connectionManager, equippedHorseService);
         this.gameManager = gameManager;
 
         race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
@@ -64,11 +67,11 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
     @Override
     public void initializeUI() {
 
-        distanceLabel = new Label("Distance: 0m", skin);
-        coinLabel = new Label("Coins: 0", skin);
+        distanceLabel = UIFactory.createLabel("Distance: 0m");
+        coinLabel = UIFactory.createLabel("Coins: 0");
 
-        distanceLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        coinLabel.setStyle(skin.get("default", Label.LabelStyle.class));
+        //distanceLabel.setStyle(skin.get("default", Label.LabelStyle.class));
+        //coinLabel.setStyle(skin.get("default", Label.LabelStyle.class));
 
         uiStage.addActor(distanceLabel);
         uiStage.addActor(coinLabel);
@@ -153,14 +156,14 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
             Gdx.app.log("scoreboard", "player " + name + " distance:" + distance);
 
             // name and distance label
-            Label nameLabel = new Label((i + 1) + ". " + name, skin);
+            Label nameLabel = UIFactory.createLabel((i + 1) + ". " + name);
             nameLabel.setColor(p.getUsername().equals(localUsername) ? Color.GOLD : Color.WHITE);
-            Label distLabel = new Label(distance + "m", skin);
+            Label distLabel = UIFactory.createLabel(distance + "m");
 
             // progress bar widget
-            float progressPercent = Math.min(1f, (float) distance / (float) FINISH_DISTANCE);
-            ProgressBarWidget bar = new ProgressBarWidget(BAR_WIDTH, BAR_HEIGHT, skin, progressPercent);
-
+            float progress = Math.min(FINISH_DISTANCE, (float) distance);
+            ProgressBar bar = UIFactory.createProgressBar(0, FINISH_DISTANCE, 1, Color.GOLD);
+            bar.setValue(progress);
             Table row = new Table();
             row.add(nameLabel).width(120).left().padRight(8f);
             row.add(bar).width(BAR_WIDTH).height(BAR_HEIGHT).padRight(8f);

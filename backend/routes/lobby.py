@@ -154,13 +154,13 @@ def progress_update(data):
 
     for player in room["players"]:
         if player.username == user.username:
-            player.progress = min(max(progress, 0), 100)
+            player.progress = min(max(progress, 0), 400)
 
     log_and_emit("progress_update", {"distances": [{"username": p.username, "progress": p.progress} for p in room["players"]]}, to=room_code)
 
     if room["winner"] is None:
         for player in room["players"]:
-            if player.progress >= 100:
+            if player.progress >= 400:
                 room["winner"] = player.id
                 room["status"] = RoomStatus.Finished
                 log_and_emit("game_won", {"winner": player.serialize()}, to=room_code)

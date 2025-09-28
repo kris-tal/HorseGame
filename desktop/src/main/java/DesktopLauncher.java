@@ -3,17 +3,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import core.HorseGame;
 import data.horse.HorseTypeRegistry;
-import data.race.EquippedHorseService;
-import race.input.KeyboardInputHandler;
-import race.map.RandomMapGenerator;
+import services.managers.ConnectionManager;
+import services.managers.ConnectionManagerPort;
 import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
 import services.media.AudioService;
 import services.media.ResourceManagerAudioService;
-import views.login.LoginScreen;
-import views.register.RegisterScreen;
-import views.ranch.RanchScreen;
-import views.training.manager.TrainingManager;
 
 public class DesktopLauncher {
     public static void main(String[] args) {
@@ -27,9 +22,10 @@ public class DesktopLauncher {
         //composition root
         AudioService audio = new ResourceManagerAudioService();
         SessionManagerPort sessionManager = new SessionManager();
+        ConnectionManagerPort connectionManager = new ConnectionManager();
         HorseTypeRegistry.loadDefault();
 
-        HorseGame game = new HorseGame(sessionManager, audio);
+        HorseGame game = new HorseGame(sessionManager, connectionManager, audio);
         new Lwjgl3Application(game, config);
     }
 }

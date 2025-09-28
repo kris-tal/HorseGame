@@ -45,6 +45,7 @@ import views.ranch.info.HorseInfoPanel;
 import java.util.List;
 
 public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
+    private ConnectionManagerPort connectionManager;
     private final LobbyManager lobbyManager;
     private final HorseGame game;
     private final RanchPresenter presenter;
@@ -69,12 +70,13 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
     private RanchStatusBar statusBar;
 
-    public RanchScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
+    public RanchScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
         this.sessionManager = sessionManager;
+        this.connectionManager = connectionManager;
         this.menuContext = new MenuContext();
         this.presenter = new RanchPresenter(this, menuContext);
-        this.lobbyManager = new LobbyManager(sessionManager, ConnectionManager.getInstance());
+        this.lobbyManager = new LobbyManager(sessionManager, connectionManager);
         this.equippedHorseService = equippedHorseService;
         equippedHorseService.ensureEquippedHorse();
     }
@@ -306,13 +308,13 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
             case SINGLEPLAYER -> {
                 race.map.TrainingMapGenerator mapGenerator = new race.map.TrainingMapGenerator();
                 race.input.KeyboardInputHandler inputHandler = new race.input.KeyboardInputHandler();
-                views.training.manager.TrainingManager trainingManager = new views.training.manager.TrainingManager(mapGenerator, inputHandler, sessionManager, equippedHorseService);
+                views.training.manager.TrainingManager trainingManager = new views.training.manager.TrainingManager(mapGenerator, inputHandler, sessionManager, connectionManager, equippedHorseService);
                 views.training.screen.TrainingScreen trainingScreen = trainingManager.createTrainingScreen(game);
                 game.setScreen(trainingScreen);
             }
             case MULTIPLAYER -> {
-                GameManager gameManager = new GameManager(sessionManager, ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
-                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, equippedHorseService, gameManager));
+                GameManager gameManager = new GameManager(sessionManager, connectionManager, lobbyManager.getCurrentLobby());
+                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, connectionManager, equippedHorseService, gameManager));
             }
         }
     }

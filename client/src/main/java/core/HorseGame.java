@@ -2,19 +2,22 @@
 package core;
 
 import com.badlogic.gdx.Game;
+import services.managers.ConnectionManagerPort;
 import services.media.AudioService;
 import views.login.LoginScreen;
 import services.managers.SessionManagerPort;
 
 public class HorseGame extends Game {
+    private ConnectionManagerPort connectionManager;
     private SessionManagerPort sessionManager;
     private AudioService audio;
     private LoginScreen loginScreen;
 
-    public HorseGame(SessionManagerPort sessionManager, AudioService audio) {
+    public HorseGame(SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, AudioService audio) {
         this.sessionManager = sessionManager;
+        this.connectionManager = connectionManager;
         this.audio = audio;
-        loginScreen = new LoginScreen(this, audio);
+        loginScreen = new LoginScreen(this, connectionManager, audio);
     }
 
     @Override

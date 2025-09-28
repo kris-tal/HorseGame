@@ -7,6 +7,7 @@ import race.factory.GameFactory;
 import race.input.InputHandler;
 import race.map.MapGenerator;
 import services.horse.HorseService;
+import services.managers.ConnectionManagerPort;
 import services.training.TrainingService;
 import training.contract.TrainingPresenter;
 import views.training.presenter.TrainingPresenterFactory;
@@ -29,16 +30,16 @@ public class TrainingScreenFactory {
         this.horseService = horseService;
     }
 
-    public TrainingScreen createDefaultTrainingScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
+    public TrainingScreen createDefaultTrainingScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         BaseGameConfig config = GameConfigFactory.createTrainingConfigWithEquippedHorse(equippedHorseService);
-        return createTrainingScreen(game, config, sessionManager, equippedHorseService);
+        return createTrainingScreen(game, config, sessionManager, connectionManager, equippedHorseService);
     }
 
-    public TrainingScreen createTrainingScreen(HorseGame game, BaseGameConfig config, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
+    public TrainingScreen createTrainingScreen(HorseGame game, BaseGameConfig config, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         GameFactory gameFactory = new GameFactory(mapGenerator, inputHandler, config);
         TrainingPresenter presenter = TrainingPresenterFactory.createTrainingPresenter(
                 gameFactory, config, trainingService, sessionManager, equippedHorseService
         );
-        return new TrainingScreen(game, presenter, trainingService, horseService, sessionManager, equippedHorseService);
+        return new TrainingScreen(game, presenter, trainingService, horseService, sessionManager, connectionManager, equippedHorseService);
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.lobby.LobbyCreationResponse;
 import services.managers.ConnectionManager;
+import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 
 import java.io.IOException;
@@ -13,13 +14,15 @@ import java.net.http.HttpResponse;
 
 public class LobbyServiceImpl implements LobbyService {
     private final SessionManagerPort sessionManager;
+    private final ConnectionManagerPort connectionManager;
     private final Gson gson = new Gson();
 
     private String currentLobby;
     private boolean isLobbyCreator = false;
 
-    public LobbyServiceImpl(SessionManagerPort sessionManager) {
+    public LobbyServiceImpl(SessionManagerPort sessionManager, ConnectionManagerPort connectionManager) {
         this.sessionManager = sessionManager;
+        this.connectionManager = connectionManager;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public boolean joinLobby(String room) {
         currentLobby = room;
-        return ConnectionManager.getInstance().connectToRoom(room, sessionManager.getToken());
+        return connectionManager.connectToRoom(room, sessionManager.getToken());
     }
 
     @Override
@@ -75,7 +78,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public void updatePosition(int progress) {
-        ConnectionManager.getInstance().emitProgressUpdate(
+        connectionManager.emitProgressUpdate(
                 sessionManager.getToken(),
                 progress
         );
@@ -83,7 +86,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public void closeConnection() {
-        ConnectionManager.getInstance().closeConnection();
+        connectionManager.closeConnection();
         currentLobby = null;
         isLobbyCreator = false;
     }

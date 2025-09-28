@@ -14,6 +14,7 @@ import core.HorseGame;
 import data.race.EquippedHorseService;
 import race.RaceWorld;
 import race.input.InputManager;
+import services.managers.ConnectionManagerPort;
 import services.managers.ResourceManager;
 import services.managers.SessionManagerPort;
 import views.ranch.RanchScreen;
@@ -25,14 +26,16 @@ public abstract class BaseGameScreen implements Screen {
     protected final Stage uiStage;
     protected final Skin skin;
     protected final SessionManagerPort sessionManager;
+    protected final ConnectionManagerPort connectionManager;
     protected final EquippedHorseService equippedHorseservice;
 
     protected boolean statsPanelShown = false;
     protected boolean onGameFinished = false;
 
-    public BaseGameScreen(HorseGame game, SessionManagerPort sessionManager, EquippedHorseService equippedHorseService) {
+    public BaseGameScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
         this.sessionManager = sessionManager;
+        this.connectionManager = connectionManager;
         this.equippedHorseservice = equippedHorseService;
         this.batch = new SpriteBatch();
         this.bgStage = new Stage(new ScreenViewport());
@@ -53,7 +56,7 @@ public abstract class BaseGameScreen implements Screen {
     protected abstract void handleGameCompletion();
 
     protected void handleEscapeKey() {
-        game.setScreen(new RanchScreen(game, sessionManager, equippedHorseservice));
+        game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseservice));
     }
 
     @Override

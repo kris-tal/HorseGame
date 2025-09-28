@@ -16,8 +16,7 @@ import java.util.List;
 
 import static services.auth.AuthServiceImpl.BASE_URL;
 
-public class ConnectionManager {
-    private static ConnectionManager instance;
+public class ConnectionManager implements ConnectionManagerPort {
     private Socket sessionSocket;
     private final Gson gson;
     private LobbyListener lobbyListener;
@@ -25,31 +24,26 @@ public class ConnectionManager {
     private String currentRoom;
     private boolean connected;
 
-    private ConnectionManager() {
+    public ConnectionManager() {
         gson = new Gson();
         connected = false;
     }
 
-    public static synchronized ConnectionManager getInstance() {
-        if (instance == null) {
-            instance = new ConnectionManager();
-        }
-        return instance;
-    }
-
+    @Override
     public void setLobbyListener(LobbyListener listener) {
         this.lobbyListener = listener;
     }
-
+    @Override
     public void setGameListener(GameListener listener) {
         this.gameListener = listener;
     }
 
+    @Override
     public void clearListeners() {
         this.gameListener = null;
         this.lobbyListener = null;
     }
-
+    @Override
     public boolean connectToRoom(String room, String token) {
         try {
             if (sessionSocket != null) {
@@ -75,7 +69,7 @@ public class ConnectionManager {
         }
     }
 
-
+    @Override
     public void emitProgressUpdate(String token, int progress) {
         if (sessionSocket != null && sessionSocket.connected()) {
             HashMap<String, Object> data = new HashMap<>();
@@ -191,7 +185,7 @@ public class ConnectionManager {
             System.out.println("ConnectionManager: Error parsing progress update: " + jsonData + ", error: " + e.getMessage());
         }
     }
-
+    @Override
     public void closeConnection() {
         if (sessionSocket != null) {
             sessionSocket.off();
@@ -201,15 +195,15 @@ public class ConnectionManager {
         currentRoom = null;
         connected = false;
     }
-
+    @Override
     public boolean isConnected() {
         return connected;
     }
-
+    @Override
     public String getCurrentRoom() {
         return currentRoom;
     }
-
+    @Override
     public Socket getSocket() {
         return sessionSocket;
     }
