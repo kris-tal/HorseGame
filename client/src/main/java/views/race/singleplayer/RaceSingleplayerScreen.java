@@ -1,4 +1,3 @@
-// java
 package views.race.singleplayer;
 
 import com.badlogic.gdx.Gdx;

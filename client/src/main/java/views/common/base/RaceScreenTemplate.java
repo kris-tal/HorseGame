@@ -1,4 +1,3 @@
-// java
 package views.common.base;
 
 import com.badlogic.gdx.Gdx;

@@ -6,7 +6,6 @@ import race.config.BaseGameConfig;
 import race.factory.GameFactory;
 import race.state.GameStateManager;
 
-
 public abstract class RacePresenterTemplate {
     protected RaceWorld world;
     protected final GameStateManager gameStateManager;

@@ -1,11 +1,9 @@
 package views.race.multiplayer;
 
-import com.badlogic.gdx.Gdx;
 import presentation.common.RacePresenterTemplate;
 import race.config.BaseGameConfig;
 import race.factory.GameFactory;
 import services.managers.GameManager;
-import views.race.singleplayer.RaceSingleplayerPresenter;
 
 public class RaceMultiplayerPresenter extends RacePresenterTemplate {
     private final GameManager gameManager;
