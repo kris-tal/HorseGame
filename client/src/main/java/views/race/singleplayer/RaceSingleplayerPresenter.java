@@ -1,12 +1,10 @@
 package views.race.singleplayer;
 
-import race.*;
 import race.config.BaseGameConfig;
 import race.factory.GameFactory;
-import race.state.GameStateManager;
-import presentation.common.BaseGamePresenter;
+import presentation.common.RacePresenterTemplate;
 
-public class RaceSingleplayerPresenter extends BaseGamePresenter {
+public class RaceSingleplayerPresenter extends RacePresenterTemplate {
 
     public RaceSingleplayerPresenter(GameFactory gameFactory, BaseGameConfig raceConfig) {
         super(gameFactory, raceConfig);

@@ -2,8 +2,6 @@ package views.race.multiplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,18 +15,17 @@ import services.managers.GameManager;
 import services.managers.SessionManagerPort;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
-import views.common.base.BaseGameScreen;
+import views.common.base.RaceScreenTemplate;
 import views.common.ui.UIFactory;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
-import views.race.ui.ProgressBarWidget;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 // Multiplayer race game loop screen
-public class RaceMultiplayerScreen extends BaseGameScreen {
+public class RaceMultiplayerScreen extends RaceScreenTemplate {
     private final RaceMultiplayerPresenter presenter;
     private Label distanceLabel;
     private Label coinLabel;

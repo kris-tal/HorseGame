@@ -15,12 +15,12 @@ import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 import services.training.TrainingService;
 import services.training.TrainingServiceImpl;
-import views.common.base.BaseGameScreen;
+import views.common.base.RaceScreenTemplate;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
 
-public class RaceSingleplayerScreen extends BaseGameScreen {
+public class RaceSingleplayerScreen extends RaceScreenTemplate {
     private final RaceSingleplayerPresenter presenter;
     private Label distanceLabel;
     private Label coinLabel;
