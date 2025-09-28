@@ -18,6 +18,7 @@ import views.training.presenter.TrainingPresenterFactory;
 import services.managers.SessionManagerPort;
 import services.requests.ProtectedRequestsService;
 import data.race.EquippedHorseService;
+import data.horse.HorseData;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -46,7 +47,14 @@ class TrainingPresenterFlowTest {
 
     @Test
     void presenter_initializes_and_updates() {
-        BaseGameConfig config = GameConfigFactory.createTrainingConfigWithCooldownReduction(0f);
+        // Create mock equipped horse service with a test horse
+        HorseData testHorseData = mock(HorseData.class);
+        when(testHorseData.getHorseType()).thenReturn(data.horse.HorseTypeRegistry.getByKey("boring_horse"));
+        when(testHorseData.getTrainingPoints()).thenReturn(0);
+        when(testHorseData.getLevel()).thenReturn(0);
+        when(equippedHorseService.getEquippedHorse()).thenReturn(testHorseData);
+        
+        BaseGameConfig config = GameConfigFactory.createTrainingConfigWithEquippedHorse(equippedHorseService);
         SystemsFactory testSystems = new SystemsFactory() {
             @Override
             public CameraSystem createCameraSystem(data.race.GameMap map, int visibleCols) {
@@ -73,9 +81,9 @@ class TrainingPresenterFlowTest {
                 return mock(race.state.GameStateManager.class);
             }
         };
-        HorseActorFactory testHorse = player -> mock(BaseHorseActor.class);
+        HorseActorFactory testHorseActor = player -> mock(BaseHorseActor.class);
 
-        GameFactory gf = new GameFactory(mapGenerator, inputHandler, config, new DefaultPlayerFactory(), testHorse, testSystems);
+        GameFactory gf = new GameFactory(mapGenerator, inputHandler, config, new DefaultPlayerFactory(), testHorseActor, testSystems);
 
         TrainingPresenter presenter = TrainingPresenterFactory.createTrainingPresenter(
                 gf,

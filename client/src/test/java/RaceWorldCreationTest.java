@@ -16,6 +16,10 @@ import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
 import race.RaceWorld;
 import race.objects.EmptyObject;
+import data.race.EquippedHorseService;
+import data.horse.HorseData;
+import data.horse.HorseType;
+import data.horse.HorseTypeRegistry;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,7 +41,15 @@ class RaceWorldCreationTest {
         }
         when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));//kiedy zrobi sie mapowanie to zwroci mape z danymi
 
-        BaseGameConfig config = GameConfigFactory.createRaceConfigWithCooldownReduction(0f);
+        // Create mock equipped horse service with a test horse
+        EquippedHorseService equippedHorseService = mock(EquippedHorseService.class);
+        HorseData testHorse = mock(HorseData.class);
+        when(testHorse.getHorseType()).thenReturn(HorseTypeRegistry.getByKey("boring_horse"));
+        when(testHorse.getTrainingPoints()).thenReturn(0);
+        when(testHorse.getLevel()).thenReturn(0);
+        when(equippedHorseService.getEquippedHorse()).thenReturn(testHorse);
+        
+        BaseGameConfig config = GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
 
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(GameMap map, int visibleCols) { return mock(CameraSystem.class); }
@@ -47,14 +59,14 @@ class RaceWorldCreationTest {
             @Override public race.state.GameStateManager createGameStateManager() { return mock(race.state.GameStateManager.class); }
         };
 
-        HorseActorFactory testHorse = player -> mock(BaseHorseActor.class);
+        HorseActorFactory testHorseActor = player -> mock(BaseHorseActor.class);
 
         GameWorldFactory factory = GameFactory.builder()
                 .withMapGenerator(mapGenerator)
                 .withInputHandler(inputHandler)
                 .withConfig(config)
                 .withSystemsFactory(testSystems)
-                .withHorseActorFactory(testHorse)
+                .withHorseActorFactory(testHorseActor)
                 .build();
 
         RaceWorld world = factory.createWorld();
