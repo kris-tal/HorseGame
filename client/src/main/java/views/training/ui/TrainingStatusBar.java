@@ -19,7 +19,7 @@ public class TrainingStatusBar extends Table {
     public TrainingStatusBar() {
         super();
         setBackground(new NinePatchDrawable(UIStyles.getDefaultBackgroundPatch()));
-        pad(8).padLeft(12).padRight(12);
+        pad(10).padLeft(12).padRight(12);
         align(Align.left);
 
         titleLabel = UIFactory.createMediumLabel("TRAINING");

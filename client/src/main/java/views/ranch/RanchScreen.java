@@ -216,8 +216,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     }
 
     private void setupStatusBar() {
-        Skin skin = ResourceManager.uiSkin;
         statusBar = new RanchStatusBar(game, sessionManager);
+        statusBar.pad(50f, 70f, 0f, 100f);
         stage.addActor(statusBar);
 
         statusBar.setListener(action -> {
