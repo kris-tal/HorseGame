@@ -9,8 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.badlogic.gdx.Application;
-import io.socket.client.Socket;
 
 import services.listeners.GameListener;
 import services.listeners.LobbyListener;
@@ -18,18 +16,10 @@ import services.managers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ConnectionManagerTest {
-
-    @Mock
-    private Socket mockSocket;
-
     @Mock
     private LobbyListener mockLobbyListener;
-
     @Mock
     private GameListener mockGameListener;
-
-    @Mock
-    private Application mockApp;
 
     private ConnectionManager connectionManager;
 

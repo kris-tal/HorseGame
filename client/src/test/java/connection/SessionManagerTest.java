@@ -60,17 +60,13 @@ public class SessionManagerTest {
 
     @Test
     void testEndSession() {
-        // Start a session first
         sessionManager.startSession("testToken");
         assertTrue(sessionManager.isLoggedIn());
-
-        // End the session
         sessionManager.endSession();
 
         assertFalse(sessionManager.isLoggedIn());
         assertNull(sessionManager.getToken());
 
-        // Should throw when trying to get protected service after ending session
         assertThrows(IllegalStateException.class,
                 () -> sessionManager.getProtectedRequestsService());
     }
@@ -79,8 +75,6 @@ public class SessionManagerTest {
     void testMultipleSessionStarts() {
         sessionManager.startSession("token1");
         assertEquals("token1", sessionManager.getToken());
-
-        // Starting another session should replace the previous one
         sessionManager.startSession("token2");
         assertEquals("token2", sessionManager.getToken());
         assertTrue(sessionManager.isLoggedIn());

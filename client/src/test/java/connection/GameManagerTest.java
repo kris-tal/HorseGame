@@ -54,8 +54,6 @@ public class GameManagerTest {
         assertFalse(gameManager.isGameInProgress());
         assertNull(gameManager.getWinner());
         assertEquals(testPlayers, gameManager.getCurrentPlayers());
-
-        // Verify that the connection manager was configured
         verify(mockConnectionManager).setGameListener(gameManager);
     }
 
