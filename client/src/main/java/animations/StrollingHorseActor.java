@@ -1,8 +1,8 @@
-// java
 package animations;
 
 import com.badlogic.gdx.math.MathUtils;
 import data.horse.HorseData;
+import data.horse.HorseDataHolder;
 
 public class StrollingHorseActor extends BaseHorseActor implements HorseDataHolder {
     private final float minX, maxX, minY, maxY;

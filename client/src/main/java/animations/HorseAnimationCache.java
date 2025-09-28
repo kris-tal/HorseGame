@@ -1,4 +1,3 @@
-// java
 package animations;
 
 import data.horse.HorseType;

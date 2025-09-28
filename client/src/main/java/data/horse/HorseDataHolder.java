@@ -1,6 +1,4 @@
-package animations;
-
-import data.horse.HorseData;
+package data.horse;
 
 public interface HorseDataHolder {
     HorseData getHorseData();

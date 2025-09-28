@@ -19,6 +19,9 @@ public abstract class BaseHorseActor extends Actor {
     protected boolean facingRight = true;
     protected final float scale;
 
+    float HORSE_WIDTH = 32f;
+    float HORSE_HEIGHT = 32f;
+
     public BaseHorseActor(HorseType horseType, float scale) {
         this(horseType, null, scale);
     }
@@ -30,13 +33,13 @@ public abstract class BaseHorseActor extends Actor {
         this.palette = horseType.getPalette();
         this.scale = scale;
 
-        setSize(32f * scale, 32f * scale);
+        setSize(HORSE_WIDTH * scale, HORSE_HEIGHT * scale);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        stateTime += delta; // always increment so animations run even when idle
+        stateTime += delta;
     }
 
     @Override
@@ -78,7 +81,7 @@ public abstract class BaseHorseActor extends Actor {
             batch.draw(tail, drawX, drawY, width, height);
         }
 
-        batch.setColor(1f, 1f, 1f, 1f); // reset
+        batch.setColor(1f, 1f, 1f, 1f);
     }
 
     protected void moveTo(float x, float y) {
