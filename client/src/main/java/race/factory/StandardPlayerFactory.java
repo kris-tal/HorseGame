@@ -17,13 +17,14 @@ public class StandardPlayerFactory implements PlayerFactory {
             config.getLanes() / 2,
             config.getSpeed(),
             config.getSprintCooldownReduction() > 0f ?
-                new TrainingSprintStrategy(config.getSprintCooldownReduction()) :
+                new TrainingSprintStrategy(config.getSprintCooldown()) :
                 new StandardSprintStrategy(),
             new StandardPlayerMovementStrategy(),
             new StandardPlayerVisionStrategy(),
             new StandardSprintManager(),
             new StandardStatusEffectManager(),
-            config.getSprintDuration()
+            config.getSprintDuration(),
+            config.getSprintCooldown()
         );
     }
 }
