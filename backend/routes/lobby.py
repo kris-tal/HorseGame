@@ -164,6 +164,7 @@ def progress_update(data):
                 room["winner"] = player.id
                 room["status"] = RoomStatus.Finished
                 log_and_emit("game_won", {"winner": player.serialize()}, to=room_code)
+                del room
                 return
 
 
