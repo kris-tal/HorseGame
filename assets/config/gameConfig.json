@@ -1,7 +1,7 @@
 {
   "gameConfig": {
     "defaultLanes": 3,
-    "raceLength": 4000,
+    "raceLength": 3000,
     "trainingLength": 300000,
     "defaultSpeed": 4.0,
     "defaultVisibleCols": 10,

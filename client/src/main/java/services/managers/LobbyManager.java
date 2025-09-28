@@ -8,6 +8,7 @@ import data.race.GameMap;
 import data.race.PlayerProgressResponse;
 import race.config.BaseGameConfig;
 import race.config.GameConfigFactory;
+import race.config.GameConfigValues;
 import race.map.RandomMapGenerator;
 import services.listeners.LobbyListener;
 import services.lobby.LobbyService;
@@ -81,8 +82,8 @@ public class LobbyManager implements LobbyListener {
         if (currentLobby == null) {
             return;
         }
-        //BaseGameConfig config = new GameConfigFactory(/* wpisz tu swojego konia */).createMultiplayerRaceConfig();
-        GameMap map = new RandomMapGenerator().generateMap(3, 4000);
+
+        GameMap map = new RandomMapGenerator().generateMap(GameConfigValues.getDefaultLanes(), GameConfigValues.getRaceLength());
         service.startLobby(currentLobby.getLobbyCode(), map);
     }
 
