@@ -1,7 +1,5 @@
 package data.lobby;
 
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -56,7 +54,7 @@ public class PlayerInfoClient {
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
-
+    public void setUsername(String username) {this.username = username; }
     @Override
     public String toString() {
         return "PlayerInfoClient{" +

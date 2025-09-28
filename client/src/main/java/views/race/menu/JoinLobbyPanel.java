@@ -1,10 +1,12 @@
 package views.race.menu;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import services.listeners.JoinLobbyListener;
 import services.managers.LobbyManager;
@@ -81,12 +83,25 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
     }
     @Override
     protected void addContent(float width, float height) {
-        /*
-            TODO:
-            * Make it auto uppercase since the only allowed codes are combined uppercase numbers and letters
-         */
         roomCodeField = UIFactory.createTextField("Enter Lobby Code");
         roomCodeField.setMessageText("ABC123");
+
+        roomCodeField.setTextFieldFilter((textField, c) -> {
+            if (Character.isLowerCase(c)) {
+                String currentText = textField.getText();
+                int cursorPosition = textField.getCursorPosition();
+                String newText = currentText.substring(0, cursorPosition) +
+                        Character.toUpperCase(c) +
+                        currentText.substring(cursorPosition);
+
+                textField.setText(newText);
+                textField.setCursorPosition(cursorPosition + 1);
+
+                return false;
+            }
+            return Character.isUpperCase(c) || Character.isDigit(c) || c == ' ';
+        });
+
         content.add(roomCodeField).width(200f).padTop(smallPadding).padBottom(defaultPadding).row();
 
         joinButton = UIFactory.createLargeTextButton("JOIN LOBBY");
@@ -98,14 +113,12 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         });
         content.add(joinButton).padBottom(defaultPadding).row();
 
-        // Status label for feedback
         statusLabel = UIFactory.createLabel("");
-        statusLabel.setColor(1f, 0.3f, 0.3f, 1f); // Red color for errors
+        statusLabel.setColor(1f, 0.3f, 0.3f, 1f);
         content.add(statusLabel).padTop(10f).row();
 
-        // Instructions
         Label instructionLabel = UIFactory.createLabel("Ask the lobby host for the code");
-        instructionLabel.setColor(0.7f, 0.7f, 0.7f, 1f); // Gray color
+        instructionLabel.setColor(0.7f, 0.7f, 0.7f, 1f);
         content.add(instructionLabel).padTop(20f).row();
     }
 

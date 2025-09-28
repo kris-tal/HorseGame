@@ -4,7 +4,6 @@ package services.lobby;
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import data.lobby.LobbyCreationResponse;
-import services.managers.ConnectionManager;
 import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 
@@ -16,7 +15,6 @@ public class LobbyServiceImpl implements LobbyService {
     private final SessionManagerPort sessionManager;
     private final ConnectionManagerPort connectionManager;
     private final Gson gson = new Gson();
-
     private String currentLobby;
     private boolean isLobbyCreator = false;
 

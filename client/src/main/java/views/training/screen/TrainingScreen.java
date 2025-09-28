@@ -192,7 +192,7 @@ public class TrainingScreen extends RaceScreenTemplate {
         game.setScreen(new RanchScreen(game, sessionManager, connectionManager, equippedHorseService));
     }
 
-    private HorseData resolveHorse() {
+    protected HorseData resolveHorse() {
         return equippedHorseService.getEquippedHorse();
     }
 }

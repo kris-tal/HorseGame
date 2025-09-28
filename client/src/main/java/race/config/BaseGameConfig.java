@@ -11,8 +11,10 @@ public class BaseGameConfig {
     protected final float sprintCooldownReduction;
     protected final int horseLevel;
     protected final float sprintDuration;
+    protected final float sprintCooldown;
+    protected final boolean playerImmortal;
 
-    public BaseGameConfig(int lanes, int length, float speed, HorseType horseType, int visibleCols, float sprintCooldownReduction, int horseLevel, float sprintDuration) {
+    public BaseGameConfig(int lanes, int length, float speed, HorseType horseType, int visibleCols, float sprintCooldownReduction, int horseLevel, float sprintDuration, float sprintCooldown, boolean playerImmortal) {
         this.lanes = lanes;
         this.length = length;
         this.speed = speed;
@@ -21,6 +23,8 @@ public class BaseGameConfig {
         this.sprintCooldownReduction = sprintCooldownReduction;
         this.horseLevel = horseLevel;
         this.sprintDuration = sprintDuration;
+        this.sprintCooldown = sprintCooldown;
+        this.playerImmortal = playerImmortal;
     }
 
     public int getLanes() { return lanes; }
@@ -31,6 +35,8 @@ public class BaseGameConfig {
     public float getSprintCooldownReduction() { return sprintCooldownReduction; }
     public int getHorseLevel() { return horseLevel; }
     public float getSprintDuration() { return sprintDuration; }
+    public float getSprintCooldown() { return sprintCooldown; }
+    public boolean isPlayerImmortal() { return playerImmortal; }
 }
 
 

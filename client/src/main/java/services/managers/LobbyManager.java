@@ -58,20 +58,17 @@ public class LobbyManager implements LobbyListener {
 
     public void joinLobby(String lobbyCode) {
         if (currentLobby != null) {
-            connectionManager.closeConnection();
+            return;
         }
 
-        // Create lobby info immediately (optimistic)
         currentLobby = new LobbyInfo(lobbyCode);
         boolean success = service.joinLobby(lobbyCode);
         if (!success) {
-            // If immediate failure, clear the lobby
             currentLobby = null;
             if (connectionListener != null) {
                 connectionListener.onLobbyJoined(false);
             }
         }
-        // If success, wait for async callback to confirm
     }
 
     public void startLobby() {
@@ -81,6 +78,9 @@ public class LobbyManager implements LobbyListener {
         service.startLobby(currentLobby.getLobbyCode());
     }
 
+    public void setCurrentLobby(LobbyInfo lobby) {
+        this.currentLobby = lobby;
+    }
     public LobbyInfo getCurrentLobby() {
         return currentLobby;
     }
@@ -127,10 +127,9 @@ public class LobbyManager implements LobbyListener {
         return player.isCreator();
     }
 
-    // Implementation of LobbyListener interface
     @Override
     public void onPlayerListChanged(HashMap<String, PlayerInfoClient> newPlayers) {
-        if (currentLobby != null) {
+        if (getCurrentLobby() != null) {
             currentLobby.setPlayers(newPlayers);
             if (stateListener != null) {
                 stateListener.onPlayersUpdated();

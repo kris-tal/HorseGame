@@ -13,6 +13,7 @@ public class GameConfigFactory {
     private static final float TRAINING_POINTS_MULTIPLIER = 0.0001f;
     private static final float SPRINT_LEVEL_MULTIPLIER = 0.1f;
     private static final float DEFAULT_SPRINT = 2f;
+    private static final float DEFAULT_SPRINT_COOLDOWN = 10f;
 
     private final EquippedHorseService horseService;
 
@@ -20,19 +21,25 @@ public class GameConfigFactory {
         this.horseService = horseService;
     }
 
-    public BaseGameConfig createRaceConfig() {
+    public BaseGameConfig createMultiplayerRaceConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, RACE_LENGTH);
+        return createConfigWithHorse(horse, RACE_LENGTH, true);
+    }
+
+    public BaseGameConfig createSingleplayerRaceConfig() {
+        HorseData horse = horseService.getEquippedHorse();
+        return createConfigWithHorse(horse, RACE_LENGTH, false);
     }
 
     public BaseGameConfig createTrainingConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, TRAINING_LENGTH);
+        return createConfigWithHorse(horse, TRAINING_LENGTH, false);
     }
 
-    private BaseGameConfig createConfigWithHorse(HorseData horseData, int length) {
+    private BaseGameConfig createConfigWithHorse(HorseData horseData, int length, boolean playerImmortal) {
         float cooldownReduction = calculateCooldownReduction(horseData);
         float sprintDuration = calculateSprintDuration(horseData);
+        float sprintCooldown = calculateSprintCooldown(horseData);
         return new BaseGameConfig(
                 DEFAULT_LANES,
                 length,
@@ -41,7 +48,9 @@ public class GameConfigFactory {
                 DEFAULT_VISIBLE_COLS,
                 cooldownReduction,
                 horseData.getLevel(),
-                sprintDuration
+                sprintDuration,
+                sprintCooldown,
+                playerImmortal
         );
     }
 
@@ -52,5 +61,10 @@ public class GameConfigFactory {
     private float calculateSprintDuration(HorseData horseData) {
         float levelBonus = horseData.getLevel() * SPRINT_LEVEL_MULTIPLIER;
         return DEFAULT_SPRINT * (1f + levelBonus);
+    }
+
+    private float calculateSprintCooldown(HorseData horseData) {
+        float cooldownReduction = calculateCooldownReduction(horseData);
+        return DEFAULT_SPRINT_COOLDOWN * (1f - cooldownReduction);
     }
 }

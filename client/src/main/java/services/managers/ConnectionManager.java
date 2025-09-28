@@ -1,7 +1,9 @@
 package services.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Json;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import data.lobby.PlayerInfoClient;
 import data.lobby.PlayerListResponse;
 import data.race.PlayerProgressResponse;
@@ -142,7 +144,11 @@ public class ConnectionManager implements ConnectionManagerPort {
         sessionSocket.on("game_won", args -> {
             if (gameListener != null) {
                 String winnerData = args.length > 1 ? args[1].toString() : args[0].toString();
-                gameListener.onGameWon(winnerData);
+                JsonObject jsonObj = new Gson().fromJson(winnerData, JsonObject.class);
+                String winnerDataInner = jsonObj.get("winner").toString();
+                jsonObj = new Gson().fromJson(winnerDataInner, JsonObject.class);
+                String winnerUsername = jsonObj.get("username").toString();
+                gameListener.onGameWon(winnerUsername);
             }
         });
 

@@ -50,7 +50,7 @@ class RaceWorldCreationTest {
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorse);
         
         GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
-        BaseGameConfig config = configFactory.createRaceConfig();
+        BaseGameConfig config = configFactory.createSingleplayerRaceConfig();
 
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(GameMap map, int visibleCols) { return mock(CameraSystem.class); }
