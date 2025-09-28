@@ -18,7 +18,7 @@ public class Player {
 
     protected boolean sprinting = false;
     protected float sprintTimeLeft = 0f;
-    protected float sprintDuration = 2f;
+    protected float sprintDuration;
     protected float sprintCooldown = 10f;
     protected float cooldownTimer = 0f;
 
@@ -41,24 +41,7 @@ public class Player {
                         SprintStrategy sprintStrategy, PlayerMovementStrategy movementStrategy, 
                         PlayerVisionStrategy visionStrategy, SprintManager sprintManager, 
                         StatusEffectManager statusEffectManager) {
-        this(horseType, startingLane, speed, sprintStrategy, movementStrategy, visionStrategy, sprintManager, statusEffectManager, 0);
-    }
-
-    public Player(HorseType horseType, int startingLane, float speed,
-                        SprintStrategy sprintStrategy, PlayerMovementStrategy movementStrategy, 
-                        PlayerVisionStrategy visionStrategy, SprintManager sprintManager, 
-                        StatusEffectManager statusEffectManager, int horseLevel) {
-        this.horseType = horseType;
-        this.lane = startingLane;
-        this.baseSpeed = speed;
-        this.sprintStrategy = sprintStrategy;
-        this.movementStrategy = movementStrategy;
-        this.visionStrategy = visionStrategy;
-        this.sprintManager = sprintManager;
-        this.statusEffectManager = statusEffectManager;
-        
-        float levelBonus = horseLevel * 0.1f; 
-        this.sprintDuration = 2f * (1f + levelBonus); 
+        this(horseType, startingLane, speed, sprintStrategy, movementStrategy, visionStrategy, sprintManager, statusEffectManager, 2f);
     }
 
     public Player(HorseType horseType, int startingLane, float speed,
