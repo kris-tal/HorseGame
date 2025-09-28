@@ -26,27 +26,72 @@ public class GameConfigValues {
     }
     
     private static void loadConfig() throws IOException {
+        String[] candidates = new String[]{
+                "config/gameConfig.json",
+                "assets/config/gameConfig.json"
+        };
+
+        String jsonContent = readFirstAvailable(candidates);
+        if (jsonContent == null) {
+            throw new IOException("Plik konfiguracyjny nie istnieje w żadnej lokalizacji");
+        }
+
+        JsonObject root = JsonParser.parseString(jsonContent).getAsJsonObject();
+        config = root.getAsJsonObject("gameConfig");
+    }
+
+    private static String readFirstAvailable(String... candidates) {
+        for (String path : candidates) {
+            String content = readClasspath(path);
+            if (content != null) {
+                return content;
+            }
+        }
+
+        for (String path : candidates) {
+            String content = readFilesystem(path);
+            if (content != null) {
+                return content;
+            }
+        }
+        
+        return null;
+    }
+
+    private static String readClasspath(String path) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
             classLoader = GameConfigValues.class.getClassLoader();
         }
-
-        try (InputStream inputStream = classLoader.getResourceAsStream("config/gameConfig.json")) {
+        
+        try (InputStream inputStream = classLoader.getResourceAsStream(path)) {
             if (inputStream == null) {
-                throw new IOException("Plik konfiguracyjny nie istnieje: config/gameConfig.json");
+                return null;
             }
-
+            
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 StringBuilder jsonContent = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     jsonContent.append(line).append('\n');
                 }
-
-                JsonObject root = JsonParser.parseString(jsonContent.toString()).getAsJsonObject();
-                config = root.getAsJsonObject("gameConfig");
+                return jsonContent.toString();
             }
+        } catch (IOException e) {
+            return null;
         }
+    }
+
+    private static String readFilesystem(String path) {
+        try {
+            java.nio.file.Path filePath = java.nio.file.Path.of(path);
+            if (java.nio.file.Files.exists(filePath)) {
+                return java.nio.file.Files.readString(filePath, StandardCharsets.UTF_8);
+            }
+        } catch (IOException e) {
+            // Ignoruj błędy filesystem
+        }
+        return null;
     }
 
     public static int getDefaultLanes() {
