@@ -2,7 +2,6 @@
 package views.training.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.HorseGame;
 import data.horse.HorseData;
@@ -16,6 +15,7 @@ import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
 import training.contract.TrainingPresenter;
 import data.race.EquippedHorseService;
+import views.training.ui.TrainingStatusBar;
 
 public class TrainingScreen extends BaseGameScreen {
     private final TrainingPresenter presenter;
@@ -24,13 +24,9 @@ public class TrainingScreen extends BaseGameScreen {
     private final SessionManagerPort sessionManager;
     private final EquippedHorseService equippedHorseService;
 
-    private Label titleLabel;
-    private Label distanceLabel;
-    private Label trainingPointsLabel;
-    private Label longestRunLabel;
-    private Label coinsLabel;
     private SprintWidget sprintWidget;
     private TrainingStatsPanel statsPanel;
+    private TrainingStatusBar statusBar;
 
     public TrainingScreen(HorseGame game,
                           TrainingPresenter presenter,
@@ -48,35 +44,17 @@ public class TrainingScreen extends BaseGameScreen {
 
     @Override
     protected void initializeUI() {
-        Table table = new Table();
-        table.setFillParent(true);
-        table.top().left();
+        Table root = new Table();
+        root.setFillParent(true);
+        root.top().left();
+        root.pad(60f, 60f, 0f, 0f);
 
-        titleLabel = new Label("TRAINING MODE", skin);
-        distanceLabel = new Label("Distance: 0m", skin);
-        trainingPointsLabel = new Label("Training Points: 0/10000", skin);
-        longestRunLabel = new Label("Longest Run: 0m", skin);
-        coinsLabel = new Label("Coins: 0", skin);
+        statusBar = new TrainingStatusBar();
+        root.add(statusBar).left().top();
 
-        titleLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        distanceLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        trainingPointsLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        longestRunLabel.setStyle(skin.get("default", Label.LabelStyle.class));
-        coinsLabel.setStyle(skin.get("default", Label.LabelStyle.class));
+        uiStage.addActor(root);
 
-        table.add(titleLabel).pad(10);
-        table.row();
-        table.add(distanceLabel).pad(5);
-        table.row();
-        table.add(trainingPointsLabel).pad(5);
-        table.row();
-        table.add(longestRunLabel).pad(5);
-        table.row();
-        table.add(coinsLabel).pad(5);
-
-        uiStage.addActor(table);
-
-        statsPanel = new TrainingStatsPanel(600, 400);
+        statsPanel = new TrainingStatsPanel(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         statsPanel.setX((Gdx.graphics.getWidth() - statsPanel.getWidth()) / 2f);
         statsPanel.setY((Gdx.graphics.getHeight() - statsPanel.getHeight()) / 2f);
         statsPanel.setVisible(false);
@@ -157,16 +135,20 @@ public class TrainingScreen extends BaseGameScreen {
     @Override
     protected void updateUI(float delta) {
         try {
-            distanceLabel.setText("Distance: " + presenter.getDistance() + "m");
-            trainingPointsLabel.setText("Training Points: " + presenter.getTrainingPoints() + "/10000");
-            longestRunLabel.setText("Longest Run: " + presenter.getDisplayLongestRun() + "m");
-            coinsLabel.setText("Coins: " + presenter.getCoins());
+            if (statusBar != null) {
+                statusBar.setDistance(presenter.getDistance());
+                statusBar.setTrainingPoints(presenter.getTrainingPoints());
+                try {
+                    statusBar.setLongestRun(Integer.parseInt(presenter.getDisplayLongestRun()));
+                } catch (Exception ignored) {
+                }
+                statusBar.setCoins(presenter.getCoins());
+            }
 
             if (sprintWidget != null && presenter.getWorld() != null && presenter.getWorld().getPlayer() != null) {
                 sprintWidget.act(delta);
             }
-        } catch (Exception e) {
-            // intentionally ignored
+        } catch (Exception ignored) {
         }
     }
 
@@ -194,13 +176,11 @@ public class TrainingScreen extends BaseGameScreen {
 
     private HorseData resolveHorse() {
         try {
-            // Prefer equipped horse if available
             HorseData equipped = (equippedHorseService != null) ? equippedHorseService.getEquippedHorse() : null;
             if (equipped != null) {
                 return equipped;
             }
         } catch (Throwable ignored) {
-            // fall back to user horses list
         }
         try {
             var horses = horseService.getUserHorses();
