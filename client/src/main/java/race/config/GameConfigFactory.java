@@ -5,16 +5,6 @@ import data.race.EquippedHorseService;
 
 public class GameConfigFactory {
 
-    private static final int DEFAULT_LANES = 3;
-    private static final int RACE_LENGTH = 4000;
-    private static final int TRAINING_LENGTH = 300000;
-    private static final float DEFAULT_SPEED = 4f;
-    private static final int DEFAULT_VISIBLE_COLS = 10;
-    private static final float TRAINING_POINTS_MULTIPLIER = 0.0001f;
-    private static final float SPRINT_LEVEL_MULTIPLIER = 0.1f;
-    private static final float DEFAULT_SPRINT = 2f;
-    private static final float DEFAULT_SPRINT_COOLDOWN = 10f;
-
     private final EquippedHorseService horseService;
 
     public GameConfigFactory(EquippedHorseService horseService) {
@@ -23,17 +13,17 @@ public class GameConfigFactory {
 
     public BaseGameConfig createMultiplayerRaceConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, RACE_LENGTH, true);
+        return createConfigWithHorse(horse, GameConfigValues.getRaceLength(), true);
     }
 
     public BaseGameConfig createSingleplayerRaceConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, RACE_LENGTH, false);
+        return createConfigWithHorse(horse, GameConfigValues.getRaceLength(), false);
     }
 
     public BaseGameConfig createTrainingConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, TRAINING_LENGTH, false);
+        return createConfigWithHorse(horse, GameConfigValues.getTrainingLength(), false);
     }
 
     private BaseGameConfig createConfigWithHorse(HorseData horseData, int length, boolean playerImmortal) {
@@ -41,11 +31,11 @@ public class GameConfigFactory {
         float sprintDuration = calculateSprintDuration(horseData);
         float sprintCooldown = calculateSprintCooldown(horseData);
         return new BaseGameConfig(
-                DEFAULT_LANES,
+                GameConfigValues.getDefaultLanes(),
                 length,
-                DEFAULT_SPEED,
+                GameConfigValues.getDefaultSpeed(),
                 horseData.getHorseType(),
-                DEFAULT_VISIBLE_COLS,
+                GameConfigValues.getDefaultVisibleCols(),
                 cooldownReduction,
                 horseData.getLevel(),
                 sprintDuration,
@@ -55,16 +45,16 @@ public class GameConfigFactory {
     }
 
     private float calculateCooldownReduction(HorseData horseData) {
-        return horseData.getTrainingPoints() * TRAINING_POINTS_MULTIPLIER;
+        return horseData.getTrainingPoints() * GameConfigValues.getTrainingPointsMultiplier();
     }
 
     private float calculateSprintDuration(HorseData horseData) {
-        float levelBonus = horseData.getLevel() * SPRINT_LEVEL_MULTIPLIER;
-        return DEFAULT_SPRINT * (1f + levelBonus);
+        float levelBonus = horseData.getLevel() * GameConfigValues.getSprintLevelMultiplier();
+        return GameConfigValues.getDefaultSprint() * (1f + levelBonus);
     }
 
     private float calculateSprintCooldown(HorseData horseData) {
         float cooldownReduction = calculateCooldownReduction(horseData);
-        return DEFAULT_SPRINT_COOLDOWN * (1f - cooldownReduction);
+        return GameConfigValues.getDefaultSprintCooldown() * (1f - cooldownReduction);
     }
 }

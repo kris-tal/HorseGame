@@ -73,6 +73,10 @@ public class TrainingDataControllerImpl implements TrainingDataController {
             }
             TrainingResponse response = trainingService.sendTrainingData(trainingData);
 
+            if (response.isSuccess()) {
+                refreshHorseDataFromServer();
+            }
+
             resetSession();
 
             return response;
@@ -96,5 +100,20 @@ public class TrainingDataControllerImpl implements TrainingDataController {
     public void resetSession() {
         pointsEarnedInThisSession = 0;
         lastDistanceCheckpoint = 0;
+    }
+
+    private void refreshHorseDataFromServer() {
+        try {
+            HorseData currentHorse = equippedHorseService.getEquippedHorse();
+            if (currentHorse != null) {
+                HorseData updatedHorse = horseService.getHorseDataById(currentHorse.getId());
+                if (updatedHorse != null) {
+                    equippedHorseService.equipHorse(updatedHorse);
+                    trainingPoints = updatedHorse.getTrainingPoints();
+                    longestRunDistance = updatedHorse.getLongestRunDistance();
+                }
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

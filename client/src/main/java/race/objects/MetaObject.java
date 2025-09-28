@@ -11,7 +11,7 @@ public class MetaObject extends MapObject {
 
     @Override
     public void onCollision(Player player) {
-        player.success();
+
     }
 
     @Override
