@@ -9,6 +9,7 @@ import data.race.PlayerProgressResponse;
 import race.config.BaseGameConfig;
 import race.config.GameConfigFactory;
 import race.config.GameConfigValues;
+import race.config.ConfigModule;
 import race.map.RandomMapGenerator;
 import services.listeners.LobbyListener;
 import services.lobby.LobbyService;
@@ -83,7 +84,8 @@ public class LobbyManager implements LobbyListener {
             return;
         }
 
-        GameMap map = new RandomMapGenerator().generateMap(GameConfigValues.getDefaultLanes(), GameConfigValues.getRaceLength());
+        GameConfigValues configValues = ConfigModule.getConfigValues();
+        GameMap map = new RandomMapGenerator().generateMap(configValues.getDefaultLanes(), configValues.getRaceLength());
         service.startLobby(currentLobby.getLobbyCode(), map);
     }
 

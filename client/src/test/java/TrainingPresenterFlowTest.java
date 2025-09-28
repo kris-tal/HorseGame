@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
+import race.config.ConfigModule;
 import animations.BaseHorseActor;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
@@ -54,7 +55,7 @@ class TrainingPresenterFlowTest {
         when(testHorseData.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorseData);
         
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         BaseGameConfig config = configFactory.createTrainingConfig();
         SystemsFactory testSystems = new SystemsFactory() {
             @Override

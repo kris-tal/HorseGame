@@ -39,4 +39,3 @@ public class BaseGameConfig {
     public boolean isPlayerImmortal() { return playerImmortal; }
 }
 
-

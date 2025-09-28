@@ -14,6 +14,7 @@ import race.input.InputHandler;
 import race.map.MapGenerator;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
+import race.config.ConfigModule;
 import race.RaceWorld;
 import race.objects.EmptyObject;
 import data.race.EquippedHorseService;
@@ -49,7 +50,7 @@ class RaceWorldCreationTest {
         when(testHorse.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorse);
         
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         BaseGameConfig config = configFactory.createSingleplayerRaceConfig();
 
         SystemsFactory testSystems = new SystemsFactory() {

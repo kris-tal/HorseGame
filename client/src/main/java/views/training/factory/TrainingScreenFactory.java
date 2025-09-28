@@ -3,6 +3,7 @@ package views.training.factory;
 import core.HorseGame;
 import race.config.BaseGameConfig;
 import race.config.GameConfigFactory;
+import race.config.ConfigModule;
 import race.factory.GameFactory;
 import race.input.InputHandler;
 import race.map.MapGenerator;
@@ -31,7 +32,7 @@ public class TrainingScreenFactory {
     }
 
     public TrainingScreen createDefaultTrainingScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         BaseGameConfig config = configFactory.createTrainingConfig();
         return createTrainingScreen(game, config, sessionManager, connectionManager, equippedHorseService);
     }

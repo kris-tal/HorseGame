@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import data.race.GameMap;
 import race.config.GameConfigFactory;
+import race.config.ConfigModule;
 import race.config.BaseGameConfig;
 import core.HorseGame;
 import data.lobby.PlayerInfoClient;
@@ -49,7 +50,7 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
         super(game, sessionManager, connectionManager, equippedHorseService);
         this.gameManager = gameManager;
 
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         race.config.BaseGameConfig config = configFactory.createMultiplayerRaceConfig();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
