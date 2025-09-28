@@ -38,7 +38,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         this.trainingService = new TrainingServiceImpl(sessionManager);
         this.equippedHorseService = equippedHorseService;
 
-        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse();
+        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config);
@@ -138,19 +138,7 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
     }
 
     private HorseData resolveHorse() {
-        try {
-            HorseData horse = equippedHorseService.getEquippedHorse();
-            if (horse != null) return horse;
-        } catch (Throwable ignored) {
-        }
-        try {
-            var horses = horseService.getUserHorses();
-            if (horses != null && !horses.isEmpty()) {
-                return horses.getFirst();
-            }
-        } catch (Exception ignored) {
-        }
-        return null;
+        return equippedHorseService.getEquippedHorse();
     }
 
     @Override

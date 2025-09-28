@@ -44,7 +44,7 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
         super(game, sessionManager, equippedHorseService);
         this.gameManager = gameManager;
 
-        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse();
+        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
 

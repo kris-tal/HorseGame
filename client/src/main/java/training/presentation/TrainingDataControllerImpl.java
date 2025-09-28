@@ -84,23 +84,10 @@ public class TrainingDataControllerImpl implements TrainingDataController {
     @Override
     public void loadHorseData() {
         try {
-            HorseData horse = null;
-            try {
-                horse = (equippedHorseService != null) ? equippedHorseService.getEquippedHorse() : null;
-            } catch (Throwable ignored) {
-            }
-            if (horse == null) {
-                var horses = horseService.getUserHorses();
-                if (horses != null && !horses.isEmpty()) {
-                    horse = horses.getFirst();
-                }
-            }
-
-            if (horse != null) {
-                trainingPoints = horse.getTrainingPoints();
-                longestRunDistance = horse.getLongestRunDistance();
-                resetSession();
-            }
+            HorseData horse = equippedHorseService.getEquippedHorse();
+            trainingPoints = horse.getTrainingPoints();
+            longestRunDistance = horse.getLongestRunDistance();
+            resetSession();
         } catch (Exception ignored) {
         }
     }

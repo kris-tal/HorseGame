@@ -175,20 +175,6 @@ public class TrainingScreen extends BaseGameScreen {
     }
 
     private HorseData resolveHorse() {
-        try {
-            HorseData equipped = (equippedHorseService != null) ? equippedHorseService.getEquippedHorse() : null;
-            if (equipped != null) {
-                return equipped;
-            }
-        } catch (Throwable ignored) {
-        }
-        try {
-            var horses = horseService.getUserHorses();
-            if (horses != null && !horses.isEmpty()) {
-                return horses.getFirst();
-            }
-        } catch (Exception ignored) {
-        }
-        return null;
+        return equippedHorseService.getEquippedHorse();
     }
 }
