@@ -36,8 +36,7 @@ public class GameLoop {
         collisionSystem.checkCollisions(player, map);
     }
 
-    public void render(com.badlogic.gdx.graphics.g2d.SpriteBatch batch, GameMap map, 
-                      Player player, BaseHorseActor horseActor) {
-        rendererSystem.render(batch, map, player, horseActor);
+    public void render(com.badlogic.gdx.graphics.g2d.SpriteBatch batch) {
+        rendererSystem.render(batch);
     }
 }

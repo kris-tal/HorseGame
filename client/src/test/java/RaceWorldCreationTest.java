@@ -54,7 +54,6 @@ class RaceWorldCreationTest {
 
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(GameMap map, int visibleCols) { return mock(CameraSystem.class); }
-            @Override public race.rendering.RendererSystem createRendererSystem(CameraSystem cameraSystem) { return mock(race.rendering.RendererSystem.class); }
             @Override public CollisionSystem createCollisionSystem() { return mock(CollisionSystem.class); }
             @Override public GameLoop createGameLoop(InputHandler ih, CameraSystem cs, CollisionSystem c, race.rendering.RendererSystem r) { return mock(GameLoop.class); }
             @Override public race.state.GameStateManager createGameStateManager() { return mock(race.state.GameStateManager.class); }

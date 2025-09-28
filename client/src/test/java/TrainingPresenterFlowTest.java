@@ -62,10 +62,6 @@ class TrainingPresenterFlowTest {
                 return mock(CameraSystem.class);
             }
 
-            @Override
-            public race.rendering.RendererSystem createRendererSystem(CameraSystem cameraSystem) {
-                return mock(race.rendering.RendererSystem.class);
-            }
 
             @Override
             public CollisionSystem createCollisionSystem() {

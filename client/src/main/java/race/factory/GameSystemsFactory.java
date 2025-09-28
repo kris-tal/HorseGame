@@ -16,10 +16,6 @@ public class GameSystemsFactory implements SystemsFactory {
         return new CameraSystem(map, visibleCols);
     }
 
-    @Override
-    public RendererSystem createRendererSystem(CameraSystem cameraSystem) {
-        return new RendererSystem(cameraSystem);
-    }
 
     @Override
     public CollisionSystem createCollisionSystem() {

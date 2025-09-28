@@ -9,9 +9,13 @@ import race.coordination.GameLoop;
 import race.input.InputHandler;
 import race.map.MapGenerator;
 import race.rendering.RendererSystem;
+import race.rendering.MapRenderer;
+import race.rendering.PlayerRenderer;
+import race.rendering.VisionEffectRenderer;
 import race.state.GameStateManager;
 import data.race.GameMap;
 import race.config.BaseGameConfig;
+import java.util.Arrays;
 
 public abstract class BaseGameFactory implements GameWorldFactory {
     protected final MapGenerator mapGenerator;
@@ -39,7 +43,7 @@ public abstract class BaseGameFactory implements GameWorldFactory {
         BaseHorseActor horseActor = createHorseActor(player);
 
         CameraSystem cameraSystem = createCameraSystem(map);
-        RendererSystem rendererSystem = createRendererSystem(cameraSystem);
+        RendererSystem rendererSystem = createRendererSystem(map, player, horseActor, cameraSystem);
         CollisionSystem collisionSystem = createCollisionSystem();
         GameLoop gameLoop = createGameLoop(cameraSystem, collisionSystem, rendererSystem);
         GameStateManager gameStateManager = createGameStateManager();
@@ -59,7 +63,12 @@ public abstract class BaseGameFactory implements GameWorldFactory {
 
     protected CameraSystem createCameraSystem(GameMap map) { return systemsFactory.createCameraSystem(map, getVisibleCols()); }
 
-    protected RendererSystem createRendererSystem(CameraSystem cameraSystem) { return systemsFactory.createRendererSystem(cameraSystem); }
+    protected RendererSystem createRendererSystem(GameMap map, Player player, BaseHorseActor horseActor, CameraSystem cameraSystem) {
+        MapRenderer mapRenderer = new MapRenderer(map, cameraSystem);
+        PlayerRenderer playerRenderer = new PlayerRenderer(player, horseActor, cameraSystem);
+        VisionEffectRenderer visionEffectRenderer = new VisionEffectRenderer(player);
+        return new RendererSystem(Arrays.asList(mapRenderer, playerRenderer, visionEffectRenderer));
+    }
 
     protected CollisionSystem createCollisionSystem() { return systemsFactory.createCollisionSystem(); }
 

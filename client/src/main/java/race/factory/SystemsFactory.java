@@ -12,7 +12,6 @@ import race.state.GameStateManager;
 
 public interface SystemsFactory {
     CameraSystem createCameraSystem(GameMap map, int visibleCols);
-    RendererSystem createRendererSystem(CameraSystem cameraSystem);
     CollisionSystem createCollisionSystem();
     GameLoop createGameLoop(InputHandler inputHandler, CameraSystem cameraSystem, CollisionSystem collisionSystem, RendererSystem rendererSystem);
     GameStateManager createGameStateManager();

@@ -37,7 +37,7 @@ public class RaceWorld {
 
     public void render(SpriteBatch batch) {
         try {
-            gameLoop.render(batch, map, player, horseActor);
+            gameLoop.render(batch);
         } catch (Exception e) {
             // Handle errors silently but we can change it
         }
