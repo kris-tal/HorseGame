@@ -6,15 +6,14 @@ import race.config.BaseGameConfig;
 import race.factory.GameFactory;
 import race.state.GameStateManager;
 
-
-public abstract class BaseGamePresenter {
+public abstract class RacePresenterTemplate {
     protected RaceWorld world;
     protected final GameStateManager gameStateManager;
     protected final GameFactory gameFactory;
     protected final BaseGameConfig gameConfig;
     protected boolean initialized = false;
 
-    public BaseGamePresenter(GameFactory gameFactory, BaseGameConfig gameConfig) {
+    public RacePresenterTemplate(GameFactory gameFactory, BaseGameConfig gameConfig) {
         this.gameFactory = gameFactory;
         this.gameConfig = gameConfig;
         this.gameStateManager = new GameStateManager();

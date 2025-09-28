@@ -1,12 +1,11 @@
 package views.race.multiplayer;
 
-import com.badlogic.gdx.Gdx;
+import presentation.common.RacePresenterTemplate;
 import race.config.BaseGameConfig;
 import race.factory.GameFactory;
 import services.managers.GameManager;
-import views.race.singleplayer.RaceSingleplayerPresenter;
 
-public class RaceMultiplayerPresenter extends RaceSingleplayerPresenter {
+public class RaceMultiplayerPresenter extends RacePresenterTemplate {
     private final GameManager gameManager;
     private float progressSendTimer = 0f;
     private final float SENT_INTERVAL = 0.1f; // 100ms
@@ -26,10 +25,10 @@ public class RaceMultiplayerPresenter extends RaceSingleplayerPresenter {
 
     @Override
     public void update(float delta) {
-        if (gameStateManager.isRaceFinished())
-            return;
+        if (gameStateManager.isRaceFinished()) return;
 
-        super.update(delta);
+        world.update(delta);
+        gameStateManager.update(world.getPlayer(), world.getMap());
 
         progressSendTimer += delta;
         if (progressSendTimer >= SENT_INTERVAL) {
@@ -37,5 +36,9 @@ public class RaceMultiplayerPresenter extends RaceSingleplayerPresenter {
             int curDistance = getDistance();
             gameManager.updatePosition(curDistance);
         }
+    }
+
+    public int getCoins() {
+        return world.getPlayer().getCoins();
     }
 }

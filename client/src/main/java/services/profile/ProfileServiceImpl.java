@@ -1,4 +1,3 @@
-// java
 package services.profile;
 
 import com.google.gson.Gson;

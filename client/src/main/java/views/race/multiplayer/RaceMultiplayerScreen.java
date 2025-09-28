@@ -2,12 +2,12 @@ package views.race.multiplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import race.config.GameConfigFactory;
+import race.config.BaseGameConfig;
 import core.HorseGame;
 import data.lobby.PlayerInfoClient;
 import data.race.EquippedHorseService;
@@ -17,18 +17,17 @@ import services.managers.GameManager;
 import services.managers.SessionManagerPort;
 import services.profile.ProfileService;
 import services.profile.ProfileServiceImpl;
-import views.common.base.BaseGameScreen;
+import views.common.base.RaceScreenTemplate;
 import views.common.ui.UIFactory;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
-import views.race.ui.ProgressBarWidget;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 // Multiplayer race game loop screen
-public class RaceMultiplayerScreen extends BaseGameScreen {
+public class RaceMultiplayerScreen extends RaceScreenTemplate {
     private final RaceMultiplayerPresenter presenter;
     private Label distanceLabel;
     private Label coinLabel;
@@ -47,7 +46,8 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
         super(game, sessionManager, connectionManager, equippedHorseService);
         this.gameManager = gameManager;
 
-        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        race.config.BaseGameConfig config = configFactory.createRaceConfig();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
 
@@ -153,7 +153,6 @@ public class RaceMultiplayerScreen extends BaseGameScreen {
             PlayerInfoClient p = players.get(i);
             String name = p.getUsername();
             int distance = p.getProgress();
-            Gdx.app.log("scoreboard", "player " + name + " distance:" + distance);
 
             // name and distance label
             Label nameLabel = UIFactory.createLabel((i + 1) + ". " + name);

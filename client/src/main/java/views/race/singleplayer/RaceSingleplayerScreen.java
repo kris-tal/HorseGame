@@ -1,8 +1,9 @@
-// java
 package views.race.singleplayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import race.config.GameConfigFactory;
+import race.config.BaseGameConfig;
 import core.HorseGame;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
@@ -15,12 +16,12 @@ import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 import services.training.TrainingService;
 import services.training.TrainingServiceImpl;
-import views.common.base.BaseGameScreen;
+import views.common.base.RaceScreenTemplate;
 import views.race.ui.RaceStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
 
-public class RaceSingleplayerScreen extends BaseGameScreen {
+public class RaceSingleplayerScreen extends RaceScreenTemplate {
     private final RaceSingleplayerPresenter presenter;
     private Label distanceLabel;
     private Label coinLabel;
@@ -41,7 +42,8 @@ public class RaceSingleplayerScreen extends BaseGameScreen {
         this.trainingService = new TrainingServiceImpl(sessionManager);
         this.equippedHorseService = equippedHorseService;
 
-        race.config.BaseGameConfig config = race.config.GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        race.config.BaseGameConfig config = configFactory.createRaceConfig();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config);

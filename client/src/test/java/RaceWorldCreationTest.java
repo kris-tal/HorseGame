@@ -49,7 +49,8 @@ class RaceWorldCreationTest {
         when(testHorse.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorse);
         
-        BaseGameConfig config = GameConfigFactory.createRaceConfigWithEquippedHorse(equippedHorseService);
+        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        BaseGameConfig config = configFactory.createRaceConfig();
 
         SystemsFactory testSystems = new SystemsFactory() {
             @Override public CameraSystem createCameraSystem(GameMap map, int visibleCols) { return mock(CameraSystem.class); }

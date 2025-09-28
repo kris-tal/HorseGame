@@ -10,7 +10,7 @@ import services.horse.HorseService;
 import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 import services.training.TrainingService;
-import views.common.base.BaseGameScreen;
+import views.common.base.RaceScreenTemplate;
 import views.training.ui.TrainingStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
@@ -18,7 +18,7 @@ import training.contract.TrainingPresenter;
 import data.race.EquippedHorseService;
 import views.training.ui.TrainingStatusBar;
 
-public class TrainingScreen extends BaseGameScreen {
+public class TrainingScreen extends RaceScreenTemplate {
     private final TrainingPresenter presenter;
     private final TrainingService trainingService;
     private final HorseService horseService;

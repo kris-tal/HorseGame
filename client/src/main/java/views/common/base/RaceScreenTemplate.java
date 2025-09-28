@@ -1,4 +1,3 @@
-// java
 package views.common.base;
 
 import com.badlogic.gdx.Gdx;
@@ -19,7 +18,7 @@ import services.managers.ResourceManager;
 import services.managers.SessionManagerPort;
 import views.ranch.RanchScreen;
 
-public abstract class BaseGameScreen implements Screen {
+public abstract class RaceScreenTemplate implements Screen {
     protected final HorseGame game;
     protected final SpriteBatch batch;
     protected final Stage bgStage;
@@ -32,7 +31,7 @@ public abstract class BaseGameScreen implements Screen {
     protected boolean statsPanelShown = false;
     protected boolean onGameFinished = false;
 
-    public BaseGameScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
+    public RaceScreenTemplate(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService) {
         this.game = game;
         this.sessionManager = sessionManager;
         this.connectionManager = connectionManager;
