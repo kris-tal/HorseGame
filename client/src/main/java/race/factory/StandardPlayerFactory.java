@@ -24,7 +24,8 @@ public class StandardPlayerFactory implements PlayerFactory {
             new StandardSprintManager(),
             new StandardStatusEffectManager(),
             config.getSprintDuration(),
-            config.getSprintCooldown()
+            config.getSprintCooldown(),
+            config.isPlayerImmortal()
         );
     }
 }

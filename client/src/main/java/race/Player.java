@@ -15,6 +15,7 @@ public class Player {
     private int coins = 0;
     private final float baseSpeed;
     private boolean alive = true;
+    private boolean immortal;
     private boolean raceCompleted = false;
 
     private final SprintState sprintState;
@@ -34,7 +35,8 @@ public class Player {
                   SprintStrategy sprintStrategy, PlayerMovementStrategy movementStrategy,
                   PlayerVisionStrategy visionStrategy, SprintManager sprintManager,
                   StatusEffectManager statusEffectManager,
-                  float sprintDuration, float sprintCooldown) {
+                  float sprintDuration, float sprintCooldown,
+                  boolean immortal) {
         this.horseType = horseType;
         this.lane = startingLane;
         this.baseSpeed = speed;
@@ -44,6 +46,7 @@ public class Player {
         this.sprintManager = sprintManager;
         this.statusEffectManager = statusEffectManager;
         this.sprintState = new SprintState(sprintDuration, sprintCooldown);
+        this.immortal = immortal;
     }
 
     public void update(float delta) {
@@ -85,7 +88,13 @@ public class Player {
     public float getVisionLimitColsLeft() { return visionLimitColsLeft; }
 
     // Stan podstawowy
-    public void kill() { alive = false; }
+    public void kill() {
+        if (immortal) {
+            slowDown();
+        } else {
+            alive = false;
+        }
+    }
     public void success() { raceCompleted = true; }
     public void addCoins(int amount) { coins += amount; }
 

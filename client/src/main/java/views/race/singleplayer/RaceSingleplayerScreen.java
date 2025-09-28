@@ -43,7 +43,7 @@ public class RaceSingleplayerScreen extends RaceScreenTemplate {
         this.equippedHorseService = equippedHorseService;
 
         GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
-        race.config.BaseGameConfig config = configFactory.createRaceConfig();
+        race.config.BaseGameConfig config = configFactory.createSingleplayerRaceConfig();
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
         race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config);

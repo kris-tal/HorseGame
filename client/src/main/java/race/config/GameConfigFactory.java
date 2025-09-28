@@ -21,17 +21,22 @@ public class GameConfigFactory {
         this.horseService = horseService;
     }
 
-    public BaseGameConfig createRaceConfig() {
+    public BaseGameConfig createMultiplayerRaceConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, RACE_LENGTH);
+        return createConfigWithHorse(horse, RACE_LENGTH, true);
+    }
+
+    public BaseGameConfig createSingleplayerRaceConfig() {
+        HorseData horse = horseService.getEquippedHorse();
+        return createConfigWithHorse(horse, RACE_LENGTH, false);
     }
 
     public BaseGameConfig createTrainingConfig() {
         HorseData horse = horseService.getEquippedHorse();
-        return createConfigWithHorse(horse, TRAINING_LENGTH);
+        return createConfigWithHorse(horse, TRAINING_LENGTH, false);
     }
 
-    private BaseGameConfig createConfigWithHorse(HorseData horseData, int length) {
+    private BaseGameConfig createConfigWithHorse(HorseData horseData, int length, boolean playerImmortal) {
         float cooldownReduction = calculateCooldownReduction(horseData);
         float sprintDuration = calculateSprintDuration(horseData);
         float sprintCooldown = calculateSprintCooldown(horseData);
@@ -44,7 +49,8 @@ public class GameConfigFactory {
                 cooldownReduction,
                 horseData.getLevel(),
                 sprintDuration,
-                sprintCooldown
+                sprintCooldown,
+                playerImmortal
         );
     }
 
