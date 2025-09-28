@@ -256,9 +256,6 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             showExitConfirmation();
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            game.showTrainingScreen(sessionManager, equippedHorseService);
-        }
         stage.act(delta);
         stage.draw();
 
@@ -306,7 +303,13 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     @Override
     public void navigateToRace() {
         switch (menuContext.getRaceMode()) {
-            case SINGLEPLAYER -> game.showTrainingScreen(sessionManager, equippedHorseService);
+            case SINGLEPLAYER -> {
+                race.map.TrainingMapGenerator mapGenerator = new race.map.TrainingMapGenerator();
+                race.input.KeyboardInputHandler inputHandler = new race.input.KeyboardInputHandler();
+                views.training.manager.TrainingManager trainingManager = new views.training.manager.TrainingManager(mapGenerator, inputHandler, sessionManager, equippedHorseService);
+                views.training.screen.TrainingScreen trainingScreen = trainingManager.createTrainingScreen(game);
+                game.setScreen(trainingScreen);
+            }
             case MULTIPLAYER -> {
                 GameManager gameManager = new GameManager(sessionManager, ConnectionManager.getInstance(), lobbyManager.getCurrentLobby());
                 game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, equippedHorseService, gameManager));
