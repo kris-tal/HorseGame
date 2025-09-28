@@ -6,7 +6,7 @@ import services.managers.ResourceManager;
 
 public class MetaObject extends MapObject {
     public MetaObject() {
-        super(ResourceManager.obstaclesAtlas.findRegion("barrier"));
+        super(ResourceManager.obstaclesAtlas.findRegion("meta"));
     }
 
     @Override
@@ -21,6 +21,6 @@ public class MetaObject extends MapObject {
 
     @Override
     public boolean isFatal() {
-        return false; 
+        return false;
     }
 }
