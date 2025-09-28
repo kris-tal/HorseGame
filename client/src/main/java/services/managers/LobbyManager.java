@@ -81,6 +81,7 @@ public class LobbyManager implements LobbyListener {
         if (currentLobby == null) {
             return;
         }
+        //BaseGameConfig config = new GameConfigFactory(/* wpisz tu swojego konia */).createMultiplayerRaceConfig();
         GameMap map = new RandomMapGenerator().generateMap(3, 4000);
         service.startLobby(currentLobby.getLobbyCode(), map);
     }
