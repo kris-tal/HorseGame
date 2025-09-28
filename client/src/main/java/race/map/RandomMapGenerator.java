@@ -1,10 +1,30 @@
 package race.map;
 
 import java.util.Random;
-import race.mode.race.map.RaceMapObjectGenerationStrategy;
+import race.objects.*;
 
 public class RandomMapGenerator extends AbstractMapGenerator {
     public RandomMapGenerator() {
-        super(new RaceMapObjectGenerationStrategy(), new Random());
+        super(
+                new ConfigurableMapObjectGenerationStrategy(
+                        createRaceConfig(),
+                        (lane, col, random) -> {
+                            if (col == 301) return new MetaObject();
+                            if (col > 301) return new EmptyObject();
+                            return null;
+                        }
+                ),
+                new Random()
+        );
+    }
+
+    private static MapObjectProbabilityConfig createRaceConfig() {
+        MapObjectProbabilityConfig config = new MapObjectProbabilityConfig();
+        config.addProbability(0.01, DeathStoneObject.class);
+        config.addProbability(0.05, CoinObject.class);
+        config.addProbability(0.09, PuddleObject.class);
+        config.addProbability(0.13, BushObject.class);
+        config.addProbability(0.15, ElectricBarrierObject.class);
+        return config;
     }
 }
