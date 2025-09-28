@@ -23,7 +23,7 @@ public class RandomMapGenerator extends AbstractMapGenerator {
         config.addProbability(0.01, DeathStoneObject.class);
         config.addProbability(0.05, PuddleObject.class);
         config.addProbability(0.09, BushObject.class);
-        config.addProbability(0.13, ElectricBarrierObject.class);
+        config.addProbability(0.11, ElectricBarrierObject.class);
         return config;
     }
 }
