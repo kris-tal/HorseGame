@@ -69,7 +69,7 @@ public class ShopServiceImpl implements ShopService {
             int status = response.statusCode();
             if (status == 200 || status == 400 || status == 401 || status == 404) {
                 PurchaseResult result = gson.fromJson(response.body(), PurchaseResult.class);
-                return new PurchaseResult(result.money, result.success, result.message, type == PurchaseType.UPGRADE);
+                return new PurchaseResult(result.getMoney(), result.isSuccess(), result.getMessage(), type == PurchaseType.UPGRADE);
             }
         } catch (IOException | InterruptedException e) {
             return new PurchaseResult(0, false, "Request failed: " + e.getMessage(), type == PurchaseType.UPGRADE);

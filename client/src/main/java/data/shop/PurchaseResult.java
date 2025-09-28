@@ -1,10 +1,10 @@
 package data.shop;
 
 public class PurchaseResult {
-    public int money;
-    public boolean success;
-    public String message;
-    public boolean isUpgrade;
+    private final int money;
+    private final boolean success;
+    private final String message;
+    private final boolean isUpgrade;
 
     public PurchaseResult(int money, boolean success, String message, boolean isUpgrade) {
         this.money = money;
@@ -13,12 +13,18 @@ public class PurchaseResult {
         this.isUpgrade = isUpgrade;
     }
 
+    public int getMoney() { return money; }
+    public boolean isSuccess() { return success; }
+    public String getMessage() { return message; }
+    public boolean isUpgrade() { return isUpgrade; }
+
     @Override
     public String toString() {
         return "PurchaseResult{" +
                 "success=" + success +
                 ", message='" + message + '\'' +
-                ", newBalance=" + money +
+                ", money=" + money +
+                ", isUpgrade=" + isUpgrade +
                 '}';
     }
 }

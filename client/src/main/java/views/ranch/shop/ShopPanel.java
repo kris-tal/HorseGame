@@ -136,7 +136,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
         new Thread(() -> {
             PurchaseResult result = shopService.postHorsePurchase(horseId);
             Gdx.app.postRunnable(() -> {
-                if (result.success) {
+                if (result.isSuccess()) {
                     refreshShop();
                     if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
                 }
@@ -148,7 +148,7 @@ public class ShopPanel extends ListPanel<ShopItem> {
         new Thread(() -> {
             PurchaseResult result = shopService.postUpgradePurchase(horseId);
             Gdx.app.postRunnable(() -> {
-                if (result.success) {
+                if (result.isSuccess()) {
                     refreshShop();
                     if (onPurchaseComplete != null) onPurchaseComplete.accept(result);
                 }

@@ -206,8 +206,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
         createLobbyPanel.setOnShowCallback(() -> showPanel(createLobbyPanel));
 
         shopPanel.setOnPurchaseComplete(result -> {
-            statusBar.updateMoney(result.money);
-            if (!result.isUpgrade) {
+            statusBar.updateMoney(result.getMoney());
+            if (!result.isUpgrade()) {
                 addNewHorseFromServer();
             }
         });
