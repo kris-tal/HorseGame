@@ -7,7 +7,7 @@ import race.coordination.GameLoop;
 import race.state.GameStateManager;
 
 public class RaceWorld {
-    private final GameMap map;
+    private GameMap map;
     private final Player player;
     private final BaseHorseActor horseActor;
     private final GameLoop gameLoop;

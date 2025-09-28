@@ -76,7 +76,7 @@ public class LobbyManagerTest {
 
         lobbyManager.joinLobby("ANOTHER123");
 
-        verify(mockConnectionManager, times(0)).closeConnection();
+        verify(mockConnectionManager, times(1)).closeConnection();
     }
 
     @Test
@@ -121,9 +121,9 @@ public class LobbyManagerTest {
 
     @Test
     void testOnLobbyStarted() {
-        lobbyManager.onLobbyStarted();
+        lobbyManager.onLobbyStarted("");
 
-        verify(mockStateListener).onLobbyStarted();
+        verify(mockStateListener).onLobbyStarted("");
     }
 
     @Test

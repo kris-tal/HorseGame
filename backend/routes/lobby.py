@@ -101,13 +101,35 @@ def start_room(code):
     data, status = get_user(identity)
     if status != 200:
         return data, status
+
     room = rooms.get(code)
     if not room:
         return jsonify({"error": "Room not found"}), 404
+
     if room["created_by"] != identity:
         return jsonify({"error": "Only host can start the room"}), 403
+
+    request_data = request.get_json()
+    map_data = None
+
+    if request_data and 'map_data' in request_data:
+        map_data = request_data['map_data']
+        # Log the efficiency improvement!
+        if map_data:
+            import json
+            parsed = json.loads(map_data)
+            if 'map_data' in parsed:
+                current_app.logger.info(f"Compact map for room {code}: {len(parsed['map_data'])} chars")
+
     room["status"] = RoomStatus.Started
-    log_and_emit("room_started", {"room": code}, to=code)
+
+    emission_data = {
+        "room": code,
+        "map_data": map_data
+    }
+
+    log_and_emit("room_started", emission_data, to=code)
+
     return jsonify({"message": "Room started"}), 200
 
 @socketio.on("connect")
@@ -154,13 +176,13 @@ def progress_update(data):
 
     for player in room["players"]:
         if player.username == user.username:
-            player.progress = min(max(progress, 0), 400)
+            player.progress = min(max(progress, 0), 4000)
 
     log_and_emit("progress_update", {"distances": [{"username": p.username, "progress": p.progress} for p in room["players"]]}, to=room_code)
 
     if room["winner"] is None:
         for player in room["players"]:
-            if player.progress >= 400:
+            if player.progress >= 4000:
                 room["winner"] = player.id
                 room["status"] = RoomStatus.Finished
                 log_and_emit("game_won", {"winner": player.serialize()}, to=room_code)

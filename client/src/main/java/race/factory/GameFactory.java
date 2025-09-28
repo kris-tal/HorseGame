@@ -16,6 +16,10 @@ public class GameFactory extends BaseGameFactory {
         super(mapGenerator, inputHandler, config, new StandardPlayerFactory(), new RaceHorseActorFactory(), new GameSystemsFactory());
     }
 
+    public GameFactory(MapGenerator mapGenerator, InputHandler inputHandler, BaseGameConfig config, GameMap map) {
+        super(mapGenerator, inputHandler, config, new StandardPlayerFactory(), new RaceHorseActorFactory(), new GameSystemsFactory(), map);
+    }
+
     @Override
     protected GameMap generateMap() {
         return mapGenerator.generateMap(config.getLanes(), config.getLength());

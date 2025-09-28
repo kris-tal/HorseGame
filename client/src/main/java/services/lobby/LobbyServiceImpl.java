@@ -3,7 +3,9 @@ package services.lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import data.lobby.LobbyCreationResponse;
+import data.race.GameMap;
 import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 
@@ -52,25 +54,35 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
-    public void startLobby(String room) {
+    public void startLobby(String room, GameMap map) {
         if (currentLobby == null) return;
         if (!isLobbyCreator) return;
 
-        HttpRequest request = sessionManager.getProtectedRequestsService()
-                .ProtectedPost("/lobby/" + room + "/start", HttpRequest.BodyPublishers.noBody())
-                .build();
-
         try {
+            String mapJson = map.Serialize();
+
+            JsonObject payload = new JsonObject();
+            payload.addProperty("map_data", mapJson);
+
+            String jsonString = new Gson().toJson(payload);
+
+            HttpRequest request = sessionManager.getProtectedRequestsService()
+                    .ProtectedPost("/lobby/" + room + "/start",
+                            HttpRequest.BodyPublishers.ofString(jsonString))
+                    .header("Content-Type", "application/json")
+                    .build();
+
             HttpResponse<String> response = sessionManager.getProtectedRequestsService()
                     .GetHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 200) {
-                Gdx.app.log("Lobby", "Started room " + room);
+                Gdx.app.log("Lobby", "Started room " + room + " with map");
             } else {
-                Gdx.app.log("Lobby", "Failed to start room " + room);
+                Gdx.app.log("Lobby", "Failed to start room " + room + ": " + response.body());
             }
         } catch (IOException | InterruptedException e) {
-            Gdx.app.log("Lobby", "Failed to start room " + room);
+            Gdx.app.log("Lobby", "Failed to start room " + room + ": " + e.getMessage());
         }
     }
 
