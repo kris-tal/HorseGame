@@ -150,7 +150,6 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
             PlayerInfoClient p = players.get(i);
             String name = p.getUsername();
             int distance = p.getProgress();
-            Gdx.app.log("scoreboard", "player " + name + " distance:" + distance);
 
             // name and distance label
             Label nameLabel = UIFactory.createLabel((i + 1) + ". " + name);
