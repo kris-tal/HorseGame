@@ -12,12 +12,10 @@ import core.HorseGame;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
 import services.listeners.JoinLobbyListener;
-import services.listeners.WaitingLobbyListener;
 import services.managers.*;
 import services.ranch.RanchHorsesRefresher;
 import views.common.context.MenuContext;
 import views.common.ui.ConfirmationPanel;
-import views.common.ui.Panel;
 import views.race.menu.*;
 import views.ranch.horses.HorseActorFactory;
 import views.ranch.horses.HorseActors;
@@ -34,7 +32,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     private final EquippedHorseService equippedHorseService;
 
     private Stage stage;
-    private PanelManager panelManager;
+    private RanchPanelsManager panelManager;
 
     private Rectangle fence;
     private HorseActors horseActors;
@@ -66,7 +64,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        panelManager = new PanelManager(stage);
+        panelManager = new RanchPanelsManager(stage);
 
         setupBackground();
         setupHorses();

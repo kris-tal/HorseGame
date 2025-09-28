@@ -34,17 +34,6 @@ public class RanchHorseUpdateService {
         syncEquipped(latest);
     }
 
-    public void updateAsync(Array<StrollingHorseActor> actors) {
-        new Thread(() -> {
-            List<HorseData> latest = horseService.getUserHorses();
-            if (latest == null) return;
-            Gdx.app.postRunnable(() -> {
-                applyInPlace(actors, latest);
-                syncEquipped(latest);
-            });
-        }, "RanchHorseUpdate").start();
-    }
-
     private void applyInPlace(Array<StrollingHorseActor> actors, List<HorseData> latest) {
         Map<Integer, HorseData> latestById = new HashMap<>();
         for (HorseData h : latest) latestById.put(h.getId(), h);
