@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
+import data.race.GameMap;
 import services.listeners.JoinLobbyListener;
 import services.listeners.WaitingLobbyListener;
 import services.managers.*;
@@ -130,8 +131,8 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
 
         createLobbyPanel.setListener(new services.listeners.WaitingLobbyListener() {
             @Override
-            public void onLobbyStarted() {
-                navigateToRace();
+            public void onLobbyStarted(String data) {
+                navigateToRace(data);
             }
 
             @Override
@@ -204,7 +205,7 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
     }
 
     @Override
-    public void navigateToRace() {
+    public void navigateToRace(String data) {
         switch (menuContext.getRaceMode()) {
             case SINGLEPLAYER -> {
                 race.map.TrainingMapGenerator mapGenerator = new race.map.TrainingMapGenerator();
@@ -214,8 +215,9 @@ public class RanchScreen implements Screen, RanchView, JoinLobbyListener {
                 game.setScreen(trainingScreen);
             }
             case MULTIPLAYER -> {
+                GameMap map = GameMap.deserializeGameMap(data);
                 GameManager gameManager = new GameManager(sessionManager, connectionManager, lobbyManager.getCurrentLobby());
-                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, connectionManager, equippedHorseService, gameManager));
+                game.setScreen(new views.race.multiplayer.RaceMultiplayerScreen(game, sessionManager, connectionManager, equippedHorseService, gameManager, map));
             }
         }
     }

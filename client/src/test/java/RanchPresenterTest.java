@@ -44,7 +44,7 @@ class RanchPresenterTest {
         presenter.onSingleplayerClicked();
         verify(menuContext).setRaceMode(MenuContext.RaceMode.SINGLEPLAYER);
         verify(view).hideAllPanels();
-        verify(view).navigateToRace();
+        verify(view).navigateToRace("");
         verifyNoMoreInteractions(view, menuContext);
     }
 

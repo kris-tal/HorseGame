@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public interface LobbyListener {
     void onPlayerListChanged(HashMap<String, PlayerInfoClient> newPlayers);
-    void onLobbyStarted();
+    void onLobbyStarted(String data);
     void onLobbyClosed();
     void onLobbyJoined(boolean success);
     void onLobbyCreated(String lobbyCode);

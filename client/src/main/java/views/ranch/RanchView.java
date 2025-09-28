@@ -7,7 +7,7 @@ public interface RanchView {
 
     void hideAllPanels();
 
-    void navigateToRace();
+    void navigateToRace(String data);
 
     void showExitConfirmation();
 }

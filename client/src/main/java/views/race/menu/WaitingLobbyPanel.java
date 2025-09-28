@@ -140,10 +140,10 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     }
 
     @Override
-    public void onLobbyStarted() {
+    public void onLobbyStarted(String data) {
         Gdx.app.postRunnable(() -> {
             if (listener != null) {
-                listener.onLobbyStarted();
+                listener.onLobbyStarted(data);
             }
         });
     }

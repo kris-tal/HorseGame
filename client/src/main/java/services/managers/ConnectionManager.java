@@ -95,7 +95,8 @@ public class ConnectionManager implements ConnectionManagerPort {
 
         sessionSocket.on("room_started", args -> {
             if (lobbyListener != null) {
-                lobbyListener.onLobbyStarted();
+                String data = args.length > 1 ? args[1].toString() : args[0].toString();
+                lobbyListener.onLobbyStarted(data);
             }
         });
 

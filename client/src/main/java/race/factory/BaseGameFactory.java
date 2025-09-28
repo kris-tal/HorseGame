@@ -18,6 +18,7 @@ import race.config.BaseGameConfig;
 import java.util.Arrays;
 
 public abstract class BaseGameFactory implements GameWorldFactory {
+    private GameMap map;
     protected final MapGenerator mapGenerator;
     protected final InputHandler inputHandler;
     protected final BaseGameConfig config;
@@ -33,10 +34,22 @@ public abstract class BaseGameFactory implements GameWorldFactory {
         this.playerFactory = playerFactory;
         this.horseActorFactory = horseActorFactory;
         this.systemsFactory = systemsFactory;
+        this.map = null;
+    }
+
+    protected BaseGameFactory(MapGenerator mapGenerator, InputHandler inputHandler, BaseGameConfig config,
+                              PlayerFactory playerFactory, HorseActorFactory horseActorFactory, SystemsFactory systemsFactory, GameMap map) {
+        this.mapGenerator = mapGenerator;
+        this.inputHandler = inputHandler;
+        this.config = config;
+        this.playerFactory = playerFactory;
+        this.horseActorFactory = horseActorFactory;
+        this.systemsFactory = systemsFactory;
+        this.map = map;
     }
 
     public final RaceWorld createWorld() {
-        GameMap map = generateMap();
+        if(map == null) map = generateMap();
 
         Player player = createPlayer();
 

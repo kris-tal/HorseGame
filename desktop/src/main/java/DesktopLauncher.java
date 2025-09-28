@@ -16,7 +16,7 @@ public class DesktopLauncher {
         config.setTitle("Horse Game");
         config.setForegroundFPS(60);
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        config.setFullscreenMode(displayMode);
+        config.setWindowedMode(800, 600);//config.setFullscreenMode(displayMode);
         config.setResizable(false);
 
         //composition root

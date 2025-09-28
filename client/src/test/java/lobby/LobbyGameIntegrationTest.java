@@ -55,10 +55,10 @@ public class LobbyGameIntegrationTest {
 
         lobbyManager.onLobbyJoined(true);
         lobbyManager.onPlayerListChanged(players);
-        lobbyManager.onLobbyStarted();
+        lobbyManager.onLobbyStarted("");
 
         verify(mockStateListener).onPlayersUpdated();
-        verify(mockStateListener).onLobbyStarted();
+        verify(mockStateListener).onLobbyStarted("");
 
         LobbyInfo lobbyInfo = lobbyManager.getCurrentLobby();
         if (lobbyInfo != null) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import data.race.GameMap;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
 import core.HorseGame;
@@ -44,7 +45,7 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
     // misc
     private final String localUsername;
 
-    public RaceMultiplayerScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService, GameManager gameManager) {
+    public RaceMultiplayerScreen(HorseGame game, SessionManagerPort sessionManager, ConnectionManagerPort connectionManager, EquippedHorseService equippedHorseService, GameManager gameManager, GameMap map) {
         super(game, sessionManager, connectionManager, equippedHorseService);
         this.gameManager = gameManager;
 
@@ -53,7 +54,7 @@ public class RaceMultiplayerScreen extends RaceScreenTemplate {
         race.map.MapGenerator mapGenerator = new race.map.RandomMapGenerator();
         race.input.InputHandler inputHandler = new race.input.KeyboardInputHandler();
 
-        race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config);
+        race.factory.GameFactory raceFactory = new race.factory.GameFactory(mapGenerator, inputHandler, config, map);
 
         presenter = new RaceMultiplayerPresenter(raceFactory, config, gameManager);
         presenter.init();

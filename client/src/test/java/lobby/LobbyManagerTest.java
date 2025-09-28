@@ -121,9 +121,9 @@ public class LobbyManagerTest {
 
     @Test
     void testOnLobbyStarted() {
-        lobbyManager.onLobbyStarted();
+        lobbyManager.onLobbyStarted("");
 
-        verify(mockStateListener).onLobbyStarted();
+        verify(mockStateListener).onLobbyStarted("");
     }
 
     @Test

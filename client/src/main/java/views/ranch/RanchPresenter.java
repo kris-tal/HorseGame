@@ -29,7 +29,7 @@ public class RanchPresenter {
     public void onSingleplayerClicked() {
         menuContext.setRaceMode(MenuContext.RaceMode.SINGLEPLAYER);
         view.hideAllPanels();
-        view.navigateToRace();
+        view.navigateToRace("");
     }
 
     public void onMultiplayerClicked(Panel panel) {

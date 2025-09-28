@@ -3,7 +3,12 @@ package services.managers;
 
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
+import data.race.EquippedHorseService;
+import data.race.GameMap;
 import data.race.PlayerProgressResponse;
+import race.config.BaseGameConfig;
+import race.config.GameConfigFactory;
+import race.map.RandomMapGenerator;
 import services.listeners.LobbyListener;
 import services.lobby.LobbyService;
 import services.lobby.LobbyServiceImpl;
@@ -26,7 +31,7 @@ public class LobbyManager implements LobbyListener {
 
         void onPlayersUpdated();
 
-        void onLobbyStarted();
+        void onLobbyStarted(String data);
 
         void onLobbyClosed();
     }
@@ -58,6 +63,7 @@ public class LobbyManager implements LobbyListener {
 
     public void joinLobby(String lobbyCode) {
         if (currentLobby != null) {
+            leaveLobby();
             return;
         }
 
@@ -75,7 +81,8 @@ public class LobbyManager implements LobbyListener {
         if (currentLobby == null) {
             return;
         }
-        service.startLobby(currentLobby.getLobbyCode());
+        GameMap map = new RandomMapGenerator().generateMap(3, 4000);
+        service.startLobby(currentLobby.getLobbyCode(), map);
     }
 
     public void setCurrentLobby(LobbyInfo lobby) {
@@ -138,9 +145,9 @@ public class LobbyManager implements LobbyListener {
     }
 
     @Override
-    public void onLobbyStarted() {
+    public void onLobbyStarted(String data) {
         if (stateListener != null) {
-            stateListener.onLobbyStarted();
+            stateListener.onLobbyStarted(data);
         }
     }
 
