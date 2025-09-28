@@ -6,7 +6,7 @@ import data.race.EquippedHorseService;
 public class GameConfigFactory {
 
     private static final int DEFAULT_LANES = 3;
-    private static final int RACE_LENGTH = 400;
+    private static final int RACE_LENGTH = 4000;
     private static final int TRAINING_LENGTH = 300000;
     private static final float DEFAULT_SPEED = 4f;
     private static final int DEFAULT_VISIBLE_COLS = 10;
