@@ -18,6 +18,6 @@ public class BushObject extends MapObject {
 
     @Override
     public boolean isObstacle() {
-        return false; // Krzak nie zabija konia, tylko ogranicza widoczność
+        return false;
     }
 }
