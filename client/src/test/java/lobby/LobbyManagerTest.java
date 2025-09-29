@@ -48,7 +48,7 @@ public class LobbyManagerTest {
         assertNotNull(lobbyManager);
         assertNull(lobbyManager.getCurrentLobby());
 
-        // Verify that the connection manager was configured
+
         verify(mockConnectionManager).setLobbyListener(lobbyManager);
     }
 
@@ -81,7 +81,7 @@ public class LobbyManagerTest {
 
     @Test
     void testStartLobbyWithoutCurrentLobby() {
-        // Should return early when no current lobby
+
         assertDoesNotThrow(() -> lobbyManager.startLobby());
     }
 
@@ -112,10 +112,10 @@ public class LobbyManagerTest {
     void testOnPlayerListChangedWithoutLobby() {
         HashMap<String, PlayerInfoClient> players = new HashMap<>();
 
-        // Should not crash when no current lobby
+
         assertDoesNotThrow(() -> lobbyManager.onPlayerListChanged(players));
 
-        // Should not call listener when no lobby
+
         verify(mockStateListener, never()).onPlayersUpdated();
     }
 
@@ -161,10 +161,10 @@ public class LobbyManagerTest {
     void testUpdateProgressWithNullLobby() {
         PlayerProgressResponse progress = mock(PlayerProgressResponse.class);
 
-        // Should not crash when no current lobby
+
         assertDoesNotThrow(() -> lobbyManager.updateProgress(progress));
 
-        // Should not call listener when no lobby
+
         verify(mockStateListener, never()).onPlayersUpdated();
     }
 
@@ -179,7 +179,7 @@ public class LobbyManagerTest {
         LobbyInfo testLobby = new LobbyInfo("TEST123");
         testLobby.setPlayers(players);
 
-        // Create progress response
+
         PlayerProgressResponse progress = new PlayerProgressResponse();
         List<PlayerProgressResponse.PlayerProgress> progressList = new ArrayList<>();
 

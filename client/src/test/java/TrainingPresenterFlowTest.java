@@ -1,4 +1,4 @@
-// java
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,6 @@ class TrainingPresenterFlowTest {
 
     @Test
     void presenter_initializes_and_updates() {
-        // Create mock equipped horse service with a test horse
         HorseData testHorseData = mock(HorseData.class);
         when(testHorseData.getHorseType()).thenReturn(data.horse.HorseTypeRegistry.getByKey("boring_horse"));
         when(testHorseData.getTrainingPoints()).thenReturn(0);

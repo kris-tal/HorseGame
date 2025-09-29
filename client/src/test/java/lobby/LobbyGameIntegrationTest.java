@@ -70,7 +70,7 @@ public class LobbyGameIntegrationTest {
 
     @Test
     void testGameProgressUpdateFlow() {
-        // Setup game
+
         HashMap<String, PlayerInfoClient> players = new HashMap<>();
         PlayerInfoClient player1 = new PlayerInfoClient();
         player1.setUsername("player1");

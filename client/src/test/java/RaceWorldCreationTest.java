@@ -42,7 +42,7 @@ class RaceWorldCreationTest {
         }
         when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));//kiedy zrobi sie mapowanie to zwroci mape z danymi
 
-        // Create mock equipped horse service with a test horse
+
         EquippedHorseService equippedHorseService = mock(EquippedHorseService.class);
         HorseData testHorse = mock(HorseData.class);
         when(testHorse.getHorseType()).thenReturn(HorseTypeRegistry.getByKey("boring_horse"));

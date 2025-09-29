@@ -57,34 +57,6 @@ public class TrainingPresenterImpl implements TrainingPresenter {
         }
     }
 
-    private void handleTrainingCompletion() {
-        RaceWorld world = gameController.getGameWorld();
-        if (world == null) return;
-        
-        Player player = world.getPlayer();
-        int distance = (int) player.getCol() * 10;
-        int sessionPoints = dataController.getSessionPointsEarned();
-        
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, true);
-        TrainingResponse response = dataController.saveTrainingData(trainingData);
-        
-        uiController.showTrainingCompletion(true, sessionPoints, distance);
-    }
-
-    public void handleTrainingFailure() {
-        RaceWorld world = gameController.getGameWorld();
-        if (world == null) return;
-        
-        Player player = world.getPlayer();
-        int distance = (int) player.getCol() * 10;
-        int sessionPoints = dataController.getSessionPointsEarned();
-        
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, false);
-        TrainingResponse response = dataController.saveTrainingData(trainingData);
-        
-        uiController.showTrainingFailure(distance);
-    }
-
     public void saveTrainingDataBeforeExit(int horseId) {
         RaceWorld world = gameController.getGameWorld();
         if (world == null) return;

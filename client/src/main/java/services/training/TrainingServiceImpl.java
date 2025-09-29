@@ -27,25 +27,6 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public TrainingResponse performTraining(TrainingData data) {
-        try {
-            String requestBody = gson.toJson(data);
-
-            HttpRequest request = sessionManager.getProtectedRequestsService()
-                    .ProtectedPost("/train", HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
-                    .build();
-
-            HttpResponse<String> response = sessionManager.getProtectedRequestsService()
-                    .GetHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-            return gson.fromJson(response.body(), TrainingResponse.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
     public TrainingResponse sendTrainingData(TrainingData data) {
         try {
             String requestBody = gson.toJson(data);
