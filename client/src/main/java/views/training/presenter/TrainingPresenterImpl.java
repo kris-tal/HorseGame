@@ -27,7 +27,7 @@ public class TrainingPresenterImpl implements TrainingPresenter {
 
     public void init() {
         if (initialized) return;
-        
+
         dataController.loadHorseData();
         dataController.resetSession();
         gameController.initializeGame();
@@ -36,7 +36,7 @@ public class TrainingPresenterImpl implements TrainingPresenter {
 
     public void update(float delta) {
         if (!initialized) return;
-        
+
         gameController.updateGame(delta);
         checkDistanceForPoints();
         uiController.updateUI();
@@ -46,53 +46,25 @@ public class TrainingPresenterImpl implements TrainingPresenter {
     private void checkDistanceForPoints() {
         RaceWorld world = gameController.getGameWorld();
         if (world == null) return;
-        
+
         Player player = world.getPlayer();
         float playerCol = player.getCol();
         int currentDistance = (int) playerCol * 10; // Convert to meters
         int distanceKm = currentDistance / 1000;
-        
+
         if (distanceKm > 0) {
             int pointsEarned = dataController.calculatePointsForDistance(distanceKm);
         }
     }
 
-    private void handleTrainingCompletion() {
-        RaceWorld world = gameController.getGameWorld();
-        if (world == null) return;
-        
-        Player player = world.getPlayer();
-        int distance = (int) player.getCol() * 10;
-        int sessionPoints = dataController.getSessionPointsEarned();
-        
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, true);
-        TrainingResponse response = dataController.saveTrainingData(trainingData);
-        
-        uiController.showTrainingCompletion(true, sessionPoints, distance);
-    }
-
-    public void handleTrainingFailure() {
-        RaceWorld world = gameController.getGameWorld();
-        if (world == null) return;
-        
-        Player player = world.getPlayer();
-        int distance = (int) player.getCol() * 10;
-        int sessionPoints = dataController.getSessionPointsEarned();
-        
-        TrainingData trainingData = createTrainingData(distance, sessionPoints, false);
-        TrainingResponse response = dataController.saveTrainingData(trainingData);
-        
-        uiController.showTrainingFailure(distance);
-    }
-
     public void saveTrainingDataBeforeExit(int horseId) {
         RaceWorld world = gameController.getGameWorld();
         if (world == null) return;
-        
+
         Player player = world.getPlayer();
         int distance = (int) player.getCol() * 10;
         int sessionPoints = dataController.getSessionPointsEarned();
-        
+
         TrainingData trainingData = createTrainingData(distance, sessionPoints, false);
         trainingData.horseId = horseId;
         TrainingResponse response = dataController.saveTrainingData(trainingData);
@@ -115,7 +87,7 @@ public class TrainingPresenterImpl implements TrainingPresenter {
     private TrainingData createTrainingData(int distance, int points, boolean success) {
         RaceWorld world = gameController.getGameWorld();
         int coins = world != null ? world.getPlayer().getCoins() : 0;
-        
+
         TrainingData data = new TrainingData();
         data.distance = distance;
         data.success = success;

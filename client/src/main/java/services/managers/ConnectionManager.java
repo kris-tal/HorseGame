@@ -34,6 +34,7 @@ public class ConnectionManager implements ConnectionManagerPort {
     public void setLobbyListener(LobbyListener listener) {
         this.lobbyListener = listener;
     }
+
     @Override
     public void setGameListener(GameListener listener) {
         this.gameListener = listener;
@@ -44,6 +45,7 @@ public class ConnectionManager implements ConnectionManagerPort {
         this.gameListener = null;
         this.lobbyListener = null;
     }
+
     @Override
     public boolean connectToRoom(String room, String token) {
         try {
@@ -166,15 +168,16 @@ public class ConnectionManager implements ConnectionManagerPort {
 
     private void handlePlayerListUpdate(String jsonData) {
         try {
-            Gdx.app.postRunnable(()-> {
-            List<PlayerInfoClient> players = gson.fromJson(jsonData, PlayerListResponse.class).getPlayers();
-            if (players != null && lobbyListener != null) {
-                HashMap<String, PlayerInfoClient> playerMap = new HashMap<>();
-                for (PlayerInfoClient p : players) {
-                    playerMap.put(p.getUsername(), p);
+            Gdx.app.postRunnable(() -> {
+                List<PlayerInfoClient> players = gson.fromJson(jsonData, PlayerListResponse.class).getPlayers();
+                if (players != null && lobbyListener != null) {
+                    HashMap<String, PlayerInfoClient> playerMap = new HashMap<>();
+                    for (PlayerInfoClient p : players) {
+                        playerMap.put(p.getUsername(), p);
+                    }
+                    lobbyListener.onPlayerListChanged(playerMap);
                 }
-                lobbyListener.onPlayerListChanged(playerMap);
-            }});
+            });
         } catch (Exception e) {
             System.out.println("ConnectionManager: Error parsing player list: "
                     + jsonData + ", error: " + e.getMessage());
@@ -195,6 +198,7 @@ public class ConnectionManager implements ConnectionManagerPort {
         }
 
     }
+
     @Override
     public void closeConnection() {
         if (sessionSocket != null) {
@@ -205,14 +209,17 @@ public class ConnectionManager implements ConnectionManagerPort {
         currentRoom = null;
         connected = false;
     }
+
     @Override
     public boolean isConnected() {
         return connected;
     }
+
     @Override
     public String getCurrentRoom() {
         return currentRoom;
     }
+
     @Override
     public Socket getSocket() {
         return sessionSocket;

@@ -1,4 +1,3 @@
-// java
 package core;
 
 import com.badlogic.gdx.Game;

@@ -14,6 +14,7 @@ import race.input.InputHandler;
 import race.map.MapGenerator;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
+import race.config.ConfigModule;
 import race.RaceWorld;
 import race.objects.EmptyObject;
 import data.race.EquippedHorseService;
@@ -41,7 +42,7 @@ class RaceWorldCreationTest {
         }
         when(mapGenerator.generateMap(anyInt(), anyInt())).thenReturn(new GameMap(lanes, length, data));//kiedy zrobi sie mapowanie to zwroci mape z danymi
 
-        // Create mock equipped horse service with a test horse
+
         EquippedHorseService equippedHorseService = mock(EquippedHorseService.class);
         HorseData testHorse = mock(HorseData.class);
         when(testHorse.getHorseType()).thenReturn(HorseTypeRegistry.getByKey("boring_horse"));
@@ -49,7 +50,7 @@ class RaceWorldCreationTest {
         when(testHorse.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorse);
         
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         BaseGameConfig config = configFactory.createSingleplayerRaceConfig();
 
         SystemsFactory testSystems = new SystemsFactory() {

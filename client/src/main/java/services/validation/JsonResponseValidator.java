@@ -6,11 +6,11 @@ import com.google.gson.JsonSyntaxException;
 
 public class JsonResponseValidator implements ResponseValidator {
     private final Gson gson;
-    
+
     public JsonResponseValidator() {
         this.gson = new Gson();
     }
-    
+
     @Override
     public boolean isValidJson(String responseBody) {
         if (responseBody == null || responseBody.trim().isEmpty()) {
@@ -19,7 +19,7 @@ public class JsonResponseValidator implements ResponseValidator {
         if (responseBody.trim().startsWith("<") || responseBody.contains("<!DOCTYPE") || responseBody.contains("<html")) {
             return false;
         }
-        
+
         try {
             gson.fromJson(responseBody, Object.class);
             return true;
@@ -27,13 +27,13 @@ public class JsonResponseValidator implements ResponseValidator {
             return false;
         }
     }
-    
+
     @Override
     public boolean isSuccessfulResponse(String responseBody) {
         if (!isValidJson(responseBody)) {
             return false;
         }
-        
+
         try {
             JsonObject jsonObject = gson.fromJson(responseBody, JsonObject.class);
             if (jsonObject.has("success")) {
@@ -44,13 +44,13 @@ public class JsonResponseValidator implements ResponseValidator {
             return false;
         }
     }
-    
+
     @Override
     public String extractErrorMessage(String responseBody) {
         if (!isValidJson(responseBody)) {
             return "Invalid JSON response: " + responseBody;
         }
-        
+
         try {
             JsonObject jsonObject = gson.fromJson(responseBody, JsonObject.class);
             if (jsonObject.has("msg")) {

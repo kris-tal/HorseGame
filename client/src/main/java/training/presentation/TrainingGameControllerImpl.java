@@ -8,7 +8,7 @@ import training.contract.TrainingGameController;
 public class TrainingGameControllerImpl implements TrainingGameController {
     private final GameFactory gameFactory;
     private final BaseGameConfig trainingConfig;
-    
+
     private RaceWorld world;
     private boolean trainingCompleted = false;
 
@@ -28,7 +28,7 @@ public class TrainingGameControllerImpl implements TrainingGameController {
     public void updateGame(float delta) {
         if (world != null && !trainingCompleted) {
             world.update(delta);
-            
+
             if (world.getGameStateManager().isRaceFinished()) {
                 trainingCompleted = true;
             }

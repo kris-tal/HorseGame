@@ -43,7 +43,7 @@ class RanchHorsesRefresherTest {
 
     @Test
     void initialLoad_callsInit_andEquipsMatchingHorse() {
-        // Arrange
+
         HorseService horseService = mock(HorseService.class);
         EquippedHorseService equipped = mock(EquippedHorseService.class);
         HorseActors actors = mock(HorseActors.class);
@@ -55,10 +55,10 @@ class RanchHorsesRefresherTest {
 
         RanchHorsesRefresher refresher = new RanchHorsesRefresher(horseService, equipped);
 
-        // Act
+
         refresher.initialLoad(actors);
 
-        // Assert
+
         verify(actors).init(List.of(h1, h2));
         verify(equipped).getEquippedHorse();
         verify(equipped).equipHorse(h2);
@@ -67,7 +67,7 @@ class RanchHorsesRefresherTest {
 
     @Test
     void refreshAsync_fetches_latest_andSyncs_onAppThread() throws Exception {
-        // Arrange
+
         HorseService horseService = mock(HorseService.class);
         EquippedHorseService equipped = mock(EquippedHorseService.class);
         HorseActors actors = mock(HorseActors.class);
@@ -84,10 +84,10 @@ class RanchHorsesRefresherTest {
 
         RanchHorsesRefresher refresher = new RanchHorsesRefresher(horseService, equipped);
 
-        // Act
+
         refresher.refreshAsync(actors);
 
-        // Assert
+
         assertTrue(applied.await(2, TimeUnit.SECONDS), "Async refresh did not complete");
         verify(actors).syncWith(List.of(h3));
         verify(equipped).getEquippedHorse();
@@ -97,7 +97,7 @@ class RanchHorsesRefresherTest {
 
     @Test
     void syncEquipped_whenEquippedIsNull_callsEnsure() {
-        // Arrange
+
         HorseService horseService = mock(HorseService.class);
         EquippedHorseService equipped = mock(EquippedHorseService.class);
         HorseActors actors = mock(HorseActors.class);
@@ -108,10 +108,10 @@ class RanchHorsesRefresherTest {
 
         RanchHorsesRefresher refresher = new RanchHorsesRefresher(horseService, equipped);
 
-        // Act
+
         refresher.initialLoad(actors);
 
-        // Assert
+
         verify(actors).init(List.of(h1));
         verify(equipped).getEquippedHorse();
         verify(equipped).ensureEquippedHorse();
@@ -120,7 +120,7 @@ class RanchHorsesRefresherTest {
 
     @Test
     void syncEquipped_whenEquippedMissing_callsEnsure() {
-        // Arrange
+
         HorseService horseService = mock(HorseService.class);
         EquippedHorseService equipped = mock(EquippedHorseService.class);
         HorseActors actors = mock(HorseActors.class);
@@ -134,10 +134,10 @@ class RanchHorsesRefresherTest {
 
         RanchHorsesRefresher refresher = new RanchHorsesRefresher(horseService, equipped);
 
-        // Act
+
         refresher.initialLoad(actors);
 
-        // Assert
+
         verify(actors).init(List.of(h1, h2));
         verify(equipped).getEquippedHorse();
         verify(equipped).ensureEquippedHorse();

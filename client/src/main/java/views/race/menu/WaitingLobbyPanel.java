@@ -53,6 +53,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     protected String getTitle() {
         return "";
     }
+
     @Override
     protected void addContent(float width, float height) {
         listTable = new Table();
@@ -135,7 +136,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     public void setListener(WaitingLobbyListener listener) {
         this.listener = listener;
     }
-    
+
     public void setOnShowCallback(Runnable callback) {
         this.onShowCallback = callback;
     }

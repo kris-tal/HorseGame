@@ -1,9 +1,10 @@
-// java
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import race.config.GameConfigFactory;
 import race.config.BaseGameConfig;
+import race.config.ConfigModule;
 import animations.BaseHorseActor;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
@@ -47,14 +48,13 @@ class TrainingPresenterFlowTest {
 
     @Test
     void presenter_initializes_and_updates() {
-        // Create mock equipped horse service with a test horse
         HorseData testHorseData = mock(HorseData.class);
         when(testHorseData.getHorseType()).thenReturn(data.horse.HorseTypeRegistry.getByKey("boring_horse"));
         when(testHorseData.getTrainingPoints()).thenReturn(0);
         when(testHorseData.getLevel()).thenReturn(0);
         when(equippedHorseService.getEquippedHorse()).thenReturn(testHorseData);
         
-        GameConfigFactory configFactory = new GameConfigFactory(equippedHorseService);
+        GameConfigFactory configFactory = ConfigModule.createGameConfigFactory(equippedHorseService);
         BaseGameConfig config = configFactory.createTrainingConfig();
         SystemsFactory testSystems = new SystemsFactory() {
             @Override

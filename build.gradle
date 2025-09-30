@@ -1,5 +1,6 @@
 subprojects {
   apply plugin: "java"
+  apply plugin: "jacoco"
 
   java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -28,5 +29,14 @@ subprojects {
       testLogging {
         events "passed", "skipped", "failed"
       }
+    finalizedBy jacocoTestReport
+  }
+
+  jacocoTestReport {
+    dependsOn test
+    reports {
+      xml.required = true
+      html.required = true
+    }
   }
 }

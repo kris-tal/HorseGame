@@ -64,7 +64,7 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         }
     }
 
-    public void onLobbyJoined(boolean success){
+    public void onLobbyJoined(boolean success) {
         if (success) {
             statusLabel.setText("Successfully joined!");
             statusLabel.setColor(0.3f, 1f, 0.3f, 1f);
@@ -79,6 +79,7 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         joinButton.setDisabled(false);
         joinButton.setText("JOIN LOBBY");
     }
+
     @Override
     protected void addContent(float width, float height) {
         roomCodeField = UIFactory.createTextField("Enter Lobby Code");
@@ -124,6 +125,8 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
     protected String getTitle() {
         return "JOIN LOBBY";
     }
+
     @Override
-    protected void populateRow(Table row, Object item) {}
+    protected void populateRow(Table row, Object item) {
+    }
 }

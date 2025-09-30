@@ -58,34 +58,95 @@ public class Player {
     }
 
     // Sterowanie
-    public void moveUp() { if (lane < 2) lane++; }
-    public void moveDown() { if (lane > 0) lane--; }
+    public void moveUp() {
+        if (lane < 2) lane++;
+    }
+
+    public void moveDown() {
+        if (lane > 0) lane--;
+    }
 
     // Sprint API
-    public void startSprint() { sprintManager.startSprint(this); }
-    public boolean canSprint() { return sprintManager.canSprint(this); }
+    public void startSprint() {
+        sprintManager.startSprint(this);
+    }
+
+    public boolean canSprint() {
+        return sprintManager.canSprint(this);
+    }
+
     public float getSprintCooldownProgress() {
         return sprintStrategy.getSprintCooldownProgress(sprintState.getCooldownTimer(), sprintState.getCooldown());
     }
-    public boolean isSprinting() { return sprintState.isSprinting(); }
-    public boolean isInSprintCooldown() { return sprintState.isInCooldown(); }
-    public void resetSprint() { sprintManager.resetSprint(this); }
-    public void makeSprintAvailable() { sprintManager.makeSprintAvailable(this); }
-    public float getSprintTimeLeft() { return sprintState.getTimeLeft(); }
-    public float getSprintDuration() { return sprintState.getDuration(); }
-    public float getSprintCooldown() { return sprintState.getCooldown(); }
-    public float getCooldownTimer() { return sprintState.getCooldownTimer(); }
-    public SprintStrategy getSprintStrategy() { return sprintStrategy; }
+
+    public boolean isSprinting() {
+        return sprintState.isSprinting();
+    }
+
+    public boolean isInSprintCooldown() {
+        return sprintState.isInCooldown();
+    }
+
+    public void resetSprint() {
+        sprintManager.resetSprint(this);
+    }
+
+    public void makeSprintAvailable() {
+        sprintManager.makeSprintAvailable(this);
+    }
+
+    public float getSprintTimeLeft() {
+        return sprintState.getTimeLeft();
+    }
+
+    public float getSprintDuration() {
+        return sprintState.getDuration();
+    }
+
+    public float getSprintCooldown() {
+        return sprintState.getCooldown();
+    }
+
+    public float getCooldownTimer() {
+        return sprintState.getCooldownTimer();
+    }
+
+    public SprintStrategy getSprintStrategy() {
+        return sprintStrategy;
+    }
 
     // Efekty
-    public void slowDown(float seconds) { statusEffectManager.applySlowDown(this, seconds); }
-    public void slowDown() { statusEffectManager.applySlowDown(this, 1.5f); }
-    public void limitVisionByMeters(float meters) { statusEffectManager.applyVisionLimitByMeters(this, meters); }
-    public boolean isVisionLimited() { return statusEffectManager.isVisionLimited(this); }
-    public float getSlowDownTimeLeft() { return slowDownTimeLeft; }
-    public float getSlowDownFactor() { return slowDownFactor; }
-    public float getVisionLimitTime() { return visionLimitTime; }
-    public float getVisionLimitColsLeft() { return visionLimitColsLeft; }
+    public void slowDown(float seconds) {
+        statusEffectManager.applySlowDown(this, seconds);
+    }
+
+    public void slowDown() {
+        statusEffectManager.applySlowDown(this, 1.5f);
+    }
+
+    public void limitVisionByMeters(float meters) {
+        statusEffectManager.applyVisionLimitByMeters(this, meters);
+    }
+
+    public boolean isVisionLimited() {
+        return statusEffectManager.isVisionLimited(this);
+    }
+
+    public float getSlowDownTimeLeft() {
+        return slowDownTimeLeft;
+    }
+
+    public float getSlowDownFactor() {
+        return slowDownFactor;
+    }
+
+    public float getVisionLimitTime() {
+        return visionLimitTime;
+    }
+
+    public float getVisionLimitColsLeft() {
+        return visionLimitColsLeft;
+    }
 
     // Stan podstawowy
     public void kill() {
@@ -95,23 +156,63 @@ public class Player {
             alive = false;
         }
     }
-    public void success() { raceCompleted = true; }
-    public void addCoins(int amount) { coins += amount; }
+
+    public void success() {
+        raceCompleted = true;
+    }
+
+    public void addCoins(int amount) {
+        coins += amount;
+    }
 
     // Gettery
-    public int getLane() { return lane; }
-    public float getCol() { return col; }
-    public boolean isAlive() { return alive; }
-    public float getSpeed() { return baseSpeed; }
-    public int getCoins() { return coins; }
-    public HorseType getHorseType() { return horseType; }
-    public SprintState getSprintState() { return sprintState; }
-    public boolean isRaceCompleted() { return raceCompleted; }
+    public int getLane() {
+        return lane;
+    }
+
+    public float getCol() {
+        return col;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public float getSpeed() {
+        return baseSpeed;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public HorseType getHorseType() {
+        return horseType;
+    }
+
+    public SprintState getSprintState() {
+        return sprintState;
+    }
+
+    public boolean isRaceCompleted() {
+        return raceCompleted;
+    }
 
     // Settery
-    public void setCol(float col) { this.col = col; }
-    public void setSlowDownTimeLeft(float slowDownTimeLeft) { this.slowDownTimeLeft = slowDownTimeLeft; }
-    public void setVisionLimitTime(float visionLimitTime) { this.visionLimitTime = visionLimitTime; }
-    public void setVisionLimitColsLeft(float visionLimitColsLeft) { this.visionLimitColsLeft = visionLimitColsLeft; }
+    public void setCol(float col) {
+        this.col = col;
+    }
+
+    public void setSlowDownTimeLeft(float slowDownTimeLeft) {
+        this.slowDownTimeLeft = slowDownTimeLeft;
+    }
+
+    public void setVisionLimitTime(float visionLimitTime) {
+        this.visionLimitTime = visionLimitTime;
+    }
+
+    public void setVisionLimitColsLeft(float visionLimitColsLeft) {
+        this.visionLimitColsLeft = visionLimitColsLeft;
+    }
 }
 

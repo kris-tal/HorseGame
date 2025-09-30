@@ -1,10 +1,10 @@
-// java
 package services.managers;
 
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import data.race.GameMap;
 import data.race.PlayerProgressResponse;
+import race.config.ConfigModule;
 import race.config.GameConfigValues;
 import race.map.RandomMapGenerator;
 import services.listeners.LobbyListener;
@@ -80,13 +80,15 @@ public class LobbyManager implements LobbyListener {
             return;
         }
 
-        GameMap map = new RandomMapGenerator().generateMap(GameConfigValues.getDefaultLanes(), GameConfigValues.getRaceLength());
+        GameConfigValues configValues = ConfigModule.getConfigValues();
+        GameMap map = new RandomMapGenerator().generateMap(configValues.getDefaultLanes(), configValues.getRaceLength());
         service.startLobby(currentLobby.getLobbyCode(), map);
     }
 
     public void setCurrentLobby(LobbyInfo lobby) {
         this.currentLobby = lobby;
     }
+
     public LobbyInfo getCurrentLobby() {
         return currentLobby;
     }

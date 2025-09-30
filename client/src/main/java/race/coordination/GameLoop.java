@@ -14,8 +14,8 @@ public class GameLoop {
     private final CollisionSystem collisionSystem;
     private final RendererSystem rendererSystem;
 
-    public GameLoop(InputHandler inputHandler, CameraSystem cameraSystem, 
-                   CollisionSystem collisionSystem, RendererSystem rendererSystem) {
+    public GameLoop(InputHandler inputHandler, CameraSystem cameraSystem,
+                    CollisionSystem collisionSystem, RendererSystem rendererSystem) {
         this.inputHandler = inputHandler;
         this.cameraSystem = cameraSystem;
         this.collisionSystem = collisionSystem;

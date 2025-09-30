@@ -151,7 +151,7 @@ public class RanchHorsesIntegrationTest extends LibgdxHeadlessTestBase {
         StrollingHorseActor a1 = map.get(1);
         StrollingHorseActor a2 = map.get(2);
 
-        //checking if the order is corrected
+
         a1.setPosition(0, 200);
         a2.setPosition(0, 100);
 

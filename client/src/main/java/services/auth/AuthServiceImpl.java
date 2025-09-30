@@ -99,7 +99,8 @@ public class AuthServiceImpl implements AuthService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             return switch (response.statusCode()) {
-                case 201 -> new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
+                case 201 ->
+                        new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
                 case 409 -> new AuthResult(AuthCode.USERNAME_TAKEN, null);
                 case 400 -> new AuthResult(AuthCode.INVALID_INPUT, null);
                 default -> new AuthResult(AuthCode.SERVER_ERROR, null);

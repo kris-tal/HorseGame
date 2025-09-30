@@ -10,8 +10,6 @@ public interface TrainingDataController {
 
     int getSessionPointsEarned();
 
-    int getDatabaseTrainingPoints();
-
     int getLongestRunDistance();
 
     TrainingResponse saveTrainingData(TrainingData trainingData);

@@ -66,14 +66,13 @@ public class TrainingDataControllerImpl implements TrainingDataController {
     @Override
     public TrainingResponse saveTrainingData(TrainingData trainingData) {
         try {
-            trainingPoints += pointsEarnedInThisSession;
-
             if (trainingData.distance > longestRunDistance) {
                 longestRunDistance = trainingData.distance;
             }
             TrainingResponse response = trainingService.sendTrainingData(trainingData);
 
             if (response.isSuccess()) {
+                trainingPoints += pointsEarnedInThisSession;
                 refreshHorseDataFromServer();
             }
 
@@ -81,7 +80,7 @@ public class TrainingDataControllerImpl implements TrainingDataController {
 
             return response;
         } catch (Exception e) {
-            return new TrainingResponse("{\"success\": false, \"message\": \"Failed to save training data: " + e.getMessage() + "\"}");
+            return new TrainingResponse("{\"success\": false, \"msg\": \"Failed to save training data: " + e.getMessage() + "\", \"money\": 0, \"training_points\": 0, \"level\": 0, \"longest_run_distance\": 0}");
         }
     }
 

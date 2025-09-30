@@ -1,4 +1,4 @@
-// java
+
 package services.ranch;
 
 import com.badlogic.gdx.Application;
@@ -46,7 +46,7 @@ class RanchHorseUpdateServiceTest {
     private static StrollingHorseActor actorWith(HorseData data) {
         StrollingHorseActor a = mock(StrollingHorseActor.class);
         when(a.getHorseData()).thenReturn(data);
-        // When setHorseData is called, subsequent getHorseData returns the new value
+
         doAnswer(inv -> {
             HorseData nd = inv.getArgument(0);
             when(a.getHorseData()).thenReturn(nd);
