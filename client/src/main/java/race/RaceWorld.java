@@ -1,8 +1,8 @@
 package race;
 
+import animations.BaseHorseActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
-import animations.BaseHorseActor;
 import race.coordination.GameLoop;
 import race.state.GameStateManager;
 

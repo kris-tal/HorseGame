@@ -1,12 +1,12 @@
 package race.coordination;
 
-import race.Player;
 import animations.BaseHorseActor;
+import data.race.GameMap;
+import race.Player;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
 import race.input.InputHandler;
 import race.rendering.RendererSystem;
-import data.race.GameMap;
 
 public class GameLoop {
     private final InputHandler inputHandler;

@@ -8,7 +8,6 @@ import services.horse.HorseServiceImpl;
 import services.managers.SessionManagerPort;
 import views.ranch.horses.HorseActors;
 
-
 import java.util.List;
 
 public class RanchHorsesRefresher {

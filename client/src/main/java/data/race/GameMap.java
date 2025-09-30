@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import race.MapObject;
 import race.objects.*;
+
 import java.util.HashMap;
 import java.util.Map;
 

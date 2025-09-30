@@ -1,13 +1,16 @@
 package services.auth;
 
-import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import data.auth.AuthCode;
 import data.auth.AuthResult;
+
 import java.net.URI;
-import java.net.http.*;
-import java.time.Duration;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
-import com.google.gson.Gson;
+import java.time.Duration;
 import java.util.Map;
 
 public class AuthServiceImpl implements AuthService {

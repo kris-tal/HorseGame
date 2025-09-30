@@ -1,8 +1,8 @@
 package training.presentation;
 
 import race.RaceWorld;
-import race.factory.GameFactory;
 import race.config.BaseGameConfig;
+import race.factory.GameFactory;
 import training.contract.TrainingGameController;
 
 public class TrainingGameControllerImpl implements TrainingGameController {

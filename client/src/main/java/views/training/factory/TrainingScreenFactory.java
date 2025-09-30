@@ -1,6 +1,7 @@
 package views.training.factory;
 
 import core.HorseGame;
+import data.race.EquippedHorseService;
 import race.config.BaseGameConfig;
 import race.config.GameConfigFactory;
 import race.factory.GameFactory;
@@ -8,12 +9,11 @@ import race.input.InputHandler;
 import race.map.MapGenerator;
 import services.horse.HorseService;
 import services.managers.ConnectionManagerPort;
+import services.managers.SessionManagerPort;
 import services.training.TrainingService;
 import training.contract.TrainingPresenter;
 import views.training.presenter.TrainingPresenterFactory;
 import views.training.screen.TrainingScreen;
-import services.managers.SessionManagerPort;
-import data.race.EquippedHorseService;
 
 public class TrainingScreenFactory {
 

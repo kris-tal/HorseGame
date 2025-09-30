@@ -35,13 +35,13 @@ def get_user_horses():
 
 @horses_bp.route('/horses/id/<int:id>', methods=['GET'])
 @jwt_required()
-def get_user_horse_by_id(horse_id):
+def get_user_horse_by_id(id):
     identity = get_jwt_identity()
     data, status = get_user(identity)
     if status != 200:
         return data, status
 
-    horse = Horse.query.filter_by(owner_id=data.id, id = horse_id).first()
+    horse = Horse.query.filter_by(owner_id=data.id, id = id).first()
     if not horse:
         return jsonify({"msg":"Horse not found or belongs to a different user"}), 404
     return jsonify(
@@ -56,13 +56,13 @@ def get_user_horse_by_id(horse_id):
 
 @horses_bp.route('/horses/name/<int:id>', methods=['GET'])
 @jwt_required()
-def get_user_horse_by_name(horse_id):
+def get_user_horse_by_name(id):
     identity = get_jwt_identity()
     data, status = get_user(identity)
     if status != 200:
         return data, status
 
-    horse = Horse.query.filter_by(owner_id=data.id, name_id = horse_id).first()
+    horse = Horse.query.filter_by(owner_id=data.id, name_id = id).first()
     if not horse:
         return jsonify({"msg":"Horse not found or belongs to a different user"}), 404
     return jsonify(

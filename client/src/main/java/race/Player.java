@@ -2,11 +2,11 @@ package race;
 
 import data.horse.HorseType;
 import race.state.SprintState;
-import race.strategy.sprint.SprintStrategy;
 import race.strategy.player.PlayerMovementStrategy;
 import race.strategy.player.PlayerVisionStrategy;
-import race.strategy.sprint.SprintManager;
 import race.strategy.player.StatusEffectManager;
+import race.strategy.sprint.SprintManager;
+import race.strategy.sprint.SprintStrategy;
 
 public class Player {
     private final HorseType horseType;

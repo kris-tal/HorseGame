@@ -2,8 +2,8 @@ package views.ranch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import views.common.ui.Panel;
 import views.common.ui.ListPanel;
+import views.common.ui.Panel;
 
 import java.util.ArrayList;
 import java.util.List;

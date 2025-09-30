@@ -1,21 +1,21 @@
 package views.training.presenter;
 
 import data.race.EquippedHorseService;
-import race.factory.GameFactory;
 import race.config.BaseGameConfig;
-import race.strategy.training.TrainingPointsCalculator;
+import race.factory.GameFactory;
 import race.strategy.training.ArithmeticProgressionPointsCalculator;
-import services.training.TrainingService;
+import race.strategy.training.TrainingPointsCalculator;
 import services.horse.HorseService;
 import services.horse.HorseServiceImpl;
 import services.managers.SessionManagerPort;
-import training.presentation.TrainingGameControllerImpl;
-import training.presentation.TrainingDataControllerImpl;
-import training.presentation.TrainingUIControllerImpl;
-import training.contract.TrainingGameController;
+import services.training.TrainingService;
 import training.contract.TrainingDataController;
-import training.contract.TrainingUIController;
+import training.contract.TrainingGameController;
 import training.contract.TrainingPresenter;
+import training.contract.TrainingUIController;
+import training.presentation.TrainingDataControllerImpl;
+import training.presentation.TrainingGameControllerImpl;
+import training.presentation.TrainingUIControllerImpl;
 
 public class TrainingPresenterFactory {
 

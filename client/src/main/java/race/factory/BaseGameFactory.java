@@ -1,20 +1,21 @@
 package race.factory;
 
+import animations.BaseHorseActor;
+import data.race.GameMap;
 import race.Player;
 import race.RaceWorld;
-import animations.BaseHorseActor;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
+import race.config.BaseGameConfig;
 import race.coordination.GameLoop;
 import race.input.InputHandler;
 import race.map.MapGenerator;
-import race.rendering.RendererSystem;
 import race.rendering.MapRenderer;
 import race.rendering.PlayerRenderer;
+import race.rendering.RendererSystem;
 import race.rendering.VisionEffectRenderer;
 import race.state.GameStateManager;
-import data.race.GameMap;
-import race.config.BaseGameConfig;
+
 import java.util.Arrays;
 
 public abstract class BaseGameFactory implements GameWorldFactory {

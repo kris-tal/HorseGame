@@ -1,7 +1,7 @@
 package presentation.common;
 
-import race.RaceWorld;
 import race.Player;
+import race.RaceWorld;
 import race.config.BaseGameConfig;
 import race.factory.GameFactory;
 import race.state.GameStateManager;

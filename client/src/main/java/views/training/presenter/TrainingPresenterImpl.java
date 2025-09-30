@@ -1,13 +1,13 @@
 package views.training.presenter;
 
-import race.RaceWorld;
-import race.Player;
 import data.training.TrainingData;
 import data.training.TrainingResponse;
-import training.contract.TrainingGameController;
+import race.Player;
+import race.RaceWorld;
 import training.contract.TrainingDataController;
-import training.contract.TrainingUIController;
+import training.contract.TrainingGameController;
 import training.contract.TrainingPresenter;
+import training.contract.TrainingUIController;
 
 public class TrainingPresenterImpl implements TrainingPresenter {
     private final TrainingGameController gameController;

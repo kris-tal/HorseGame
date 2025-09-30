@@ -3,11 +3,8 @@ package services.managers;
 
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
-import data.race.EquippedHorseService;
 import data.race.GameMap;
 import data.race.PlayerProgressResponse;
-import race.config.BaseGameConfig;
-import race.config.GameConfigFactory;
 import race.config.GameConfigValues;
 import race.map.RandomMapGenerator;
 import services.listeners.LobbyListener;

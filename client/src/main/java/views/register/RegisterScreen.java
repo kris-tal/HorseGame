@@ -17,11 +17,11 @@ import core.HorseGame;
 import data.race.EquippedHorseService;
 import services.auth.AuthServiceImpl;
 import services.managers.ConnectionManagerPort;
+import services.managers.ResourceManager;
 import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
 import services.media.AudioService;
 import views.common.ui.UIFactory;
-import services.managers.ResourceManager;
 import views.login.LoginScreen;
 import views.ranch.RanchScreen;
 

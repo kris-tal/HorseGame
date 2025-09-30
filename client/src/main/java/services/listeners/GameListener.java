@@ -1,9 +1,7 @@
 package services.listeners;
 
-import data.lobby.PlayerInfoClient;
 import data.race.PlayerProgressResponse;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface GameListener {

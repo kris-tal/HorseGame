@@ -1,8 +1,7 @@
 package views.login;
 
-import services.auth.AuthService;
 import data.auth.AuthCode;
-import services.managers.SessionManager;
+import services.auth.AuthService;
 import services.managers.SessionManagerPort;
 
 public class LoginPresenter {

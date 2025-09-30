@@ -1,6 +1,7 @@
 package race.rendering;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.List;
 
 public class RendererSystem {

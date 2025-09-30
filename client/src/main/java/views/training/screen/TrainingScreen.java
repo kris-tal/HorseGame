@@ -5,17 +5,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import core.HorseGame;
 import data.horse.HorseData;
+import data.race.EquippedHorseService;
 import race.RaceWorld;
 import services.horse.HorseService;
 import services.managers.ConnectionManagerPort;
 import services.managers.SessionManagerPort;
 import services.training.TrainingService;
+import training.contract.TrainingPresenter;
 import views.common.base.RaceScreenTemplate;
-import views.training.ui.TrainingStatsPanel;
 import views.race.ui.SprintWidget;
 import views.ranch.RanchScreen;
-import training.contract.TrainingPresenter;
-import data.race.EquippedHorseService;
+import views.training.ui.TrainingStatsPanel;
 import views.training.ui.TrainingStatusBar;
 
 public class TrainingScreen extends RaceScreenTemplate {
@@ -27,8 +27,8 @@ public class TrainingScreen extends RaceScreenTemplate {
     private final EquippedHorseService equippedHorseService;
 
     private float elapsedSeconds = 0f;
-    private static final float SPEEDUP_RATE_PER_SECOND = 0.01f;
-    private static final float MAX_SPEED_MULTIPLIER = 2.5f;
+    private static final float SPEEDUP_RATE_PER_SECOND = 0.02f;
+    private static final float MAX_SPEED_MULTIPLIER = 4f;
 
     private SprintWidget sprintWidget;
     private TrainingStatsPanel statsPanel;

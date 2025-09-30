@@ -1,6 +1,5 @@
 package views.common.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import services.managers.ResourceManager;
-import views.common.ui.UIFactory;
 
 public class UIStyles {
     private final static TextureAtlas atlas = ResourceManager.uiAtlas;

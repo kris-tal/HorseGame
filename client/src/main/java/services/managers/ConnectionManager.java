@@ -1,7 +1,6 @@
 package services.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import data.lobby.PlayerInfoClient;
@@ -9,8 +8,9 @@ import data.lobby.PlayerListResponse;
 import data.race.PlayerProgressResponse;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import services.listeners.LobbyListener;
 import services.listeners.GameListener;
+import services.listeners.LobbyListener;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
