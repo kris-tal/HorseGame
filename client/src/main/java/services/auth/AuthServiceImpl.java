@@ -20,7 +20,7 @@ public class AuthServiceImpl implements AuthService {
 
     public static final String BASE_URL = System.getProperty(
             "backend.baseUrl",
-            System.getenv().getOrDefault("BACKEND_BASE_URL", "http://172.20.10.2:4000")
+            System.getenv().getOrDefault("BACKEND_BASE_URL", "http://127.0.0.1:4000")
     );
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
 
