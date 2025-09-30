@@ -1,13 +1,16 @@
 package services.auth;
 
-import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import data.auth.AuthCode;
 import data.auth.AuthResult;
+
 import java.net.URI;
-import java.net.http.*;
-import java.time.Duration;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
-import com.google.gson.Gson;
+import java.time.Duration;
 import java.util.Map;
 
 public class AuthServiceImpl implements AuthService {
@@ -17,7 +20,7 @@ public class AuthServiceImpl implements AuthService {
 
     public static final String BASE_URL = System.getProperty(
             "backend.baseUrl",
-            System.getenv().getOrDefault("BACKEND_BASE_URL", "http://127.0.0.1:4000")
+            System.getenv().getOrDefault("BACKEND_BASE_URL", "http://172.20.10.2:4000")
     );
     public static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(15);
 
@@ -96,7 +99,8 @@ public class AuthServiceImpl implements AuthService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             return switch (response.statusCode()) {
-                case 201 -> new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
+                case 201 ->
+                        new AuthResult(AuthCode.SUCCESS, (String) gson.fromJson(response.body(), Map.class).get("token"));
                 case 409 -> new AuthResult(AuthCode.USERNAME_TAKEN, null);
                 case 400 -> new AuthResult(AuthCode.INVALID_INPUT, null);
                 default -> new AuthResult(AuthCode.SERVER_ERROR, null);

@@ -1,8 +1,6 @@
 package views.race.menu;
 
-import com.badlogic.gdx.Gdx;
 import services.lobby.LobbyService;
-import services.lobby.LobbyServiceImpl;
 import views.common.context.MenuContext;
 
 public class MockMenuListener implements RaceMenuPanel.RaceMenuListener {

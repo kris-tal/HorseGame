@@ -1,12 +1,10 @@
 package views.race.menu;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import services.listeners.JoinLobbyListener;
 import services.managers.LobbyManager;
@@ -66,7 +64,7 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         }
     }
 
-    public void onLobbyJoined(boolean success){
+    public void onLobbyJoined(boolean success) {
         if (success) {
             statusLabel.setText("Successfully joined!");
             statusLabel.setColor(0.3f, 1f, 0.3f, 1f);
@@ -81,6 +79,7 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
         joinButton.setDisabled(false);
         joinButton.setText("JOIN LOBBY");
     }
+
     @Override
     protected void addContent(float width, float height) {
         roomCodeField = UIFactory.createTextField("Enter Lobby Code");
@@ -126,6 +125,8 @@ public class JoinLobbyPanel extends ListPanel implements LobbyManager.LobbyConne
     protected String getTitle() {
         return "JOIN LOBBY";
     }
+
     @Override
-    protected void populateRow(Table row, Object item) {}
+    protected void populateRow(Table row, Object item) {
+    }
 }

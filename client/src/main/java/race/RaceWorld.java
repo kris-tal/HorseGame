@@ -1,8 +1,8 @@
 package race;
 
+import animations.BaseHorseActor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import data.race.GameMap;
-import animations.BaseHorseActor;
 import race.coordination.GameLoop;
 import race.state.GameStateManager;
 
@@ -13,8 +13,8 @@ public class RaceWorld {
     private final GameLoop gameLoop;
     private final GameStateManager gameStateManager;
 
-    public RaceWorld(GameMap map, Player player, BaseHorseActor horseActor, 
-                    GameLoop gameLoop, GameStateManager gameStateManager) {
+    public RaceWorld(GameMap map, Player player, BaseHorseActor horseActor,
+                     GameLoop gameLoop, GameStateManager gameStateManager) {
         this.map = map;
         this.player = player;
         this.horseActor = horseActor;
@@ -26,7 +26,7 @@ public class RaceWorld {
         if (!player.isAlive()) {
             return;
         }
-        
+
         try {
             gameLoop.update(player, horseActor, map, delta);
             gameStateManager.update(player, map);
@@ -42,9 +42,20 @@ public class RaceWorld {
             // Handle errors silently but we can change it
         }
     }
-    
-    public Player getPlayer() { return player; }
-    public GameMap getMap() { return map; }
-    public BaseHorseActor getHorseActor() { return horseActor; }
-    public GameStateManager getGameStateManager() { return gameStateManager; }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public GameMap getMap() {
+        return map;
+    }
+
+    public BaseHorseActor getHorseActor() {
+        return horseActor;
+    }
+
+    public GameStateManager getGameStateManager() {
+        return gameStateManager;
+    }
 }

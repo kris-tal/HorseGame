@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import race.MapObject;
 import race.objects.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +30,13 @@ public class GameMap {
         return map[lane][col];
     }
 
-    public int getLanes() { return lanes; }
+    public int getLanes() {
+        return lanes;
+    }
 
-    public int getLength() { return length; }
+    public int getLength() {
+        return length;
+    }
 
     public void setObject(int lane, int col, MapObject obj) {
         if (lane >= 0 && lane < lanes && col >= 0 && col < length)
@@ -46,6 +51,7 @@ public class GameMap {
         mapJson.addProperty("map_data", this.getEncodedMapData()); // Just the string!
         return new Gson().toJson(mapJson);
     }
+
     public static GameMap deserializeGameMap(String mapJson) {
         try {
             JsonObject outerJson = JsonParser.parseString(mapJson).getAsJsonObject();
@@ -98,7 +104,6 @@ public class GameMap {
         put("MetaObject", 'm');
         put("PuddleObject", 'p');
     }};
-
 
 
     private static MapObject createMapObjectFromChar(char c) {

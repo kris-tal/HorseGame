@@ -1,7 +1,7 @@
 package race.state;
 
-import race.Player;
 import data.race.GameMap;
+import race.Player;
 
 public class GameStateManager {
 

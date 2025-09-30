@@ -2,19 +2,20 @@ package views.race.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import data.lobby.LobbyInfo;
 import data.lobby.PlayerInfoClient;
 import services.listeners.WaitingLobbyListener;
-import services.managers.ConnectionManager;
 import services.managers.LobbyManager;
 import views.common.ui.ListPanel;
 import views.common.ui.UIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements LobbyManager.LobbyStateListener {
     private LobbyManager lobbyManager;
@@ -52,6 +53,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     protected String getTitle() {
         return "";
     }
+
     @Override
     protected void addContent(float width, float height) {
         listTable = new Table();
@@ -134,7 +136,7 @@ public class WaitingLobbyPanel extends ListPanel<PlayerInfoClient> implements Lo
     public void setListener(WaitingLobbyListener listener) {
         this.listener = listener;
     }
-    
+
     public void setOnShowCallback(Runnable callback) {
         this.onShowCallback = callback;
     }

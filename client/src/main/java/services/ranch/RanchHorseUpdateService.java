@@ -2,7 +2,6 @@
 package services.ranch;
 
 import animations.StrollingHorseActor;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;

@@ -1,7 +1,8 @@
 package race.map;
 
-import java.util.Random;
 import race.objects.*;
+
+import java.util.Random;
 
 public class TrainingMapGenerator extends AbstractMapGenerator {
     public TrainingMapGenerator() {

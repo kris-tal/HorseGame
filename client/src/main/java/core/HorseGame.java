@@ -1,11 +1,10 @@
-// java
 package core;
 
 import com.badlogic.gdx.Game;
 import services.managers.ConnectionManagerPort;
+import services.managers.SessionManagerPort;
 import services.media.AudioService;
 import views.login.LoginScreen;
-import services.managers.SessionManagerPort;
 
 public class HorseGame extends Game {
     private ConnectionManagerPort connectionManager;

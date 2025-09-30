@@ -9,7 +9,7 @@ services:
     environment:
       - JWT_SECRET_KEY=devsecret
       - DATABASE_URL=sqlite:////data/dev.db
-      - STARTUP_MONEY=10000
+      - STARTUP_MONEY=0
       - FLASK_ENV=development
     volumes:
       - .:/app

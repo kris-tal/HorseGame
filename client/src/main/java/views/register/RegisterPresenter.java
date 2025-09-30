@@ -2,7 +2,6 @@ package views.register;
 
 import data.auth.AuthCode;
 import services.auth.AuthService;
-import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
 
 public class RegisterPresenter {

@@ -1,4 +1,3 @@
-// java
 package data.race;
 
 import data.horse.HorseData;

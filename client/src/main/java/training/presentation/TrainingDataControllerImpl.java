@@ -1,13 +1,13 @@
 // java
 package training.presentation;
 
-import data.training.TrainingData;
-import data.training.TrainingResponse;
 import data.horse.HorseData;
 import data.race.EquippedHorseService;
-import services.training.TrainingService;
-import services.horse.HorseService;
+import data.training.TrainingData;
+import data.training.TrainingResponse;
 import race.strategy.training.TrainingPointsCalculator;
+import services.horse.HorseService;
+import services.training.TrainingService;
 import training.contract.TrainingDataController;
 
 public class TrainingDataControllerImpl implements TrainingDataController {

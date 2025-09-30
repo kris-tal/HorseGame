@@ -18,8 +18,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-//pozniej usune debug bo moze jeszcze bedzie mi potrzebny generalnie jest to syf
-
 public final class HorseTypeRegistry {
     private static final Map<Integer, HorseType> BY_ID = new HashMap<>();
     private static final Map<String, HorseType> BY_KEY = new HashMap<>();

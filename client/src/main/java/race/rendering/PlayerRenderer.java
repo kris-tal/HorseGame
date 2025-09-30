@@ -1,7 +1,7 @@
 package race.rendering;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import animations.BaseHorseActor;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import race.Player;
 import race.camera.CameraSystem;
 

@@ -1,10 +1,9 @@
 package views.ranch;
 
-import services.managers.LobbyManager;
-import views.common.ui.Panel;
 import views.common.context.MenuContext;
-import views.race.menu.WaitingLobbyPanel;
+import views.common.ui.Panel;
 import views.race.menu.JoinLobbyPanel;
+import views.race.menu.WaitingLobbyPanel;
 
 
 public class RanchPresenter {

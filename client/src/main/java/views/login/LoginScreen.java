@@ -16,15 +16,15 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import core.HorseGame;
 import data.race.EquippedHorseService;
-import services.managers.ConnectionManagerPort;
-import services.media.AudioService;
-import views.ranch.RanchScreen;
-import views.register.RegisterScreen;
 import services.auth.AuthServiceImpl;
-import views.common.ui.UIFactory;
+import services.managers.ConnectionManagerPort;
 import services.managers.ResourceManager;
 import services.managers.SessionManager;
 import services.managers.SessionManagerPort;
+import services.media.AudioService;
+import views.common.ui.UIFactory;
+import views.ranch.RanchScreen;
+import views.register.RegisterScreen;
 
 public class LoginScreen implements Screen, LoginView {
     private final HorseGame game;

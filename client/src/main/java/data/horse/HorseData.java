@@ -2,7 +2,8 @@ package data.horse;
 
 import com.google.gson.Gson;
 
-// Represent one horse
+// this represents a horse owned by the player
+
 public class HorseData {
     private final int id;
     private final int name;

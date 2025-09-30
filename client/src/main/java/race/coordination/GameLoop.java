@@ -1,12 +1,12 @@
 package race.coordination;
 
-import race.Player;
 import animations.BaseHorseActor;
+import data.race.GameMap;
+import race.Player;
 import race.camera.CameraSystem;
 import race.collision.CollisionSystem;
 import race.input.InputHandler;
 import race.rendering.RendererSystem;
-import data.race.GameMap;
 
 public class GameLoop {
     private final InputHandler inputHandler;
@@ -14,8 +14,8 @@ public class GameLoop {
     private final CollisionSystem collisionSystem;
     private final RendererSystem rendererSystem;
 
-    public GameLoop(InputHandler inputHandler, CameraSystem cameraSystem, 
-                   CollisionSystem collisionSystem, RendererSystem rendererSystem) {
+    public GameLoop(InputHandler inputHandler, CameraSystem cameraSystem,
+                    CollisionSystem collisionSystem, RendererSystem rendererSystem) {
         this.inputHandler = inputHandler;
         this.cameraSystem = cameraSystem;
         this.collisionSystem = collisionSystem;
