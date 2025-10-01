@@ -13,7 +13,6 @@ public class BushObject extends MapObject {
     @Override
     public void onCollision(Player player) {
         player.limitVisionByMeters(10f);
-        player.resetSprint();
     }
 
     @Override
